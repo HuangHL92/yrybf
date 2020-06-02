@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.mrbird.febs.group.mapper.GroupAssistMapper">
+   <!-- <sql id="findGroupAssistDetailSql">
+        SELECT
+            ga.group_id groupId,
+            ga.group_name groupName,
+            ga.group_remark groupRemark,
+            IFNULL(groupMemberCount,'0') groupMemberCount
+         
+            FROM
+            t_group_assist ga
+            LEFT JOIN (
+            SELECT
+            groupa_id,
+            count(1) groupMemberCount
+            
+            FROM
+            t_gpa_map  group by groupa_id) pa ON ga.group_id = pa.groupa_id
+        
+        where 1=1
+        <if test="groupAssist.groupId != null and groupAssist.groupId != ''">
+            AND ga.group_id = #{groupAssist.groupId}
+        </if>
+        <if test="groupAssist.groupName != null and groupAssist.groupName != ''">
+            AND ga.group_name like CONCAT('%',#{groupAssist.groupName},'%')
+        </if>
+    </sql>-->
+
+    <sql id="findGroupAssistDetailSql">
+        SELECT
+        ga.group_id groupId,
+        ga.group_name groupName,
+        ga.group_remark groupRemark,
+        gpa.persona_id groupLeader,
+        gl.nname  groupLeaderName,
+        gm.group_id groupMedicine,
+        gm.group_name groupMedicineName,
+        IFNULL(groupMemberCount,'0') groupMemberCount,
+        groupMembers,
+        cast( replace(replace(ga.group_name,'帮扶',''),'组','') as   SIGNED   INTEGER)  sortno
+        FROM
+        t_group_assist ga
+        LEFT JOIN (
+        select groupa_id,
+        count(1) groupMemberCount,
+        GROUP_CONCAT(persona_id) groupMembers from t_gpa_map where groupa_type='0'
+        group by
+        groupa_id
+        ) pa ON ga.group_id = pa.groupa_id
+        left join t_gpa_map gpa on  ga.group_id = gpa.groupa_id and gpa.groupa_type='1'
+        LEFT join t_person_assist gl on  gpa.persona_id=gl.userid
+        left join t_gma_map gma on ga.group_id=gma.groupa_id
+        left join t_group_medicine gm on  gm.group_id=gma.groupm_id
+        where 1=1
+    </sql>
+
+    <select id="findGroupDetailPage" parameterType="groupAssist" resultType="groupAssist">
+        <include refid="findGroupAssistDetailSql"/>
+         <if test="groupAssist.groupName != null and groupAssist.groupName != ''">
+            AND ga.group_name like CONCAT('%',#{groupAssist.groupName},'%')
+        </if>
+        <if test="groupAssist.groupId != null and groupAssist.groupId != ''">
+            AND ga.group_id = #{groupAssist.groupId}
+        </if>
+    </select>
+
+
+    <select id="findGroupDetail2Page" parameterType="groupAssist" resultType="groupAssist">
+        SELECT
+        ga.group_id groupId,
+        ga.group_name groupName,
+        IFNULL(groupMemberCount,'0') groupMemberCount,
+        cast( replace(replace(ga.group_name,'帮扶',''),'组','') as   SIGNED   INTEGER)  sortno
+        FROM
+        t_group_assist ga
+        LEFT JOIN (
+        select groupa_id,
+        count(1) groupMemberCount from t_gpa_map
+        group by
+        groupa_id
+        ) pa ON ga.group_id = pa.groupa_id
+        where 1=1
+        <if test="groupAssist.groupName != null and groupAssist.groupName != ''">
+            AND ga.group_name like CONCAT('%',#{groupAssist.groupName},'%')
+        </if>
+
+        <if test="groupAssist.groupId != null and groupAssist.groupId != ''">
+            AND ga.group_id = #{groupAssist.groupId}
+        </if>
+    </select>
+
+
+    <select id="findGroupDetail" parameterType="groupMedicine" resultType="groupMedicine">
+        <include refid="findGroupAssistDetailSql"/>
+        <if test="groupAssist.groupId != null and groupAssist.groupId != ''">
+            AND ga.group_id = #{groupAssist.groupId}
+        </if>
+        <if test="groupAssist.groupName != null and groupAssist.groupName != ''">
+            AND ga.group_name like CONCAT('%',#{groupAssist.groupName},'%')
+        </if>
+    </select>
+
+
+    <select id="findGroupLeaderById" resultType="java.lang.String">
+        select
+        persona_id
+        from t_gpa_map
+        WHERE groupa_type='1' and groupa_id=#{groupId}
+    </select>
+
+    <select id="findGroupMemberById" resultType="java.lang.String">
+        select
+        persona_id
+        from t_gpa_map
+        WHERE groupa_type='0' and groupa_id=#{groupId}
+    </select>
+</mapper>

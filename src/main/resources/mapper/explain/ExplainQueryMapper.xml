@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.mrbird.febs.explain.mapper.ExplainQueryMapper">
+
+    <!-- 负责人选项 -->
+    <select id="findAssistLeaders" resultType="java.util.HashMap" >
+        select DISTINCT
+        CONCAT_WS(',',p.nname,p.phone) namee,
+        p.userid valuee
+        from t_person_assist p
+        inner join t_gpa_map m on p.userid = m.persona_id and  m.groupa_type='1'
+        WHERE  1=1
+        <if test="keyword != null and keyword != ''">
+            and p.nname  like CONCAT('%',#{keyword},'%')
+        </if>
+    </select>
+
+    <!-- 服务对象选项 -->
+    <select id="findMedicines" resultType="java.util.HashMap" >
+        select
+        CONCAT_WS(',',p.person_name,p.phone) namee,
+        p.person_id valuee
+        from t_person_medicine p
+        WHERE  1=1
+        <if test="keyword != null and keyword != ''">
+            and p.person_name  like CONCAT('%',#{keyword},'%')
+        </if>
+    </select>
+
+    <!-- 服务小组 -->
+    <select id="findMedicineTeams" resultType="java.util.HashMap" >
+        select p.group_name namee,p.group_id as valuee from t_group_medicine p
+        WHERE  1=1
+        <if test="keyword != null and keyword != ''">
+            and p.group_name  like CONCAT('%',#{keyword},'%')
+        </if>
+    </select>
+
+    <!-- 帮扶小组 -->
+    <select id="findAssistTeams" resultType="java.util.HashMap" >
+        select p.group_name namee,p.group_id as valuee from t_group_assist p
+        WHERE  1=1
+        <if test="keyword != null and keyword != ''">
+            and p.group_name  like CONCAT('%',#{keyword},'%')
+        </if>
+    </select>
+
+
+
+    <sql id="findExplainDetail">
+      SELECT distinct
+        e.eid,
+        e.einfo,
+        IFNULL(e.etype,"99") etype,
+        IFNULL(e.estatus,"99") estatus,
+        IFNULL(e.myd,"99") myd,
+        e.sqrname,
+        e.sqrphone,
+        e.tel,
+        e.sqradress,
+        e.province,
+        e.city,
+        e.district,
+        e.town,
+        e.cxly,
+        e.fkmx,
+        e.createdate,
+        e.transversion,
+        gm.group_name mgroup,
+		tga.group_name agroup,
+		(select t.nname from t_person_assist t ,t_gpa_map m where t.userid=m.persona_id and m.groupa_type='1' and m.groupa_id=tga.group_id ) as fzr,
+		pm.person_name yhname,
+		pm.unit,
+        pm.duty,
+        pm.remark,
+        d1.valuee etypevalue,
+        (case when e.estatus='0' or  e.estatus='1' then '正在解决'  when e.estatus='2' or e.estatus='4' then '已解决'  when e.estatus='5' then '其它' else '' end ) estatusvalue,
+        pm.szyld
+        FROM t_explain e
+        LEFT JOIN t_dict d1 on d1.field_name='etype' and e.etype=d1.keyy and d1.table_name='t_explain'
+        LEFT JOIN t_person_medicine pm ON e.tel = pm.phone
+        LEFT JOIN t_group_medicine gm ON pm.group_id = gm.group_id
+        LEFT JOIN t_gma_map tgm ON tgm.groupm_id = pm.group_id
+		left join t_group_assist tga on tgm.groupa_id=tga.group_id
+        where e.estatus != '3' and   1=1
+    </sql>
+
+    <!-- 查询信息 -->
+    <select id="findDetailList" resultType="explain" parameterType="explain">
+        <include refid="findExplainDetail"/>
+        <if test="explain.etype != null and explain.etype != ''">
+            and e.etype  in ${explain.etype}
+        </if>
+        <if test="explain.estatus != null and explain.estatus != ''">
+            and e.estatus in ${explain.estatus}
+        </if>
+        <if test="explain.createTimeFrom != null and explain.createTimeFrom != ''">
+            and STR_TO_DATE(e.createdate,'%Y-%m-%d')  &gt;= STR_TO_DATE(#{explain.createTimeFrom},'%Y-%m-%d')
+        </if>
+        <if test="explain.createTimeTo != null and explain.createTimeTo != ''">
+            and STR_TO_DATE(e.createdate,'%Y-%m-%d')  &lt;= STR_TO_DATE(#{explain.createTimeTo},'%Y-%m-%d')
+        </if>
+        <if test="explain.mgroup != null and explain.mgroup != ''">
+            and gm.group_id in ${explain.mgroup}
+        </if>
+        <if test="explain.agroup != null and explain.agroup != ''">
+            and tga.group_id in ${explain.agroup}
+        </if>
+        <if test="explain.gmedicine != null and explain.gmedicine != ''">
+            and pm.person_id in ${explain.gmedicine}
+        </if>
+        <if test="explain.fzr != null and explain.fzr != ''">
+            and  tgm.groupa_id in (select m.groupa_id  from t_gpa_map m where  m.groupa_type='1' and m.persona_id in ${explain.fzr} )
+        </if>
+        <if test="explain.unit != null and explain.unit != ''">
+            and  pm.unit in ${explain.unit}
+        </if>
+    </select>
+
+    <select id="findDetailListToExc"  resultType="explain" parameterType="explain">
+        SELECT distinct
+        e.eid,
+        e.einfo,
+        e.tel,
+        e.createdate,
+        e.transversion,
+        gm.group_name mgroup,
+        tga.group_name agroup,
+        (select t.nname from t_person_assist t ,t_gpa_map m where t.userid=m.persona_id and m.groupa_type='1' and m.groupa_id=tga.group_id ) as fzr,
+        pm.person_name yhname,
+        pm.unit,
+        pm.duty,
+        pm.remark,
+        d1.valuee etypevalue,
+        (case when e.estatus='0' or  e.estatus='1' then '正在解决'  when e.estatus='2' or e.estatus='4' then '已解决'  when e.estatus='5' then '其它' else '' end ) estatusvalue,
+        pm.szyld,
+        (case when e.estatus='0' or  e.estatus='1' then '1'  when e.estatus='2' or e.estatus='4' then '2'  when e.estatus='5' then '3' else '99' end ) estatusorder,
+        (case when e.etype='6' then '8' else e.etype end ) etypeorder,
+        d2.keyy unitorder,
+        tf.nname sqrname,
+        tf.phone sqrphone,
+        tf.relation sqrrelation
+        FROM t_explain e
+        LEFT JOIN t_dict d1 on d1.field_name='etype' and e.etype=d1.keyy and d1.table_name='t_explain'
+        LEFT JOIN t_person_medicine pm ON e.tel = pm.phone
+        LEFT JOIN t_dict d2 on d2.field_name='unit' and pm.unit=d2.valuee and d2.table_name='t_person_medicine'
+        left join t_person_medicine_family tf on e.sqrphone=tf.phone and tf.phone != ''
+        LEFT JOIN t_group_medicine gm ON pm.group_id = gm.group_id
+        LEFT JOIN t_gma_map tgm ON tgm.groupm_id = pm.group_id
+        left join t_group_assist tga on tgm.groupa_id=tga.group_id
+        where e.estatus != '3' and   1=1
+        <if test="explain.etype != null and explain.etype != ''">
+            and e.etype  in ${explain.etype}
+        </if>
+        <if test="explain.estatus != null and explain.estatus != ''">
+            and e.estatus in ${explain.estatus}
+        </if>
+        <if test="explain.createTimeFrom != null and explain.createTimeFrom != ''">
+            and STR_TO_DATE(e.createdate,'%Y-%m-%d')  &gt;= STR_TO_DATE(#{explain.createTimeFrom},'%Y-%m-%d')
+        </if>
+        <if test="explain.createTimeTo != null and explain.createTimeTo != ''">
+            and STR_TO_DATE(e.createdate,'%Y-%m-%d')  &lt;= STR_TO_DATE(#{explain.createTimeTo},'%Y-%m-%d')
+        </if>
+        <if test="explain.mgroup != null and explain.mgroup != ''">
+            and gm.group_id in ${explain.mgroup}
+        </if>
+        <if test="explain.agroup != null and explain.agroup != ''">
+            and tga.group_id in ${explain.agroup}
+        </if>
+        <if test="explain.gmedicine != null and explain.gmedicine != ''">
+            and pm.person_id in ${explain.gmedicine}
+        </if>
+        <if test="explain.fzr != null and explain.fzr != ''">
+            and  tgm.groupa_id in (select m.groupa_id  from t_gpa_map m where  m.groupa_type='1' and m.persona_id in ${explain.fzr} )
+        </if>
+        <if test="explain.unit != null and explain.unit != ''">
+            and  pm.unit in ${explain.unit}
+        </if>
+        order by estatusorder ,etypeorder,unitorder+0
+    </select>
+
+
+    <select id="getExplainLs" resultType="explain">
+        select estatus,transversion,etype,einfo,(select m.persona_id from  t_person_medicine pm
+            inner JOIN t_group_medicine gm ON pm.group_id = gm.group_id
+            inner JOIN t_gma_map tgm ON tgm.groupm_id = pm.group_id
+            inner join t_gpa_map m on tgm.groupa_id = m.groupa_id and m.groupa_type='1'
+            where tel = pm.phone ) as aid
+            from t_explain where eid=#{eid}
+    </select>
+
+    <select id="getMedicineTelByUserid" resultType="String">
+        select phone from t_person_medicine where person_id=#{userid}
+    </select>
+
+    <update id="updateExplain1">
+        update t_explain
+        <trim prefix="set" suffixOverrides=",">
+            <if test="transversion!=null">transversion=#{transversion},</if>
+            <if test="etype!=null">etype=#{etype},</if>
+            <if test="einfo!=null">einfo=#{einfo},</if>
+            <if test="estatus!=null">estatus=#{estatus},</if>
+        </trim>
+        where  eid  = #{eid}
+    </update>
+
+
+
+</mapper>

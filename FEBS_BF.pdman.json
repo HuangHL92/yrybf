@@ -1,0 +1,2430 @@
+{
+  "modules": [
+    {
+      "name": "YLBF",
+      "chnname": "医疗帮扶",
+      "entities": [
+        {
+          "title": "t_person_medicine",
+          "fields": [
+            {
+              "name": "person_id",
+              "type": "BigInt",
+              "remark": "",
+              "chnname": "人员ID",
+              "pk": true,
+              "notNull": true,
+              "autoIncrement": true,
+              "relationNoShow": false
+            },
+            {
+              "name": "person_name",
+              "type": "ShortString",
+              "remark": "",
+              "chnname": "医疗人员姓名"
+            },
+            {
+              "name": "age",
+              "type": "ShortString",
+              "remark": "",
+              "chnname": "年龄",
+              "pk": false,
+              "notNull": false
+            },
+            {
+              "name": "sex",
+              "type": "Char",
+              "remark": "",
+              "chnname": "性别"
+            },
+            {
+              "name": "party",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "政治面貌"
+            },
+            {
+              "name": "unit",
+              "type": "MiddleString",
+              "remark": "",
+              "chnname": "工作单位"
+            },
+            {
+              "name": "duty",
+              "type": "MiddleString",
+              "remark": "",
+              "chnname": "职务"
+            },
+            {
+              "name": "szyld",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "所在医疗队"
+            },
+            {
+              "name": "accredited",
+              "type": "MiddleString",
+              "remark": "",
+              "chnname": "目前所在医疗团队"
+            },
+            {
+              "name": "phone",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "联系方式",
+              "pk": true,
+              "notNull": true
+            },
+            {
+              "name": "group_id",
+              "type": "BigInt",
+              "remark": "",
+              "chnname": "所属分组"
+            },
+            {
+              "name": "county",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "县市区"
+            },
+            {
+              "name": "town",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "镇"
+            },
+            {
+              "name": "village",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "社区"
+            },
+            {
+              "name": "address",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "家庭地址"
+            }
+          ],
+          "indexs": [],
+          "headers": [
+            {
+              "fieldName": "chnname",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "name",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "type",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "dataType",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "remark",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "pk",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "notNull",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "autoIncrement",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "defaultValue",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "relationNoShow",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "uiHint",
+              "relationNoShow": true
+            }
+          ],
+          "chnname": "医务人员信息表"
+        },
+        {
+          "title": "t_gma_map",
+          "fields": [
+            {
+              "name": "groupm_id",
+              "type": "BigInt",
+              "remark": "",
+              "chnname": "医疗小组id",
+              "pk": false,
+              "notNull": false,
+              "uiHint": "Text"
+            },
+            {
+              "name": "groupa_id",
+              "type": "BigInt",
+              "remark": "",
+              "chnname": "帮扶小组id",
+              "notNull": false,
+              "pk": false
+            }
+          ],
+          "indexs": [],
+          "headers": [
+            {
+              "fieldName": "chnname",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "name",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "type",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "dataType",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "remark",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "pk",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "notNull",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "autoIncrement",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "defaultValue",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "relationNoShow",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "uiHint",
+              "relationNoShow": true
+            }
+          ],
+          "chnname": "医务帮扶小组关系表"
+        },
+        {
+          "title": "t_group_medicine",
+          "fields": [
+            {
+              "name": "group_id",
+              "type": "BigInt",
+              "remark": "",
+              "chnname": "分组ID",
+              "pk": true,
+              "notNull": true,
+              "autoIncrement": true
+            },
+            {
+              "name": "group_name",
+              "type": "MiddleString",
+              "remark": "",
+              "chnname": "分组名称"
+            },
+            {
+              "name": "group_members",
+              "type": "MiddleString",
+              "remark": "",
+              "chnname": "成员"
+            }
+          ],
+          "indexs": [],
+          "headers": [
+            {
+              "fieldName": "chnname",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "name",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "type",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "dataType",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "remark",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "pk",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "notNull",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "autoIncrement",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "defaultValue",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "relationNoShow",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "uiHint",
+              "relationNoShow": true
+            }
+          ],
+          "chnname": "医务小组信息"
+        },
+        {
+          "title": "t_explain",
+          "fields": [
+            {
+              "name": "eid",
+              "type": "IdOrKey",
+              "remark": "",
+              "chnname": "诉求ID",
+              "pk": true,
+              "notNull": true,
+              "autoIncrement": true
+            },
+            {
+              "name": "etype",
+              "type": "Char",
+              "remark": "",
+              "chnname": "诉求类型"
+            },
+            {
+              "name": "einfo",
+              "type": "LongString",
+              "remark": "",
+              "chnname": "诉求信息"
+            },
+            {
+              "name": "sqrname",
+              "type": "IdOrKey",
+              "remark": "",
+              "chnname": "联系人姓名"
+            },
+            {
+              "name": "sqrphone",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "联系人电话"
+            },
+            {
+              "name": "tel",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "医护人员联系电话"
+            },
+            {
+              "name": "sqradress",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "详细地址",
+              "uiHint": "AddressPicker"
+            },
+            {
+              "name": "province",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "所在省"
+            },
+            {
+              "name": "city",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "所在市"
+            },
+            {
+              "name": "district",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "所在区"
+            },
+            {
+              "name": "town",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "所在街道"
+            },
+            {
+              "name": "openid",
+              "type": "ShortString",
+              "remark": "",
+              "chnname": "人员唯一码"
+            },
+            {
+              "name": "sfsw",
+              "type": "Char",
+              "remark": "0：省内；1：省外；  后台判定province 为‘浙江省’则为0，其余都为1；",
+              "chnname": "是否省外"
+            },
+            {
+              "name": "estatus",
+              "type": "Char",
+              "remark": "0:未分配；1：处理中；2：已处理；3：已撤销；4：已反馈",
+              "chnname": "诉求状态"
+            },
+            {
+              "name": "cxly",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "撤销理由"
+            },
+            {
+              "name": "myd",
+              "type": "Char",
+              "remark": "1：非常满意；2：满意；3：一般；4：不满意",
+              "chnname": "满意度"
+            },
+            {
+              "name": "fkmx",
+              "type": "MiddleString",
+              "remark": "",
+              "chnname": "满意描述"
+            },
+            {
+              "name": "createdate",
+              "type": "DateTime",
+              "remark": "",
+              "chnname": "创建时间"
+            },
+            {
+              "name": "leadappraise",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "leadappraise"
+            }
+          ],
+          "indexs": [],
+          "headers": [
+            {
+              "fieldName": "chnname",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "name",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "type",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "dataType",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "remark",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "pk",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "notNull",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "autoIncrement",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "defaultValue",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "relationNoShow",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "uiHint",
+              "relationNoShow": true
+            }
+          ],
+          "chnname": "诉求信息"
+        },
+        {
+          "title": "t_person_assist",
+          "fields": [
+            {
+              "name": "userid",
+              "type": "BigInt",
+              "remark": "",
+              "chnname": "人员ID",
+              "pk": true,
+              "notNull": true,
+              "autoIncrement": true,
+              "relationNoShow": false
+            },
+            {
+              "name": "nname",
+              "type": "ShortString",
+              "remark": "",
+              "chnname": "姓名"
+            },
+            {
+              "name": "phone",
+              "type": "ShortString",
+              "remark": "",
+              "chnname": "手机号码",
+              "pk": true,
+              "notNull": true
+            },
+            {
+              "name": "ssex",
+              "type": "Char",
+              "remark": "",
+              "chnname": "性别"
+            },
+            {
+              "name": "age",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "年龄"
+            },
+            {
+              "name": "political",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "政治面貌"
+            },
+            {
+              "name": "workunid",
+              "type": "MiddleString",
+              "remark": "",
+              "chnname": "工作单位"
+            },
+            {
+              "name": "duty",
+              "type": "MiddleString",
+              "remark": "",
+              "chnname": "职务"
+            },
+            {
+              "name": "ttype",
+              "type": "Char",
+              "remark": "1:机关处级干部；2：医疗卫生机构中层；3：社区工作者；4：志愿者",
+              "chnname": "人员类别"
+            },
+            {
+              "name": "rrole",
+              "type": "Char",
+              "remark": "1：组员；2：组长；3：团长；4：未分配角色人员 5: 团长兼组长",
+              "chnname": "角色"
+            },
+            {
+              "name": "openid",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "微信ID"
+            },
+            {
+              "name": "city",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "市"
+            },
+            {
+              "name": "county",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "区"
+            },
+            {
+              "name": "town",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "街道"
+            },
+            {
+              "name": "village",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "社区"
+            },
+            {
+              "name": "address",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "家庭地址"
+            }
+          ],
+          "indexs": [],
+          "headers": [
+            {
+              "fieldName": "chnname",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "name",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "type",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "dataType",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "remark",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "pk",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "notNull",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "autoIncrement",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "defaultValue",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "relationNoShow",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "uiHint",
+              "relationNoShow": true
+            }
+          ],
+          "chnname": "帮扶人员信息表"
+        },
+        {
+          "title": "t_group_assist",
+          "fields": [
+            {
+              "name": "group_id",
+              "type": "BigInt",
+              "remark": "",
+              "chnname": "ID",
+              "pk": true,
+              "notNull": true,
+              "autoIncrement": true
+            },
+            {
+              "name": "group_name",
+              "type": "MiddleString",
+              "remark": "",
+              "chnname": "名称"
+            },
+            {
+              "name": "group_remark",
+              "type": "MiddleString",
+              "remark": "",
+              "chnname": "备注"
+            }
+          ],
+          "indexs": [],
+          "headers": [
+            {
+              "fieldName": "chnname",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "name",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "type",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "dataType",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "remark",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "pk",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "notNull",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "autoIncrement",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "defaultValue",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "relationNoShow",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "uiHint",
+              "relationNoShow": true
+            }
+          ],
+          "chnname": "帮扶小组信息"
+        },
+        {
+          "title": "t_wxuser",
+          "fields": [
+            {
+              "name": "userid",
+              "type": "IdOrKey",
+              "remark": "",
+              "chnname": "用户ID(既手机号)",
+              "pk": true,
+              "notNull": true
+            },
+            {
+              "name": "telnum1",
+              "type": "IdOrKey",
+              "remark": "",
+              "chnname": "登录人手机号"
+            },
+            {
+              "name": "telnum2",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "医护人员手机号"
+            },
+            {
+              "name": "hospital",
+              "type": "MiddleString",
+              "remark": "",
+              "chnname": "所属医院"
+            },
+            {
+              "name": "region",
+              "type": "MiddleString",
+              "remark": "",
+              "chnname": "所在地区"
+            },
+            {
+              "name": "address",
+              "type": "MiddleString",
+              "remark": "",
+              "chnname": "详细地址"
+            },
+            {
+              "name": "passwd",
+              "type": "IdOrKey",
+              "remark": "",
+              "chnname": "密码"
+            },
+            {
+              "name": "rylx",
+              "type": "DefaultString",
+              "remark": "0为医护人员及家属,1位帮扶小组成员,2为帮扶小组组长",
+              "chnname": "用户类型"
+            },
+            {
+              "name": "family",
+              "type": "Char",
+              "remark": "0为家属,1为本人",
+              "chnname": "家庭关系"
+            },
+            {
+              "name": "openid",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "微信ID"
+            }
+          ],
+          "indexs": [],
+          "headers": [
+            {
+              "fieldName": "chnname",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "name",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "type",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "dataType",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "remark",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "pk",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "notNull",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "autoIncrement",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "defaultValue",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "relationNoShow",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "uiHint",
+              "relationNoShow": true
+            }
+          ],
+          "chnname": "微信用户登录表"
+        },
+        {
+          "title": "t_group_team",
+          "fields": [
+            {
+              "name": "tem_id",
+              "type": "BigInt",
+              "remark": "",
+              "chnname": "所在团主键",
+              "pk": true,
+              "notNull": true,
+              "autoIncrement": true
+            },
+            {
+              "name": "team_name",
+              "type": "MiddleString",
+              "remark": "",
+              "chnname": "所在团名字"
+            },
+            {
+              "name": "tuserid",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "团长ID"
+            }
+          ],
+          "indexs": [],
+          "headers": [
+            {
+              "fieldName": "chnname",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "name",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "type",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "dataType",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "remark",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "pk",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "notNull",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "autoIncrement",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "defaultValue",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "relationNoShow",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "uiHint",
+              "relationNoShow": true
+            }
+          ],
+          "chnname": "团信息"
+        },
+        {
+          "title": "t_gpa_map",
+          "fields": [
+            {
+              "name": "persona_id",
+              "type": "BigInt",
+              "remark": "",
+              "chnname": "帮扶人员id",
+              "pk": false,
+              "notNull": false,
+              "uiHint": "Text"
+            },
+            {
+              "name": "groupa_id",
+              "type": "BigInt",
+              "remark": "",
+              "chnname": "帮扶小组id",
+              "notNull": false,
+              "pk": false
+            },
+            {
+              "name": "groupa_type",
+              "type": "Char",
+              "remark": "",
+              "chnname": "是否帮扶组长"
+            }
+          ],
+          "indexs": [],
+          "headers": [
+            {
+              "fieldName": "chnname",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "name",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "type",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "dataType",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "remark",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "pk",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "notNull",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "autoIncrement",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "defaultValue",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "relationNoShow",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "uiHint",
+              "relationNoShow": true
+            }
+          ],
+          "chnname": "帮扶小组人员关系表"
+        },
+        {
+          "title": "t_gat_map",
+          "fields": [
+            {
+              "name": "groupa_id",
+              "type": "BigInt",
+              "remark": "",
+              "chnname": "帮扶小组id",
+              "pk": false,
+              "notNull": false,
+              "uiHint": "Text"
+            },
+            {
+              "name": "team_id",
+              "type": "BigInt",
+              "remark": "",
+              "chnname": "团id",
+              "notNull": false,
+              "pk": false
+            }
+          ],
+          "indexs": [],
+          "headers": [
+            {
+              "fieldName": "chnname",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "name",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "type",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "dataType",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "remark",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "pk",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "notNull",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "autoIncrement",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "defaultValue",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "relationNoShow",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "uiHint",
+              "relationNoShow": true
+            }
+          ],
+          "chnname": "帮扶小组与团关系表"
+        },
+        {
+          "title": "t_explain_assist",
+          "fields": [
+            {
+              "name": "taid",
+              "type": "ShortString",
+              "remark": "",
+              "chnname": "诉求处理id",
+              "pk": true,
+              "notNull": true
+            },
+            {
+              "name": "aid",
+              "type": "LongKey",
+              "remark": "",
+              "chnname": "帮扶人员id",
+              "notNull": true
+            },
+            {
+              "name": "tid",
+              "type": "LongKey",
+              "remark": "",
+              "chnname": "原始诉求id",
+              "notNull": true
+            },
+            {
+              "name": "receivedate",
+              "type": "Date",
+              "remark": "",
+              "chnname": "分配诉求时间"
+            },
+            {
+              "name": "startdate",
+              "type": "Date",
+              "remark": "",
+              "chnname": "诉求处理时间"
+            },
+            {
+              "name": "enddate",
+              "type": "Date",
+              "remark": "",
+              "chnname": "处理结束时间"
+            },
+            {
+              "name": "paid",
+              "type": "LongKey",
+              "remark": "",
+              "chnname": "分配人id",
+              "notNull": true
+            },
+            {
+              "name": "astatus",
+              "type": "ShortString",
+              "remark": "0：组长分配；\n1：开始处理诉求；\n2：向上转交诉求；\n3：已处理;\n4:撤回；",
+              "chnname": "状态",
+              "notNull": true
+            },
+            {
+              "name": "reason",
+              "type": "MiddleString",
+              "remark": "",
+              "chnname": "退回理由",
+              "notNull": false
+            },
+            {
+              "name": "chreason",
+              "type": "MiddleString",
+              "remark": "",
+              "chnname": "撤回诉求原因"
+            },
+            {
+              "name": "xh",
+              "type": "Integer",
+              "remark": "",
+              "chnname": "处理编号"
+            },
+            {
+              "name": "tcurrent",
+              "type": "Char",
+              "remark": "",
+              "chnname": "是否当前最新处理"
+            }
+          ],
+          "indexs": [],
+          "headers": [
+            {
+              "fieldName": "chnname",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "name",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "type",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "dataType",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "remark",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "pk",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "notNull",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "autoIncrement",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "defaultValue",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "relationNoShow",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "uiHint",
+              "relationNoShow": true
+            }
+          ],
+          "chnname": "诉求流程表"
+        },
+        {
+          "title": "t_person_medicine_family",
+          "fields": [
+            {
+              "name": "userid",
+              "type": "Integer",
+              "remark": "",
+              "chnname": "人员ID",
+              "pk": true,
+              "notNull": true
+            },
+            {
+              "name": "nname",
+              "type": "IdOrKey",
+              "remark": "",
+              "chnname": "姓名"
+            },
+            {
+              "name": "age",
+              "type": "DateTime",
+              "remark": "",
+              "chnname": "年龄"
+            },
+            {
+              "name": "relation",
+              "type": "IdOrKey",
+              "remark": "",
+              "chnname": "亲属关系"
+            },
+            {
+              "name": "address",
+              "type": "DateTime",
+              "remark": "",
+              "chnname": "目前居住地"
+            },
+            {
+              "name": "unit",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "工作单位"
+            },
+            {
+              "name": "phone",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "手机号",
+              "notNull": true
+            },
+            {
+              "name": "ylrphone",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "医护人手机号",
+              "notNull": true
+            }
+          ],
+          "indexs": [],
+          "headers": [
+            {
+              "fieldName": "chnname",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "name",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "type",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "dataType",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "remark",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "pk",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "notNull",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "autoIncrement",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "defaultValue",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "relationNoShow",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "uiHint",
+              "relationNoShow": true
+            }
+          ],
+          "chnname": "诉求家属信息表"
+        },
+        {
+          "title": "t_feedback",
+          "fields": [
+            {
+              "name": "uuid",
+              "type": "Integer",
+              "remark": "",
+              "chnname": "主键",
+              "pk": true,
+              "notNull": true
+            },
+            {
+              "name": "queinfo",
+              "type": "IdOrKey",
+              "remark": "",
+              "chnname": "反馈描述"
+            },
+            {
+              "name": "userid",
+              "type": "DateTime",
+              "remark": "",
+              "chnname": "反馈人员手机号",
+              "notNull": true
+            },
+            {
+              "name": "name",
+              "type": "IdOrKey",
+              "remark": "",
+              "chnname": "反馈人员姓名"
+            },
+            {
+              "name": "createtime",
+              "type": "DateTime",
+              "remark": "",
+              "chnname": "创建时间"
+            },
+            {
+              "name": "status",
+              "type": "DefaultString",
+              "remark": "'0'为处理'1'为已处理",
+              "chnname": "事件状态"
+            },
+            {
+              "name": "updatetime",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "更新时间"
+            }
+          ],
+          "indexs": [],
+          "headers": [
+            {
+              "fieldName": "chnname",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "name",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "type",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "dataType",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "remark",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "pk",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "notNull",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "autoIncrement",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "defaultValue",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "relationNoShow",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "uiHint",
+              "relationNoShow": true
+            }
+          ],
+          "chnname": "信息反馈表"
+        }
+      ],
+      "graphCanvas": {
+        "nodes": [
+          {
+            "shape": "table",
+            "title": "t_group_assist",
+            "moduleName": false,
+            "x": 700,
+            "y": 1060,
+            "id": "421cf104"
+          },
+          {
+            "shape": "table",
+            "title": "t_gma_map",
+            "moduleName": false,
+            "x": 690,
+            "y": 960,
+            "id": "e2c8f848"
+          },
+          {
+            "shape": "table",
+            "title": "t_gat_map",
+            "moduleName": false,
+            "x": 440,
+            "y": 1080,
+            "id": "e6ce7e5e"
+          },
+          {
+            "shape": "table",
+            "title": "t_group_team",
+            "moduleName": false,
+            "x": 140,
+            "y": 1070,
+            "id": "17f1af4d"
+          },
+          {
+            "shape": "table",
+            "title": "t_person_medicine",
+            "moduleName": false,
+            "x": 230,
+            "y": 730,
+            "id": "bf93775b"
+          },
+          {
+            "shape": "table",
+            "title": "t_group_medicine",
+            "moduleName": false,
+            "x": 370,
+            "y": 970,
+            "id": "8a9cd813"
+          },
+          {
+            "shape": "table",
+            "title": "t_gpa_map",
+            "moduleName": false,
+            "x": 960,
+            "y": 1070,
+            "id": "e486f231"
+          },
+          {
+            "shape": "table",
+            "title": "t_person_assist",
+            "moduleName": false,
+            "x": 950,
+            "y": 810,
+            "id": "ff25be68"
+          },
+          {
+            "shape": "table",
+            "title": "t_explain",
+            "moduleName": false,
+            "x": -190,
+            "y": 930,
+            "id": "b1aced4a"
+          },
+          {
+            "shape": "table",
+            "title": "t_explain_assist",
+            "moduleName": false,
+            "x": -180,
+            "y": 570,
+            "id": "ea763f74"
+          },
+          {
+            "shape": "table",
+            "title": "t_wxuser",
+            "moduleName": false,
+            "x": 620,
+            "y": 750,
+            "id": "57a51405"
+          },
+          {
+            "shape": "table",
+            "title": "t_person_medicine_family",
+            "moduleName": false,
+            "x": 320,
+            "y": 400,
+            "id": "65efbbca"
+          }
+        ],
+        "edges": [
+          {
+            "shape": "erdRelation",
+            "relation": "0,n:1",
+            "source": "e2c8f848",
+            "target": "421cf104",
+            "id": "38db398b",
+            "controlPoints": [
+              {
+                "x": 571.8046875,
+                "y": 982.8214285714286
+              },
+              {
+                "x": 585.8896484375,
+                "y": 1052.4166666666667
+              }
+            ],
+            "sourceAnchor": 2,
+            "targetAnchor": 0
+          },
+          {
+            "shape": "erdRelation",
+            "relation": "0,n:1",
+            "source": "e486f231",
+            "target": "421cf104",
+            "id": "6182b971",
+            "controlPoints": [
+              {
+                "x": 829.46484375,
+                "y": 1082.638888888889
+              },
+              {
+                "x": 814.1103515625,
+                "y": 1052.4166666666667
+              }
+            ],
+            "sourceAnchor": 2,
+            "targetAnchor": 1
+          },
+          {
+            "shape": "erdRelation",
+            "relation": "0,n:1",
+            "source": "e6ce7e5e",
+            "target": "421cf104",
+            "id": "d0c4fb2c",
+            "controlPoints": [
+              {
+                "x": 556.5341796875,
+                "y": 1082.5357142857142
+              },
+              {
+                "x": 585.8896484375,
+                "y": 1052.4166666666667
+              }
+            ],
+            "sourceAnchor": 1,
+            "targetAnchor": 0
+          },
+          {
+            "shape": "erdRelation",
+            "relation": "0,n:1",
+            "source": "e6ce7e5e",
+            "target": "17f1af4d",
+            "id": "e162a0fa",
+            "controlPoints": [
+              {
+                "x": 323.4658203125,
+                "y": 1102.8214285714287
+              },
+              {
+                "x": 270.6962890625,
+                "y": 1062.4166666666667
+              }
+            ],
+            "sourceAnchor": 2,
+            "targetAnchor": 1
+          },
+          {
+            "shape": "erdRelation",
+            "relation": "0,n:1",
+            "source": "e486f231",
+            "target": "ff25be68",
+            "id": "921bb0bc",
+            "controlPoints": [
+              {
+                "x": 1090.53515625,
+                "y": 1062.4166666666667
+              },
+              {
+                "x": 822.642578125,
+                "y": 672.1071428571429
+              }
+            ],
+            "sourceAnchor": 1,
+            "targetAnchor": 0
+          },
+          {
+            "shape": "erdRelation",
+            "relation": "0,n:1",
+            "source": "bf93775b",
+            "target": "8a9cd813",
+            "id": "7b41f7c6",
+            "controlPoints": [
+              {
+                "x": 65.462890625,
+                "y": 802.719696969697
+              },
+              {
+                "x": 237.552734375,
+                "y": 962.4166666666666
+              }
+            ],
+            "sourceAnchor": 20,
+            "targetAnchor": 0
+          },
+          {
+            "shape": "erdRelation",
+            "relation": "0,n:1",
+            "source": "e2c8f848",
+            "target": "8a9cd813",
+            "id": "746a3c7d",
+            "controlPoints": [
+              {
+                "x": 571.8046875,
+                "y": 962.5357142857143
+              },
+              {
+                "x": 502.447265625,
+                "y": 962.4166666666666
+              }
+            ],
+            "sourceAnchor": 0,
+            "targetAnchor": 1
+          },
+          {
+            "shape": "erdRelation",
+            "relation": "0,n:1",
+            "source": "b1aced4a",
+            "target": "bf93775b",
+            "id": "2cd956bf",
+            "controlPoints": [
+              {
+                "x": -38.87890625,
+                "y": 862.3353658536586
+              },
+              {
+                "x": 65.462890625,
+                "y": 782.6590909090909
+              }
+            ],
+            "sourceAnchor": 11,
+            "targetAnchor": 18
+          },
+          {
+            "shape": "erdRelation",
+            "relation": "0,n:1",
+            "source": "ff25be68",
+            "target": "57a51405",
+            "id": "fd2c315e",
+            "controlPoints": [
+              {
+                "x": 822.642578125,
+                "y": 712.2214285714285
+              },
+              {
+                "x": 778.58984375,
+                "y": 672.1630434782609
+              }
+            ],
+            "sourceAnchor": 4,
+            "targetAnchor": 1
+          },
+          {
+            "shape": "erdRelation",
+            "relation": "0,n:1",
+            "source": "bf93775b",
+            "target": "57a51405",
+            "id": "8066410d",
+            "controlPoints": [
+              {
+                "x": 394.537109375,
+                "y": 782.6590909090909
+              },
+              {
+                "x": 461.41015625,
+                "y": 672.1630434782609
+              }
+            ],
+            "sourceAnchor": 19,
+            "targetAnchor": 0
+          },
+          {
+            "shape": "erdRelation",
+            "relation": "0,n:1",
+            "source": "ea763f74",
+            "target": "b1aced4a",
+            "id": "6aee6b09",
+            "controlPoints": [
+              {
+                "x": -329.779296875,
+                "y": 512.2870370370371
+              },
+              {
+                "x": -341.12109375,
+                "y": 762.0914634146342
+              }
+            ],
+            "sourceAnchor": 4,
+            "targetAnchor": 0
+          },
+          {
+            "shape": "erdRelation",
+            "relation": "0,n:1",
+            "source": "65efbbca",
+            "target": "57a51405",
+            "id": "3e36e35d",
+            "controlPoints": [
+              {
+                "x": 447.77734375,
+                "y": 462.82894736842104
+              },
+              {
+                "x": 461.41015625,
+                "y": 672.1630434782609
+              }
+            ],
+            "sourceAnchor": 13,
+            "targetAnchor": 0
+          }
+        ]
+      },
+      "associations": [
+        {
+          "relation": "0,n:1",
+          "from": {
+            "entity": "t_gma_map",
+            "field": "groupa_id"
+          },
+          "to": {
+            "entity": "t_group_assist",
+            "field": "group_id"
+          }
+        },
+        {
+          "relation": "0,n:1",
+          "from": {
+            "entity": "t_gpa_map",
+            "field": "groupa_id"
+          },
+          "to": {
+            "entity": "t_group_assist",
+            "field": "group_id"
+          }
+        },
+        {
+          "relation": "0,n:1",
+          "from": {
+            "entity": "t_gat_map",
+            "field": "groupa_id"
+          },
+          "to": {
+            "entity": "t_group_assist",
+            "field": "group_id"
+          }
+        },
+        {
+          "relation": "0,n:1",
+          "from": {
+            "entity": "t_gat_map",
+            "field": "team_id"
+          },
+          "to": {
+            "entity": "t_group_team",
+            "field": "tem_id"
+          }
+        },
+        {
+          "relation": "0,n:1",
+          "from": {
+            "entity": "t_gpa_map",
+            "field": "persona_id"
+          },
+          "to": {
+            "entity": "t_person_assist",
+            "field": "userid"
+          }
+        },
+        {
+          "relation": "0,n:1",
+          "from": {
+            "entity": "t_person_medicine",
+            "field": "group_id"
+          },
+          "to": {
+            "entity": "t_group_medicine",
+            "field": "group_id"
+          }
+        },
+        {
+          "relation": "0,n:1",
+          "from": {
+            "entity": "t_gma_map",
+            "field": "groupm_id"
+          },
+          "to": {
+            "entity": "t_group_medicine",
+            "field": "group_id"
+          }
+        },
+        {
+          "relation": "0,n:1",
+          "from": {
+            "entity": "t_explain",
+            "field": "tel"
+          },
+          "to": {
+            "entity": "t_person_medicine",
+            "field": "phone"
+          }
+        },
+        {
+          "relation": "0,n:1",
+          "from": {
+            "entity": "t_person_assist",
+            "field": "phone"
+          },
+          "to": {
+            "entity": "t_wxuser",
+            "field": "userid"
+          }
+        },
+        {
+          "relation": "0,n:1",
+          "from": {
+            "entity": "t_person_medicine",
+            "field": "phone"
+          },
+          "to": {
+            "entity": "t_wxuser",
+            "field": "userid"
+          }
+        },
+        {
+          "relation": "0,n:1",
+          "from": {
+            "entity": "t_explain_assist",
+            "field": "tid"
+          },
+          "to": {
+            "entity": "t_explain",
+            "field": "eid"
+          }
+        },
+        {
+          "relation": "0,n:1",
+          "from": {
+            "entity": "t_person_medicine_family",
+            "field": "phone"
+          },
+          "to": {
+            "entity": "t_wxuser",
+            "field": "userid"
+          }
+        }
+      ]
+    },
+    {
+      "name": "xmz",
+      "chnname": "项目管理",
+      "entities": [
+        {
+          "title": "t_group",
+          "fields": [
+            {
+              "name": "group_id",
+              "type": "BigInt",
+              "remark": "",
+              "chnname": "ID",
+              "pk": true,
+              "notNull": true,
+              "autoIncrement": true
+            },
+            {
+              "name": "group_name",
+              "type": "MiddleString",
+              "remark": "",
+              "chnname": "项目组名称"
+            },
+            {
+              "name": "group_remark",
+              "type": "LongText",
+              "remark": "",
+              "chnname": "备注"
+            }
+          ],
+          "indexs": [],
+          "headers": [
+            {
+              "fieldName": "chnname",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "name",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "type",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "dataType",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "remark",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "pk",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "notNull",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "autoIncrement",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "defaultValue",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "relationNoShow",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "uiHint",
+              "relationNoShow": true
+            }
+          ],
+          "chnname": "项目组"
+        }
+      ],
+      "graphCanvas": {
+        "nodes": [],
+        "edges": []
+      },
+      "associations": []
+    }
+  ],
+  "dataTypeDomains": {
+    "datatype": [
+      {
+        "name": "默认字串",
+        "code": "DefaultString",
+        "apply": {
+          "JAVA": {
+            "type": "String"
+          },
+          "MYSQL": {
+            "type": "VARCHAR(32)"
+          },
+          "ORACLE": {
+            "type": "NVARCHAR2(32)"
+          },
+          "SQLServer": {
+            "type": "NVARCHAR(32)"
+          },
+          "PostgreSQL": {
+            "type": "VARCHAR(32)"
+          }
+        }
+      },
+      {
+        "name": "标识号",
+        "code": "IdOrKey",
+        "apply": {
+          "JAVA": {
+            "type": "String"
+          },
+          "ORACLE": {
+            "type": "VARCHAR2(32)"
+          },
+          "MYSQL": {
+            "type": "VARCHAR(32)"
+          },
+          "SQLServer": {
+            "type": "VARCHAR(32)"
+          },
+          "PostgreSQL": {
+            "type": "VARCHAR(32)"
+          }
+        }
+      },
+      {
+        "name": "标识号-长",
+        "code": "LongKey",
+        "apply": {
+          "MYSQL": {
+            "type": "VARCHAR(64)"
+          },
+          "ORACLE": {
+            "type": "VARCHAR2(64)"
+          },
+          "JAVA": {
+            "type": "String"
+          },
+          "SQLServer": {
+            "type": "VARCHAR(64)"
+          },
+          "PostgreSQL": {
+            "type": "VARCHAR(64)"
+          }
+        }
+      },
+      {
+        "name": "名称",
+        "code": "Name",
+        "apply": {
+          "JAVA": {
+            "type": "String"
+          },
+          "MYSQL": {
+            "type": "VARCHAR(128)"
+          },
+          "ORACLE": {
+            "type": "NVARCHAR2(128)"
+          },
+          "SQLServer": {
+            "type": "NVARCHAR(128)"
+          },
+          "PostgreSQL": {
+            "type": "VARCHAR(128)"
+          }
+        }
+      },
+      {
+        "name": "备注说明",
+        "code": "Intro",
+        "apply": {
+          "JAVA": {
+            "type": "String"
+          },
+          "MYSQL": {
+            "type": "VARCHAR(512)"
+          },
+          "ORACLE": {
+            "type": "NVARCHAR2(512)"
+          },
+          "SQLServer": {
+            "type": "NVARCHAR(512)"
+          },
+          "PostgreSQL": {
+            "type": "VARCHAR(512)"
+          }
+        }
+      },
+      {
+        "name": "字串-短",
+        "code": "ShortString",
+        "apply": {
+          "JAVA": {
+            "type": "String"
+          },
+          "MYSQL": {
+            "type": "VARCHAR(128)"
+          },
+          "ORACLE": {
+            "type": "NVARCHAR2(128)"
+          },
+          "SQLServer": {
+            "type": "NVARCHAR(128)"
+          },
+          "PostgreSQL": {
+            "type": "VARCHAR(128)"
+          }
+        }
+      },
+      {
+        "name": "字串-中",
+        "code": "MiddleString",
+        "apply": {
+          "JAVA": {
+            "type": "String"
+          },
+          "MYSQL": {
+            "type": "VARCHAR(1024)"
+          },
+          "ORACLE": {
+            "type": "NVARCHAR2(1024)"
+          },
+          "SQLServer": {
+            "type": "NVARCHAR(1024)"
+          },
+          "PostgreSQL": {
+            "type": "VARCHAR(1024)"
+          }
+        }
+      },
+      {
+        "name": "字串-长",
+        "code": "LongString",
+        "apply": {
+          "JAVA": {
+            "type": "String"
+          },
+          "ORACLE": {
+            "type": "NVARCHAR2(3072)"
+          },
+          "MYSQL": {
+            "type": "VARCHAR(3072)"
+          },
+          "SQLServer": {
+            "type": "NVARCHAR(3072)"
+          },
+          "PostgreSQL": {
+            "type": "VARCHAR(3072)"
+          }
+        }
+      },
+      {
+        "name": "大文本",
+        "code": "LongText",
+        "apply": {
+          "JAVA": {
+            "type": "String"
+          },
+          "MYSQL": {
+            "type": "TEXT"
+          },
+          "ORACLE": {
+            "type": "CLOB"
+          },
+          "SQLServer": {
+            "type": "NTEXT"
+          },
+          "PostgreSQL": {
+            "type": "TEXT"
+          }
+        }
+      },
+      {
+        "name": "小数",
+        "code": "Double",
+        "apply": {
+          "JAVA": {
+            "type": "Double"
+          },
+          "MYSQL": {
+            "type": "DECIMAL(32,10)"
+          },
+          "ORACLE": {
+            "type": "NUMBER(32,10)"
+          },
+          "SQLServer": {
+            "type": "DECIMAL(32,10)"
+          },
+          "PostgreSQL": {
+            "type": "DECIMAL(32,10)"
+          }
+        }
+      },
+      {
+        "name": "比例",
+        "code": "Ratio",
+        "apply": {
+          "MYSQL": {
+            "type": "DECIMAL(4,2)"
+          },
+          "JAVA": {
+            "type": "Double"
+          },
+          "ORACLE": {
+            "type": "NUMBER(4,2)"
+          },
+          "SQLServer": {
+            "type": "DECIMAL(4,2)"
+          },
+          "PostgreSQL": {
+            "type": "DECIMAL(4,2)"
+          }
+        }
+      },
+      {
+        "name": "整数",
+        "code": "Integer",
+        "apply": {
+          "JAVA": {
+            "type": "Integer"
+          },
+          "MYSQL": {
+            "type": "INT"
+          },
+          "ORACLE": {
+            "type": "INT"
+          },
+          "SQLServer": {
+            "type": "INT"
+          },
+          "PostgreSQL": {
+            "type": "INT"
+          }
+        }
+      },
+      {
+        "name": "大整数",
+        "code": "BigInt",
+        "apply": {
+          "MYSQL": {
+            "type": "BIGINT"
+          },
+          "JAVA": {
+            "type": "Long"
+          },
+          "ORACLE": {
+            "type": "NUMBER"
+          },
+          "SQLServer": {
+            "type": "BIGINT"
+          },
+          "PostgreSQL": {
+            "type": "BIGINT"
+          }
+        }
+      },
+      {
+        "name": "金额",
+        "code": "Money",
+        "apply": {
+          "JAVA": {
+            "type": "Double"
+          },
+          "MYSQL": {
+            "type": "DECIMAL(32,8)"
+          },
+          "ORACLE": {
+            "type": "NUMBER(32,8)"
+          },
+          "SQLServer": {
+            "type": "DECIMAL(32,8)"
+          },
+          "PostgreSQL": {
+            "type": "DECIMAL(32,8)"
+          }
+        }
+      },
+      {
+        "name": "是否",
+        "code": "YesNo",
+        "apply": {
+          "JAVA": {
+            "type": "String"
+          },
+          "MYSQL": {
+            "type": "VARCHAR(1)"
+          },
+          "ORACLE": {
+            "type": "VARCHAR2(1)"
+          },
+          "SQLServer": {
+            "type": "VARCHAR(1)"
+          },
+          "PostgreSQL": {
+            "type": "VARCHAR(1)"
+          }
+        }
+      },
+      {
+        "name": "数据字典",
+        "code": "Dict",
+        "apply": {
+          "JAVA": {
+            "type": "String"
+          },
+          "MYSQL": {
+            "type": "VARCHAR(32)"
+          },
+          "ORACLE": {
+            "type": "VARCHAR2(32)"
+          },
+          "SQLServer": {
+            "type": "VARCHAR(32)"
+          },
+          "PostgreSQL": {
+            "type": "VARCHAR(32)"
+          }
+        }
+      },
+      {
+        "name": "日期",
+        "code": "Date",
+        "apply": {
+          "JAVA": {
+            "type": "Date"
+          },
+          "MYSQL": {
+            "type": "DATE"
+          },
+          "ORACLE": {
+            "type": "DATE"
+          },
+          "SQLServer": {
+            "type": "DATE"
+          },
+          "PostgreSQL": {
+            "type": "DATE"
+          }
+        }
+      },
+      {
+        "name": "日期时间",
+        "code": "DateTime",
+        "apply": {
+          "JAVA": {
+            "type": "Date"
+          },
+          "MYSQL": {
+            "type": "DATETIME"
+          },
+          "ORACLE": {
+            "type": "DATE"
+          },
+          "SQLServer": {
+            "type": "DATE"
+          },
+          "PostgreSQL": {
+            "type": "DATE"
+          }
+        }
+      },
+      {
+        "name": "单字符",
+        "code": "Char",
+        "apply": {
+          "MYSQL": {
+            "type": "CHAR(1)"
+          },
+          "ORACLE": {
+            "type": "CHAR(1)"
+          },
+          "JAVA": {
+            "type": "String"
+          },
+          "SQLServer": {
+            "type": "CHAR(1)"
+          },
+          "PostgreSQL": {
+            "type": "CHAR(1)"
+          }
+        }
+      }
+    ],
+    "database": [
+      {
+        "code": "MYSQL",
+        "template": "DROP TABLE {{=it.entity.title}};\n$blankline\nCREATE TABLE {{=it.entity.title}}(\n{{ pkList = [] ; }}\n{{~it.entity.fields:field:index}}\n    {{? field.pk }}{{ pkList.push(field.name) }}{{?}}\n    {{=field.name}} {{=field.type}} {{= field.pk ? 'NOT NULL' : '' }} COMMENT '{{=it.func.join(field.chnname,field.remark,';')}}' {{= index < it.entity.fields.length-1 ? ',' : ( pkList.length>0 ? ',' :'' ) }}\n{{~}}\n{{? pkList.length >0 }}\n    PRIMARY KEY ({{~pkList:pkName:i}}{{= pkName }}{{= i<pkList.length-1 ? ',' : '' }}{{~}})\n{{?}}\n) COMMENT = '{{=it.func.join(it.entity.chnname,it.entity.remark,';') }}'",
+        "fileShow": true,
+        "defaultDatabase": true,
+        "createTableTemplate": "CREATE TABLE {{=it.entity.title}}(\n{{ pkList = [] ; }}\n{{~it.entity.fields:field:index}}\n    {{? field.pk }}{{ pkList.push(field.name) }}{{?}}\n    {{=field.name}} {{=field.type}} {{= field.notNull ? 'NOT NULL' : '' }} {{= field.autoIncrement ? 'AUTO_INCREMENT' : '' }} {{= field.defaultValue ? it.func.join('DEFAULT',field.defaultValue,' ') : '' }} COMMENT '{{=it.func.join(field.chnname,field.remark,' ')}}' {{= index < it.entity.fields.length-1 ? ',' : ( pkList.length>0 ? ',' :'' ) }}\n{{~}}\n{{? pkList.length >0 }}\n    PRIMARY KEY ({{~pkList:pkName:i}}{{= pkName }}{{= i<pkList.length-1 ? ',' : '' }}{{~}})\n{{?}}\n) COMMENT = '{{=it.func.join(it.entity.chnname,it.entity.remark,' ') }}';{{=it.separator}}\n$blankline\n",
+        "deleteTableTemplate": "DROP TABLE {{=it.entity.title}};{{=it.separator}}/*SkipError*/",
+        "rebuildTableTemplate": "create table PDMAN_UP_{{=it.oldEntity.title}}\nas select * from {{=it.oldEntity.title}};{{=it.separator}}\n$blankline\n\ndrop table {{=it.oldEntity.title}};{{=it.separator}}\n$blankline\n\nCREATE TABLE {{=it.newEntity.title}}(\n{{ pkList = [] ; }}\n{{~it.newEntity.fields:field:index}}\n    {{? field.pk }}{{ pkList.push(field.name) }}{{?}}\n    {{=field.name}} {{=field.type}} {{= field.notNull ? 'NOT NULL' : '' }} COMMENT '{{=it.func.join(field.chnname,field.remark,';')}}' {{= index < it.newEntity.fields.length-1 ? ',' : ( pkList.length>0 ? ',' :'' ) }}\n{{~}}\n{{? pkList.length >0 }}\n    PRIMARY KEY ({{~pkList:pkName:i}}{{= pkName }}{{= i<pkList.length-1 ? ',' : '' }}{{~}})\n{{?}}\n) COMMENT = '{{=it.func.join(it.newEntity.chnname,it.newEntity.remark,';') }}';{{=it.separator}}\n$blankline\n\n{{ sameCols = it.func.intersect(it.newEntity.fields,it.oldEntity.fields) ;}}\ninsert into {{=it.newEntity.title}}(\n{{~sameCols:field:index}}\n    {{=field.name}}{{? index<sameCols.length-1}},{{?}}\n{{~}}\n) \nselect \n{{~sameCols:field:index}}\n    {{=field.name}}{{? index<sameCols.length-1}},{{?}}\n{{~}}\nfrom PDMAN_UP_{{=it.oldEntity.title}};{{=it.separator}}\n$blankline\n\ndrop table PDMAN_UP_{{=it.oldEntity.title}};{{=it.separator}}\n$blankline\n{{~it.newEntity.indexs:index}}\nALTER TABLE {{=it.newEntity.title}} ADD {{? index.isUnique}}UNIQUE{{??}}INDEX{{?}} {{=index.name}}({{=it.func.join(...index.fields,',')}});{{=it.separator}}\n{{~}}",
+        "createFieldTemplate": "ALTER TABLE {{=it.entity.title}} ADD COLUMN {{=it.field.name}} {{=it.field.type}} {{? it.field.notNull}}NOT NULL{{?}} {{? it.field.defaultValue}}DEFAULT {{? null==it.field.defaultValue}}NULL{{??}}'{{=it.field.defaultValue}}'{{?}}{{?}} {{? it.field.autoIncrement}}AUTO_INCREMENT{{?}} {{? it.field.pk}}PRIMARY KEY{{?}} {{? it.field.chnname}}COMMENT '{{=it.field.chnname}}'{{?}} {{? it.field.addAfter}}AFTER {{=it.field.addAfter}}{{?}};{{=it.separator}}",
+        "updateFieldTemplate": "ALTER TABLE {{=it.entity.title}} MODIFY COLUMN {{=it.field.name}} {{=it.field.type}} {{? it.field.notNull}}NOT NULL{{?}} {{? it.field.defaultValue}}DEFAULT {{? null==it.field.defaultValue}}NULL{{??}}'{{=it.field.defaultValue}}'{{?}}{{?}} {{? it.field.autoIncrement}}AUTO_INCREMENT{{?}} {{? it.field.chnname}}COMMENT '{{=it.field.chnname}}'{{?}};{{=it.separator}}",
+        "deleteFieldTemplate": "ALTER TABLE {{=it.entity.title}} DROP {{=it.field.name}};{{=it.separator}}",
+        "deleteIndexTemplate": "ALTER TABLE {{=it.entity.title}} DROP INDEX {{=it.index.name}};{{=it.separator}}",
+        "createIndexTemplate": "ALTER TABLE {{=it.entity.title}} ADD {{? it.index.isUnique}}UNIQUE{{??}}INDEX{{?}} {{=it.index.name}}({{=it.func.join(...it.index.fields,',')}});{{=it.separator}}",
+        "updateTableComment": "ALTER TABLE {{=it.entity.title}} COMMENT '{{=it.entity.chnname}}';{{=it.separator}}"
+      },
+      {
+        "code": "ORACLE",
+        "template": "DROP TABLE {{=it.entity.title}};{{=it.separator}}\n$blankline\nCREATE TABLE {{=it.entity.title}}(\n{{ pkList = [] ; }}\n{{~it.entity.fields:field:index}}\n    {{? field.pk }}{{ pkList.push(field.name) }}{{?}}\n    {{=field.name}} {{=field.type}}  {{= field.pk ? 'NOT NULL' : '' }} {{= index < it.entity.fields.length-1 ? ',' : ( pkList.length>0 ? ',' :'' ) }}\n{{~}}\n{{? pkList.length >0 }}\n    PRIMARY KEY ({{~pkList:pkName:i}}{{= pkName }}{{= i<pkList.length-1 ? ',' : '' }}{{~}})\n{{?}}\n);{{=it.separator}}\n$blankline\nCOMMENT ON TABLE {{=it.entity.title}} IS '{{=it.func.join(it.entity.chnname,it.entity.remark,';') }}';{{=it.separator}}\n{{~it.entity.fields:field:index}}\nCOMMENT ON COLUMN {{=it.entity.title}}.{{=field.name}} IS '{{=it.func.join(field.chnname,field.remark,';')}}';{{=it.separator}}\n{{~}}",
+        "createTableTemplate": "CREATE TABLE {{=it.entity.title}}(\n{{ pkList = [] ; }}\n{{~it.entity.fields:field:index}}\n    {{? field.pk }}{{ pkList.push(field.name) }}{{?}}\n    {{=field.name}} {{=field.type}}{{? field.defaultValue}} DEFAULT {{=field.defaultValue}}{{?}}{{= field.notNull ? ' NOT NULL' : '' }}{{= index < it.entity.fields.length-1 ? ',' : ( pkList.length>0 ? ',' :'' ) }}\n{{~}}\n{{? pkList.length >0 }}\n    PRIMARY KEY ({{~pkList:pkName:i}}{{= pkName }}{{= i<pkList.length-1 ? ',' : '' }}{{~}})\n{{?}}\n);{{=it.separator}}\n$blankline\n{{? it.entity.chnname || it.entity.remark}}COMMENT ON TABLE {{=it.entity.title}} IS {{? it.entity.remark}}'{{=it.entity.remark}}'{{??}}'{{=it.entity.chnname}}'{{?}};{{=it.separator}}{{?}}\n{{~it.entity.fields:field:index}}\n{{? field.chnname || field.remark}}COMMENT ON COLUMN {{=it.entity.title}}.{{=field.name}} IS {{? field.remark}}'{{=field.remark}}'{{??}}'{{=field.chnname}}'{{?}};{{=it.separator}}{{?}}\n{{~}}",
+        "deleteTableTemplate": "DROP TABLE {{=it.entity.title}};{{=it.separator}}/*SkipError*/\r\n$blankline",
+        "rebuildTableTemplate": "CREATE TABLE PDMAN_UP_{{=it.oldEntity.title}}\nAS SELECT * FROM {{=it.oldEntity.title}};{{=it.separator}}\n$blankline\nDROP TABLE {{=it.oldEntity.title}};{{=it.separator}}\n$blankline\nCREATE TABLE {{=it.newEntity.title}}(\n{{ pkList = [] ; }}{{~it.newEntity.fields:field:index}}{{? field.pk }}{{ pkList.push(field.name) }}{{?}}    {{=field.name}} {{=field.type}}{{? field.defaultValue}} DEFAULT {{=field.defaultValue}}{{?}}{{= field.notNull ? ' NOT NULL' : '' }}{{= index < it.newEntity.fields.length-1 ? ',' : ( pkList.length>0 ? ',' :'' ) }}\n{{~}}{{? pkList.length >0 }}    PRIMARY KEY ({{~pkList:pkName:i}}{{= pkName }}{{= i<pkList.length-1 ? ',' : '' }}{{~}}){{?}}\n);{{=it.separator}}\n$blankline\n{{? it.newEntity.chnname || it.newEntity.remark}}COMMENT ON TABLE {{=it.newEntity.title}} IS {{? it.newEntity.remark}}'{{=it.entity.remark}}'{{??}}'{{=it.newEntity.chnname}}'{{?}};{{?}}{{=it.separator}}\n{{~it.newEntity.fields:field:index}}\n{{? field.chnname || field.remark}}COMMENT ON COLUMN {{=it.newEntity.title}}.{{=field.name}} IS {{? field.remark}}'{{=field.remark}}'{{??}}'{{=field.chnname}}'{{?}};{{?}}{{=it.separator}}\n{{~}}\n{{ sameCols = it.func.intersect(it.newEntity.fields,it.oldEntity.fields) ;}}\n$blankline\nINSERT INTO {{=it.newEntity.title}}(\n{{~sameCols:field:index}}   {{=field.name}}{{? index<sameCols.length-1}},{{?}}\n{{~}}) \nSELECT\n{{~sameCols:field:index}}   {{=field.name}}{{? index<sameCols.length-1}},{{?}}\n{{~}}FROM PDMAN_UP_{{=it.oldEntity.title}};{{=it.separator}}\n\nDROP TABLE PDMAN_UP_{{=it.oldEntity.title}};{{=it.separator}}\n{{~it.newEntity.indexs:index}}\nCREATE{{? index.isUnique}} UNIQUE{{?}} INDEX {{=index.name}} ON {{=it.newEntity.title}}({{=it.func.join(index.fields,',')}});{{=it.separator}}\n{{~}}",
+        "createFieldTemplate": "ALTER TABLE {{=it.entity.title}} ADD({{=it.field.name}} {{=it.field.type}}{{? it.field.defaultValue}} DEFAULT {{=it.field.defaultValue}}{{?}}{{? it.field.notNull}} NOT NULL{{?}});{{=it.separator}}\r\n{{? it.field.chnname || it.field.remark}}COMMENT ON COLUMN {{=it.entity.title}}.{{=it.field.name}} IS {{? it.field.remark}}'{{=it.field.remark}}'{{??}}'{{=it.field.chnname}}'{{?}};{{=it.separator}}{{?}}\r\n$blankline",
+        "updateFieldTemplate": "ALTER TABLE {{=it.entity.title}} MODIFY({{=it.field.name}} {{=it.field.type}}{{? it.field.defaultValue}} DEFAULT {{=it.field.defaultValue}}{{?}}{{? it.field.notNull}} NOT NULL{{?}});{{=it.separator}}\r\n{{? it.field.chnname || it.field.remark}}COMMENT ON COLUMN {{=it.entity.title}}.{{=it.field.name}} IS {{? it.field.remark}}'{{=it.field.remark}}'{{??}}'{{=it.field.chnname}}'{{?}};{{=it.separator}}{{=it.separator}}{{?}}\r\n$blankline",
+        "deleteFieldTemplate": "ALTER TABLE {{=it.entity.title}} DROP({{=it.field.name}});{{=it.separator}}\r\n$blankline",
+        "deleteIndexTemplate": "DROP INDEX {{=it.entity.title}}.{{=it.index.name}};{{=it.separator}}\r\n$blankline",
+        "createIndexTemplate": "CREATE{{? it.index.isUnique}} UNIQUE{{?}} INDEX {{=it.index.name}} ON {{=it.entity.title}}({{=it.func.join(it.index.fields,',')}});{{=it.separator}}\r\n$blankline",
+        "updateTableComment": "{{? it.entity.chnname || it.entity.remark}}COMMENT ON TABLE {{=it.entity.title}} IS {{? it.entity.remark}}'{{=it.entity.remark}}'{{??}}'{{=it.entity.chnname}}'{{?}};{{=it.separator}}{{?}}\r\n$blankline"
+      },
+      {
+        "code": "SQLServer",
+        "createTableTemplate": "CREATE TABLE {{=it.entity.title}}(\n{{ pkList = [] ; }}\n{{~it.entity.fields:field:index}}\n    {{? field.pk }}{{ pkList.push(field.name) }}{{?}}\n    {{=field.name}} {{=field.type}} {{= field.notNull ? 'NOT NULL' : '' }} {{= field.autoIncrement ? 'IDENTITY(1,1)' : '' }} {{= field.defaultValue ? it.func.join('DEFAULT',field.defaultValue,' ') : '' }}  {{= index < it.entity.fields.length-1 ? ',' : ( pkList.length>0 ? ',' :'' ) }}\n{{~}}\n{{? pkList.length >0 }}\n    CONSTRAINT PK_{{=it.entity.title}} PRIMARY KEY CLUSTERED ({{~pkList:pkName:i}}{{= pkName }} ASC {{= i<pkList.length-1 ? ',' : '' }}{{~}}) ON [PRIMARY] \n{{?}}\n) ;{{=it.separator}}\n\n$blankline\nEXECUTE sp_addextendedproperty N'MS_Description', '{{= it.entity.chnname || it.entity.remark}}', N'user', N'dbo', N'table', N'{{=it.entity.title}}', NULL, NULL;{{=it.separator}}\n{{~it.entity.fields:field:index}}\n{{? field.chnname || field.remark}}EXECUTE sp_addextendedproperty N'MS_Description', {{? field.remark}}'{{=field.remark}}'{{??}}'{{=field.chnname}}'{{?}}, N'user', N'dbo', N'table', N'{{=it.entity.title}}', N'column', N'{{=field.name}}';{{=it.separator}}{{?}}\n{{~}}\n",
+        "deleteTableTemplate": "",
+        "rebuildTableTemplate": "",
+        "createFieldTemplate": "",
+        "updateFieldTemplate": "",
+        "deleteFieldTemplate": "",
+        "deleteIndexTemplate": "",
+        "createIndexTemplate": "",
+        "updateTableComment": ""
+      },
+      {
+        "code": "PostgreSQL",
+        "template": "DROP TABLE {{=it.entity.title}};\n$blankline\nCREATE TABLE {{=it.entity.title}}(\n{{ pkList = [] ; }}\n{{~it.entity.fields:field:index}}\n    {{? field.pk }}{{ pkList.push(field.name) }}{{?}}\n    {{=field.name}} {{=field.type}} {{= field.pk ? 'NOT NULL' : '' }} COMMENT '{{=it.func.join(field.chnname,field.remark,';')}}' {{= index < it.entity.fields.length-1 ? ',' : ( pkList.length>0 ? ',' :'' ) }}\n{{~}}\n{{? pkList.length >0 }}\n    PRIMARY KEY ({{~pkList:pkName:i}}{{= pkName }}{{= i<pkList.length-1 ? ',' : '' }}{{~}})\n{{?}}\n) COMMENT = '{{=it.func.join(it.entity.chnname,it.entity.remark,';') }}'",
+        "createTableTemplate": "CREATE TABLE {{=it.entity.title}}(\n{{ pkList = [] ; }}\n{{~it.entity.fields:field:index}}\n    {{? field.pk }}{{ pkList.push(field.name) }}{{?}}\n    {{=field.name}} {{=field.type}}{{? field.defaultValue}} DEFAULT {{=field.defaultValue}}{{?}}{{= field.notNull ? ' NOT NULL' : '' }}{{= index < it.entity.fields.length-1 ? ',' : ( pkList.length>0 ? ',' :'' ) }}\n{{~}}\n{{? pkList.length >0 }}\n    PRIMARY KEY ({{~pkList:pkName:i}}{{= pkName }}{{= i<pkList.length-1 ? ',' : '' }}{{~}})\n{{?}}\n);{{=it.separator}}\n$blankline\n{{? it.entity.chnname || it.entity.remark}}COMMENT ON TABLE {{=it.entity.title}} IS {{? it.entity.remark}}'{{=it.entity.remark}}'{{??}}'{{=it.entity.chnname}}'{{?}};{{=it.separator}}{{?}}\n{{~it.entity.fields:field:index}}\n{{? field.chnname || field.remark}}COMMENT ON COLUMN {{=it.entity.title}}.{{=field.name}} IS {{? field.remark}}'{{=field.remark}}'{{??}}'{{=field.chnname}}'{{?}};{{=it.separator}}{{?}}\n{{~}}",
+        "deleteTableTemplate": "DROP TABLE {{=it.entity.title}};{{=it.separator}}/*SkipError*/",
+        "rebuildTableTemplate": "create table PDMAN_UP_{{=it.oldEntity.title}}\nas select * from {{=it.oldEntity.title}};{{=it.separator}}\n$blankline\n\ndrop table {{=it.oldEntity.title}};{{=it.separator}}\n$blankline\n\nCREATE TABLE {{=it.newEntity.title}}(\n{{ pkList = [] ; }}\n{{~it.newEntity.fields:field:index}}\n    {{? field.pk }}{{ pkList.push(field.name) }}{{?}}\n    {{=field.name}} {{=field.type}} {{= field.notNull ? 'NOT NULL' : '' }} COMMENT '{{=it.func.join(field.chnname,field.remark,';')}}' {{= index < it.newEntity.fields.length-1 ? ',' : ( pkList.length>0 ? ',' :'' ) }}\n{{~}}\n{{? pkList.length >0 }}\n    PRIMARY KEY ({{~pkList:pkName:i}}{{= pkName }}{{= i<pkList.length-1 ? ',' : '' }}{{~}})\n{{?}}\n) COMMENT = '{{=it.func.join(it.newEntity.chnname,it.newEntity.remark,';') }}';{{=it.separator}}\n$blankline\n\n{{ sameCols = it.func.intersect(it.newEntity.fields,it.oldEntity.fields) ;}}\ninsert into {{=it.newEntity.title}}(\n{{~sameCols:field:index}}\n    {{=field.name}}{{? index<sameCols.length-1}},{{?}}\n{{~}}\n) \nselect \n{{~sameCols:field:index}}\n    {{=field.name}}{{? index<sameCols.length-1}},{{?}}\n{{~}}\nfrom PDMAN_UP_{{=it.oldEntity.title}};{{=it.separator}}\n$blankline\n\ndrop table PDMAN_UP_{{=it.oldEntity.title}};{{=it.separator}}",
+        "createFieldTemplate": "ALTER TABLE {{=it.entity.title}} ADD COLUMN {{=it.field.name}} {{=it.field.type}} {{? it.field.notNull}}NOT NULL{{?}} {{? it.field.defaultValue}}DEFAULT {{? null==it.field.defaultValue}}NULL{{??}}'{{=it.field.defaultValue}}'{{?}}{{?}} {{? it.field.autoIncrement}}AUTO_INCREMENT{{?}} {{? it.field.pk}}PRIMARY KEY{{?}} {{? it.field.chnname}}COMMENT '{{=it.field.chnname}}'{{?}} {{? it.field.addAfter}}AFTER {{=it.field.addAfter}}{{?}};{{=it.separator}}",
+        "updateFieldTemplate": "ALTER TABLE {{=it.entity.title}} MODIFY COLUMN {{=it.field.name}} {{=it.field.type}} {{? it.field.notNull}}NOT NULL{{?}} {{? it.field.defaultValue}}DEFAULT {{? null==it.field.defaultValue}}NULL{{??}}'{{=it.field.defaultValue}}'{{?}}{{?}} {{? it.field.autoIncrement}}AUTO_INCREMENT{{?}} {{? it.field.chnname}}COMMENT '{{=it.field.chnname}}'{{?}};{{=it.separator}}",
+        "deleteFieldTemplate": "ALTER TABLE {{=it.entity.title}} DROP {{=it.field.name}};{{=it.separator}}",
+        "deleteIndexTemplate": "ALTER TABLE {{=it.entity.title}} DROP INDEX {{=it.index.name}};{{=it.separator}}",
+        "createIndexTemplate": "ALTER TABLE {{=it.entity.title}} ADD {{? it.index.isUnique}}UNIQUE{{??}}INDEX{{?}} {{=it.index.name}}({{=it.func.join(...it.index.fields,',')}});{{=it.separator}}",
+        "updateTableComment": "ALTER TABLE {{=it.entity.title}} COMMENT '{{=it.entity.chnname}}';{{=it.separator}}"
+      },
+      {
+        "code": "JAVA",
+        "template": "package group.rober.pdman.{{=it.module.name}}.entity;\n$blankline\nimport javax.persistence.*;\nimport java.io.Serializable;\nimport java.util.Date;\n$blankline\n$blankline\n\n/** {{=it.entity.chnname}} */\n@Table(name=\"{{=it.entity.title}}\")\npublic class {{=it.func.camel(it.entity.title,true) }} implements Serializable,Cloneable{\n{{~it.entity.fields:field:index}}\n    /** {{=it.func.join(field.chnname,field.remark,';')}} */\n    {{? field.pk }}\n    @Id\n    @GeneratedValue\n    {{?}}\n    private {{=field.type}} {{=it.func.camel(field.name,false)}} ;\n{{~}}\n$blankline\n{{~it.entity.fields:field:index}}\n    /** {{=it.func.join(field.chnname,field.remark,';')}} */\n    public {{=field.type}} get{{=it.func.camel(field.name,true)}}(){\n        return this.{{=it.func.camel(field.name,false)}};\n    }\n    /** {{=it.func.join(field.chnname,field.remark,';')}} */\n    public void set{{=it.func.camel(field.name,true)}}({{=field.type}} {{= it.func.camel(field.name,false) }}){\n        this.{{=it.func.camel(field.name,false)}} = {{= it.func.camel(field.name,false) }};\n    }\n{{~}}\n}",
+        "createTableTemplate": "package group.rober.pdman.{{=it.module.name}}.entity;\n$blankline\nimport javax.persistence.*;\nimport java.io.Serializable;\nimport java.util.Date;\n$blankline\n$blankline\n@Table(name=\"{{=it.entity.title}}\")\npublic class {{=it.func.camel(it.entity.title,true) }} implements Serializable,Cloneable{\n{{~it.entity.fields:field:index}}\n    /** {{=it.func.join(field.chnname,field.remark,';')}} */\n    {{? field.pk }}\n    @Id\n    @GeneratedValue\n    {{?}}\n    private {{=field.type}} {{=it.func.camel(field.name,false)}} ;\n{{~}}\n$blankline\n{{~it.entity.fields:field:index}}\n    /** {{=it.func.join(field.chnname,field.remark,';')}} */\n    public {{=field.type}} get{{=it.func.camel(field.name,true)}}(){\n        return this.{{=it.func.camel(field.name,false)}};\n    }\n    /** {{=it.func.join(field.chnname,field.remark,';')}} */\n    public void set{{=it.func.camel(field.name,true)}}({{=field.type}} {{= it.func.camel(field.name,false) }}){\n        this.{{=it.func.camel(field.name,false)}} = {{= it.func.camel(field.name,false) }};\n    }\n{{~}}\n}",
+        "deleteTableTemplate": "",
+        "rebuildTableTemplate": "",
+        "createFieldTemplate": "",
+        "updateFieldTemplate": "",
+        "deleteFieldTemplate": "",
+        "deleteIndexTemplate": "",
+        "createIndexTemplate": "",
+        "updateTableComment": ""
+      }
+    ]
+  },
+  "profile": {
+    "defaultFields": [
+      {
+        "name": "revision",
+        "type": "Integer",
+        "remark": "",
+        "chnname": "乐观锁"
+      },
+      {
+        "name": "created_by",
+        "type": "IdOrKey",
+        "remark": "",
+        "chnname": "创建人"
+      },
+      {
+        "name": "created_time",
+        "type": "DateTime",
+        "remark": "",
+        "chnname": "创建时间"
+      },
+      {
+        "name": "updated_by",
+        "type": "IdOrKey",
+        "remark": "",
+        "chnname": "更新人"
+      },
+      {
+        "name": "updated_time",
+        "type": "DateTime",
+        "remark": "",
+        "chnname": "更新时间"
+      }
+    ],
+    "defaultFieldsType": "2"
+  }
+}

@@ -1,0 +1,351 @@
+<div class="layui-fluid layui-anim febs-anim" id="febs-unitp" lay-title="服务对象">
+    <div class="layui-row layui-col-space8 febs-container">
+        <div class="layui-card">
+            <form class="layui-form layui-table-form" lay-filter="person-table-form">
+                <div class="layui-row">
+                    <div class="layui-col-md12 layui-col-sm12 layui-col-xs12 ">
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <label class="layui-form-label ">所在小组</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="groupName" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-inline">
+                                <label class="layui-form-label ">姓名</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="personName" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-inline">
+                                <label class="layui-form-label ">手机号</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="phone" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-inline">
+                                <label class="layui-form-label ">所在医疗队</label>
+                                <div class="layui-input-inline">
+                                    <select name="szyld">
+                                        <option value=""></option>
+                                        <option value="援鄂">援鄂</option>
+                                        <option value="省内">省内</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="layui-inline">
+                                <label class="layui-form-label ">工作单位</label>
+                                <div class="layui-input-inline">
+                                   <input type="text" name="unit" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-inline">
+                                <div class="layui-btn layui-btn-sm layui-btn-primary table-action" id="query">
+                                    <i class="layui-icon">&#xe848;</i>
+                                </div>
+                                <div class="layui-btn layui-btn-sm layui-btn-primary table-action action-more" id="import"
+                                     shiro:hasAnyPermissions="pm:import">
+                                    <i class="layui-icon">&#xe7aa;</i> 导入Excel
+                                </div>
+                                <div class="layui-btn layui-btn-sm layui-btn-primary table-action action-more"
+                                     shiro:hasAnyPermissions="pm:delete,pm:export">
+                                    <i class="layui-icon">&#xe875;</i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--<div class="layui-col-md3 layui-col-sm12 layui-col-xs12 table-action-area">
+
+                    </div>-->
+                </div>
+            </form>
+        </div>
+        <div class="layui-card">
+            <div class="layui-col-md3 layui-col-sm6 layui-col-xs12">
+                <div class="layui-card">
+                    <div class="layui-card-body ">
+                        <table  lay-filter="groupTable" lay-data="{id: 'groupTable'}" id="groupTable"></table>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-md9 layui-col-sm6 layui-col-xs12">
+                <div class="layui-card">
+                    <div class="layui-card-body ">
+                        <table  lay-filter="personTable" lay-data="{id: 'personTable'}"></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/html" id="person-sex">
+    {{#
+    var sex = {
+    2: {title: '保密'},
+    1: {title: '女'},
+    0: {title: '男'}
+    }[d.sex];
+    }}
+    <span>{{ sex.title }}</span>
+</script>
+<script type="text/html" id="unitp-option">
+    <span shiro:lacksPermission="pm:view,explain:view,pm:update,pm:delete">
+        <span class="layui-badge-dot febs-bg-orange"></span> 无权限
+    </span>
+    <a lay-event="update" shiro:hasPermission="pm:update"><i class="layui-icon febs-edit-area febs-blue">&#xe7a4;</i></a>
+    <a lay-event="detail" shiro:hasPermission="explain:view"><i class="layui-icon febs-edit-area febs-blue">&#xe7b3;</i></a>
+    <a lay-event="family" shiro:hasPermission="pm:view"><i class="layui-icon febs-edit-area febs-blue">&#xe7d0;</i></a>
+    <a lay-event="del" shiro:hasPermission="pm:delete"><i class="layui-icon febs-edit-area febs-red">&#xe7f9;</i></a>
+</script>
+<script data-th-inline="none" type="text/javascript">
+    layui.use([ 'dropdown', 'jquery', 'laydate', 'febs', 'form', 'formSelects',  'table', 'validate','upload'], function () {
+        var $ = layui.jquery,
+            laydate = layui.laydate,
+            febs = layui.febs,
+            form = layui.form,
+            dropdown = layui.dropdown,
+            formSelects = layui.formSelects,
+            table = layui.table,
+            upload = layui.upload,
+            validate = layui.validate,
+            $view = $('#febs-unitp'),
+            $searchForm = $view.find('form'),
+            $query = $view.find('#query'),
+            tableIns,
+			table2Ins;	
+        
+      
+        form.verify(validate);
+        form.render();
+        formSelects.render();
+        initTablePerson();
+
+		initTableGroup();
+
+        laydate.render({
+            elem: '#createTime',
+            range: true
+        });
+
+        
+      /*  $view.on('click', '#export', function () {
+            var params = {};
+            params.pageSize = $view.find(".layui-laypage-limits option:selected").val();
+            params.pageNum = $view.find(".layui-laypage-em").next().html();
+            febs.download(ctx + 'pm/excel', params, '人员列表导出.xlsx');
+        });*/
+
+
+
+        dropdown.render({
+            elem: $view.find('.action-more'),
+            click: function (name, elem, event) {
+                var checkStatus = table.checkStatus('personTable');
+                if (name === 'delete') {
+                    if (!checkStatus.data.length) {
+                        febs.alert.warn('请选择需要删除的服务对象');
+                    } else {
+                        febs.modal.confirm('删除服务对象', '确定删除该服务对象？', function () {
+                            var persinIds = [];
+                            layui.each(checkStatus.data, function (key, item) {
+                                persinIds.push(item.personId);
+                            });
+                            console.log(persinIds);
+                            deletePersons(persinIds.join(','));
+                        });
+                    }
+                }
+                if (name === 'export') {
+                    var params = {};
+                    params.pageSize = $view.find(".layui-laypage-limits option:selected").val();
+                    params.pageNum = $view.find(".layui-laypage-em").next().html();
+                    febs.download(ctx + 'pm/excel', params, '人员列表导出.xlsx');
+                }
+            },
+            options: [{
+                name: 'delete',
+                title: '删除用户',
+                perms: 'pm:delete'
+            }, {
+                name: 'export',
+                title: '导出Excel',
+                perms: 'pm:export'
+            }]
+        });
+
+
+        
+        upload.render({
+            elem: '#import',
+            url: ctx + 'pm/import',
+            accept: 'file',
+            exts: 'xlsx', // 只能上传 .xlsx格式
+            size: 5 * 1024, // kb
+            before: function () {
+                febs.view.loadBar.start();
+            },
+            done: function (res) {
+                febs.view.loadBar.finish();
+                if (res.code === 200) {
+                    // 刷新 table
+                    tableIns.reload({page: {curr: 1}});
+                    var data = res.data;
+                    layer.alert("导入"+data.data.length+"条");
+                    // 弹出导入结果
+                    /* febs.modal.open('导入结果', 'pm/result', {
+                        area: $(window).width() <= 750 ? '95%' : '1000px',
+                    }); */
+                }
+            }, error: function (res) {
+                //请求异常回调
+                console.error(res);
+                febs.view.loadBar.error();
+                febs.alert.error('导入失败！');
+            }
+        });
+
+        
+        table.on('tool(personTable)', function (obj) {
+            var data = obj.data,
+                layEvent = obj.event;
+            if (layEvent === 'update') {
+                febs.modal.open('修改服务对象信息', 'person/medicineInfo/' + data.personId, {
+                    area:  '90%',
+                    btn: ['提交', '取消'],
+                    yes: function (index, layero) {
+                        $('#user-update').find('#submit').trigger('click');
+                    },
+                    btn2: function () {
+                        layer.closeAll();
+                    }
+                });
+            }
+            if (layEvent === 'detail') {
+				 febs.modal.view('诉求信息', 'person/explainInfo/' + data.phone, {
+                     area:  '90%',
+                    
+                });
+            }
+            if (layEvent === 'family') {
+            	 febs.modal.view('家庭成员', 'person/personFamily/' + data.phone, {
+                     area:  '90%' ,
+                    
+                }); 
+            }
+            if (layEvent === 'del') {
+                febs.modal.confirm('删除服务对象', '确定删除该服务对象？', function () {
+                    deletePersons(data.personId);
+                });
+            }
+
+        });
+        
+
+
+        $query.on('click', function () {
+            //resetUnitPersonForm();
+            table2Ins.reload({where: getQueryParams3(), page: {curr: 1}});
+            tableIns.reload({where: getQueryParams(), page: {curr: 1}});
+        });
+
+    
+        function initTableGroup() {
+            table2Ins = febs.table.init({
+                elem: $view.find('table')[0],
+                id: 'groupTable',
+                url: ctx + 'gm/list',
+                cols: [[
+                    {field: 'no', title: '序号',type:'numbers',width: '25%'},
+                    {field: 'groupName', title: '名称',width: '50%'},
+                    {field: 'groupMemberCount', title: '人数',width: '25%'}
+
+                ]],
+                height: 'full-220',
+                limit:50,
+                page: {
+                    layout: ['prev', 'next', 'count']
+                }
+            });
+        }
+
+
+        table.on('rowDouble(groupTable)', function(obj){
+            var data = obj.data;
+
+            tableIns.reload({where: getQueryParams2(data), page: {curr: 1}});
+            //标注选中样式
+            obj.tr.addClass('layui-table-click').siblings().removeClass('layui-table-click');
+        });
+
+        function initTablePerson() {
+            tableIns = febs.table.init({
+                elem: $view.find('table')[1],
+                id: 'personTable',
+                url: ctx + 'pm/list',
+                cellMinWidth:120,
+                cols: [[
+                    {type: 'checkbox'},
+                    {field: 'personName', title: '姓名'},
+                    {field: 'sex',title: '性别' ,Width:20},
+                    {field: 'unit', title: '单位'},
+                    {field: 'duty', title: '职务/职称'},
+                    {field: 'professional', title: '专业'},
+                    {field: 'age', title: '年龄',Width:20},
+                    {field: 'party', title: '政治面貌'},
+                    {field: 'category', title: '类别'},
+                    {field: 'szyld', title: '所在医疗队'},
+                    {field: 'county', title: '所在县市区'},
+                    {field: 'town', title: '所在镇街道'},
+                    {field: 'village', title: '所在村社区'},
+                    {field: 'address', title: '家庭地址'},
+                    {field: 'phone', title: '联系方式'},
+                    {field: 'groupName', title: '组别'},
+                    {title: '操作', toolbar: '#unitp-option' , width:150}
+                ]],
+                height: 'full-220',
+                limit:30
+            });
+        }
+
+        function getQueryParams() {
+
+           
+        	return {
+                personName: $searchForm.find("input[name='personName']").val(),
+                phone: $searchForm.find("input[name='phone']").val(),
+                groupName: $searchForm.find("input[name='groupName']").val(),
+                szyld: $searchForm.find("select[name='szyld']").val(),
+                unit: $searchForm.find("input[name='unit']").val(),
+                groupId:"",
+                invalidate_ie_cache: new Date()
+            };
+        }
+
+        function getQueryParams2(obj) {
+        	return {
+                groupId: obj.groupId,
+                personName: "",
+                invalidate_ie_cache: new Date()
+            };
+        }
+
+        function getQueryParams3() {
+
+            return {
+                groupName: $searchForm.find("input[name='groupName']").val(),
+                groupId:"",
+                invalidate_ie_cache: new Date()
+            };
+        }
+
+
+        function deletePersons(personIds) {
+            febs.get(ctx + 'pm/delete/' + personIds, null, function () {
+                febs.alert.success('删除服务对象成功');
+                $query.click();
+            });
+        }
+
+    });
+</script>

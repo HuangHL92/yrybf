@@ -1,0 +1,96 @@
+<div class="layui-fluid layui-anim febs-anim" id="febs-update" lay-title="诉求撤销">
+    <div class="layui-row layui-col-space8 febs-container">
+        <div class="layui-col-md6 layui-col-sm6 layui-col-xs12">
+            <div class="layui-card">
+                <div class="layui-card-body febs-table-full">
+                    <form class="layui-form layui-table-form" action="" lay-filter="explain-form">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label febs-form-item-require">诉求状态：</label>
+                            <div class="layui-input-block">
+                                <select name="estatus" id="estatus" th:value="${estatus}" disabled="disabled">
+                                    <option th:selected="${estatus == '0'}" value="0">未分配</option>
+                                    <option th:selected="${estatus == '1'}" value="1">处理中</option>
+                                    <option th:selected="${estatus == '2'}" value="2">已解决</option>
+                                   <!-- <option th:selected="${estatus == '3'}" value="3">已撤销</option>-->
+                                    <option th:selected="${estatus == '4'}" value="4">已反馈</option>
+                                    <option th:selected="${estatus == '5'}" value="5">其它</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label febs-form-item-require">撤销原因：</label>
+                            <div class="layui-input-block">
+                                <textarea   maxlength="1000" name="chreason"  class="layui-textarea"></textarea>
+                            </div>
+                        </div>
+                        <div class="layui-form-item febs-hide">
+                            <button type="reset" class="layui-btn" id="reset-form"></button>
+                            <button class="layui-btn" lay-submit="" lay-filter="group-form-submit"
+                                    id="submit-form"></button>
+                        </div>
+                    </form>
+                </div>
+                <div class="layui-card-footer">
+                    <button class="layui-btn" id="submit">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<span style="display: none" id="eid" >[[${eid}]]</span>
+<style>
+    .layui-form-label{
+        width: 120px;
+    }
+    .layui-input-block{
+        width: 480px;
+        margin-left: 150px;
+    }
+
+</style>
+<script data-th-inline="none" type="text/javascript">
+    layui.use(['dropdown', 'jquery', 'laydate', 'form',  'formSelects','table', 'febs', 'treeSelect', 'validate'], function () {
+        var $ = layui.jquery,
+            laydate = layui.laydate,
+            febs = layui.febs,
+            form = layui.form,
+            table = layui.table,
+            formSelects = layui.formSelects,
+            treeSelect = layui.treeSelect,
+            dropdown = layui.dropdown,
+            validate = layui.validate,
+            $view = $('#febs-update'),
+            $submit = $view.find('#submit'),
+            $searchForm = $view.find('#explain-form'),
+            $header = $view.find('#form-header'),
+            tableIns;
+
+        form.verify(validate);
+        form.render();
+
+        $submit.on('click', function () {
+            $view.find('#submit-form').trigger('click');
+        });
+
+        form.on('submit(group-form-submit)', function (data) {
+            CancelExplain(data.field);
+            return false;
+        });
+
+        var CancelExplain = function (data) {
+            var chreason = data.chreason;
+            if(chreason == null || chreason == ''){
+                layer.alert("撤销理由不能为空！")
+                return
+            }
+            var eid=$("#eid").html();
+            febs.post(ctx + 'explain/cancelExplain1?eid='+eid, data, function () {
+                layer.closeAll();
+                febs.alert.success('撤销成功');
+                $('#febs-user').find('#query').click();
+            });
+        }
+
+
+    });
+</script>

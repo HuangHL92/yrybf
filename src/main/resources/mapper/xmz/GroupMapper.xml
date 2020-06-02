@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.mrbird.febs.xmz.mapper.GroupMapper">
+
+    <sql id="findUserNamePhone_Header">
+        select
+        CONCAT_WS(',',u.username,u.mobile) namee,
+        u.user_id valuee
+        from t_user u
+    </sql>
+
+    <select id="findGroupDetail2Page" parameterType="group" resultType="group">
+        SELECT
+        g.group_id groupId,
+        g.group_name groupName,
+        u2.user_id groupLeader,
+        u.username groupLeaderName,
+        IFNULL(groupMemberCount,'0') groupMemberCount,
+        groupMembers
+        FROM
+        t_group g
+        LEFT JOIN (
+        select group_id,
+        count(1) groupMemberCount,
+        GROUP_CONCAT(user_id) groupMembers from t_user_group  where group_type='0'
+        group by
+        group_id
+        ) u1 ON u1.group_id = g.group_id
+        left join t_user_group u2 on u2.group_id=g.group_id and group_type='1'
+        left join t_user u on u.user_id=u2.user_id
+        where 1=1
+        <if test="group.groupName != null and group.groupName != ''">
+            AND g.group_name like CONCAT('%',#{group.groupName},'%')
+        </if>
+        <if test="group.groupId != null and group.groupId != ''">
+            AND g.group_id = #{group.groupId}
+        </if>
+    </select>
+    <select id="findGroupMembers" resultType="java.util.HashMap" >
+        <include refid="findUserNamePhone_Header"/>
+        left join t_user_role ur on ur.user_id=u.user_id
+        WHERE  ur.role_id = 86
+        <if test="keyword != null and keyword != ''">
+            and u.nname  like CONCAT('%',#{keyword},'%')
+        </if>
+    </select>
+    <select id="findGroupLeaders" resultType="java.util.HashMap" >
+        <include refid="findUserNamePhone_Header"/>
+        left join t_user_role ur on ur.user_id=u.user_id
+        WHERE  ur.role_id = 85
+        <if test="keyword != null and keyword != ''">
+            and u.nname  like CONCAT('%',#{keyword},'%')
+        </if>
+    </select>
+
+
+</mapper>

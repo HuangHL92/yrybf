@@ -1,0 +1,342 @@
+<div class="layui-fluid layui-anim febs-anim" id="febs-sx" lay-title="事项信息">
+    <div class="layui-row febs-container">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-body febs-table-full">
+                    <form class="layui-form layui-table-form" lay-filter="sx-table-form" id="sx-table-form">
+                        <div class="layui-row">
+                            <div class="layui-col-md12 layui-col-sm12 layui-col-xs12 ">
+                                <div class="layui-form-item">
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label ">事项类型</label>
+                                        <div class="layui-input-inline">
+                                             <select name="matterType" id="matterType" lay-filter="matterTypeSelect" xm-select="matterType">
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label ">事项时间</label>
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="createdate" id="createdate" class="layui-input">
+                                        </div>
+                                    </div>
+                                   <!--<div class="layui-inline">
+                                        <label class="layui-form-label ">处理状态</label>
+                                        <div class="layui-input-inline">
+                                            <select name="estatus" id="estatus"  xm-select="estatus1">
+                                                <option value="0">未分配</option>
+                                                <option value="1">处理中</option>
+                                                <option value="2">已解决</option>
+                                              	<option value="4">已反馈</option>
+                                                <option value="5">其它</option>
+                                            </select>
+                                        </div>
+                                    </div>-->
+<!--                                    <div class="layui-inline">
+                                        <label class="layui-form-label ">反馈类型</label>
+                                        <div class="layui-input-inline">
+                                            <select name="myd" id="myd">
+                                                <option value=""></option>
+                                                <option value="1">非常满意</option>
+                                                <option value="2">满意</option>
+                                                <option value="3">一般</option>
+                                                <option value="4">不满意</option>
+                                            </select>
+                                        </div>
+                                    </div>-->
+                                   <!-- <div class="layui-inline">
+                                        <label class="layui-form-label " >小组</label>
+                                        <div class="layui-input-inline"  >
+                                            <select name="mgroup"
+                                                    xm-select-direction="down"
+                                                    xm-select="ga-mgroup"
+                                                    xm-select-search=""
+                                                    xm-select-search-type="dl"
+                                                    lay-filter="gamgroupSelect"
+                                                    xm-select-skin="normal">
+                                            </select>
+                                        </div>
+                                    </div>-->
+                                    <!--<div class="layui-inline">
+                                        <label class="layui-form-label " >服务对象</label>
+                                        <div class="layui-input-inline"  >
+                                            <select name="gmedicine"
+                                                    xm-select-direction="down"
+                                                    xm-select="ga-medicine"
+                                                    xm-select-search=""
+                                                    xm-select-search-type="dl"
+                                                    lay-filter="gamgroupSelect"
+                                                    xm-select-skin="normal">
+                                            </select>
+                                        </div>
+                                    </div>-->
+                                    <!--<div class="layui-inline">
+                                        <label class="layui-form-label ">帮扶小组</label>
+                                        <div class="layui-input-inline" >
+                                            <select name="agroup"
+                                                    xm-select-direction="down"
+                                                    xm-select="ga-agroup"
+                                                    xm-select-search=""
+                                                    xm-select-search-type="dl"
+                                                    lay-filter="gaagroupSelect"
+                                                    xm-select-skin="normal">
+                                            </select>
+                                        </div>
+                                    </div>-->
+                                    <!--<div class="layui-inline">
+                                        <label class="layui-form-label ">帮扶负责人</label>
+                                        <div class="layui-input-inline"  >
+                                            <select name="fzr"
+                                                    xm-select-direction="down"
+                                                    xm-select="ga-fzr"
+                                                    xm-select-search=""
+                                                    xm-select-search-type="dl"
+                                                    lay-filter="gafzrSelect"
+                                                    xm-select-skin="normal">
+                                            </select>
+                                        </div>
+                                    </div>-->
+                                    <!--<div class="layui-inline">
+                                        <label class="layui-form-label ">工作单位</label>
+                                        <div class="layui-input-inline">
+                                          &lt;!&ndash; <input type="text" name="unit" id="unit" autocomplete="off" class="layui-input">&ndash;&gt;
+                                            <select name="unit" id="unit"  xm-select="unit1">
+                                                <option value="浙一">浙一</option>
+                                                <option value="浙二">浙二</option>
+                                                <option value="邵逸夫医院">邵逸夫医院</option>
+                                                <option value="省人民医院">省人民医院</option>
+                                                <option value="省疾控中心">省疾控中心</option>
+                                                <option value="省肿瘤医院">省肿瘤医院</option>
+                                                <option value="省立同德医院">省立同德医院</option>
+                                                <option value="省新华医院">省新华医院</option>
+                                                <option value="省血液中心">省血液中心</option>
+                                                <option value="省中山医院">省中山医院</option>
+                                                <option value="浙江医院">浙江医院</option>
+                                                <option value="省儿童医院">省儿童医院</option>
+                                                <option value="省中医院">省中医院</option>
+                                            </select>
+                                        </div>
+                                    </div>-->
+                                    <div class="layui-inline table-action-area">
+                                        <div class="layui-btn layui-btn-sm layui-btn-primary table-action" id="query">
+                                            <i class="layui-icon">&#xe848;</i>查询
+                                        </div>
+                                        <div class="layui-btn layui-btn-sm layui-btn-primary table-action" id="add" shiro:hasPermission="matter:add" >
+                                            <i class="layui-icon">&#xe7e3;</i>新增
+                                        </div>
+                                        <div class="layui-btn layui-btn-sm layui-btn-primary table-action action-more" id="export" shiro:hasPermission="explain:export">
+                                            <i class="layui-icon">&#xe7aa;</i> 导出结果
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                       <!-- <div class="layui-col-md3 layui-col-sm12 layui-col-xs12 table-action-area">
+
+                        </div>-->
+                    </form>
+                    <table lay-filter="matterTable" lay-data="{id: 'matterTable'}"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--<style>
+    .layui-form-item .layui-input-inline {
+        width: 210px;
+    }
+</style>-->
+<script type="text/html" id="matter-option">
+    <span shiro:lacksPermission="matter:view,matter:update,matter:delete">
+        <span class="layui-badge-dot febs-bg-orange"></span> 无权限
+    </span>
+    <a lay-event="modify" shiro:hasPermission="matter:update"><i class="layui-icon febs-edit-area febs-blue">&#xe7b3;</i></a>
+    <a lay-event="audit" shiro:hasPermission="matter:view"><i class="layui-icon febs-edit-area febs-green">&#xe7a5;</i></a>
+    <a lay-event="cancel" shiro:hasPermission="matter:delete"><i class="layui-icon febs-edit-area febs-red">&#xe7f9;</i></a>
+</script>
+<style>
+    .layui-table-cell {
+        height: 28px;
+        line-height: 28px;
+        padding: 0 6px;
+        position: relative;
+        box-sizing: border-box;
+    }
+
+</style>
+<script data-th-inline="none" type="text/javascript">
+    layui.use(['dropdown', 'jquery', 'laydate', 'form',  'formSelects','table', 'febs'/*, 'treeSelect'*/], function () {
+        var $ = layui.jquery,
+            laydate = layui.laydate,
+            febs = layui.febs,
+            form = layui.form,
+            table = layui.table,
+            formSelects = layui.formSelects,
+           // treeSelect = layui.treeSelect,
+            dropdown = layui.dropdown,
+            $view = $('#febs-sx'),
+            $query = $view.find('#query'),
+            $add = $view.find('#add'),
+            $reset = $view.find('#reset'),
+            $searchForm = $view.find('sx-table-form'),
+            sortObject = {field: 'createdate', type: null},
+            tableIns,
+            createTimeFrom,
+            createTimeTo,
+            matterType;
+
+        form.render();
+        formSelects.render();
+        initSelect();
+        initTable();
+
+        laydate.render({
+            elem: '#createdate',
+            range: true,
+            trigger: 'click'
+        });
+
+
+
+        $view.on('click', '#export', function () {
+            var params = {};
+            params.createTimeFrom= createTimeFrom,
+            params.createTimeTo= createTimeTo,
+            params.matterType= matterType,
+            febs.download(ctx + 'matter/excel', params, '事项Excel导出结果.xlsx');
+        });
+
+
+        table.on('tool(explainTable)', function (obj) {
+            var data = obj.data,
+                layEvent = obj.event;
+            if (layEvent === 'audit') {
+                /*var estatus = data.estatus;
+                if(estatus == '3'){
+                    layer.alert("事项已审批！")
+                    return
+                }*/
+                febs.modal.view('事项审批信息', 'matter/toAudit/' + data.eid, {
+                });
+            }
+            if (layEvent === 'modify') {
+                var estatus = data.estatus;
+                if(estatus == '3'){
+                    layer.alert("诉求已撤销，无法操作！")
+                    return
+                }
+                febs.modal.view('事项修改', 'matter/toUpdate/' + data.eid, {
+                });
+            }
+
+            if(layEvent === 'cancel'){
+                var estatus = data.estatus;
+/*                if(estatus == '3'){
+                    layer.alert("诉求已撤销，请勿再次操作！")
+                    return
+                }*/
+                if(estatus == '2' || estatus == '4'){
+                    layer.alert("诉求已解决，无法撤销！")
+                    return
+                }
+                febs.modal.view('诉求撤销', 'matter/toCancel/' + data.eid, {
+                });
+            }
+
+        });
+
+        $query.on('click', function () {
+            var params = $.extend(getQueryParams(), {field: sortObject.field, order: sortObject.type});
+            tableIns.reload({where: params, page: {curr: 1}});
+        });
+
+       //新增诉求
+        $add.on('click', function () {
+            febs.modal.view('事项新增', 'matter/toAdd', {});
+        });
+
+        $reset.on('click', function () {
+            $searchForm[0].reset();
+            sortObject.type = 'null';
+            createTimeTo = null;
+            createTimeFrom = null;
+            tableIns.reload({where: getQueryParams(), page: {curr: 1}, initSort: sortObject});
+        });
+
+        function initTable() {
+            tableIns = febs.table.init({
+                elem: $view.find('table'),
+                id: 'matterTable',
+                url: ctx + 'matter/list',
+                cellMinWidth: 120,
+                cols: [[,
+                    {title: '操作', toolbar: '#matter-option', minWidth: 100 },
+                    {field: 'yhname', title: '服务对象' },
+                    {field: 'tel', title: '服务对象手机号码'},
+                    {field: 'sqrphone', title: '联系人手机号码'},
+                    {title: '诉求类型', templet: '#select-etype'},
+                    {field: 'einfo', title: '诉求信息'},
+                    {field: 'createdate', title: '诉求时间'},
+                    {field: 'fzr', title: '负责人'},
+                    {field: 'mgroup', title: '服务对象所在小组'},
+                    {field: 'agroup', title: '帮扶小组'},
+                    {field: 'transversion', title: '诉求解决情况'},
+                    {field: 'unit', title: '工作单位'},
+                    {title: '状态', templet: '#select-estatus'}
+                  
+                ]],
+                height: 'full-230'
+            });
+        }
+
+        function getQueryParams() {
+            var createTime = $("#createdate").val();
+            if (createTime) {
+                createTimeFrom = createTime.split(' - ')[0];
+                createTimeTo = createTime.split(' - ')[1];
+            }else{
+            	createTimeFrom="";
+            	createTimeTo="";
+            }
+            //服务小组
+            var matters = formSelects.value('matterType', 'val');
+
+
+            return {
+                createTimeFrom: createTimeFrom,
+                createTimeTo: createTimeTo,
+                matterType: matters,
+                invalidate_ie_cache: new Date()
+            };
+        }
+
+        function initSelect(){
+            formSelectConfig('matterType','dict/code',{fieldName:'MATTER_TYPE'});//事项类型
+        }
+
+        function formSelectConfig(_id,_url,_data,_value){
+            formSelects.config(_id, {
+                delay: 1000,
+                response: {
+                    statusCode: 200
+                },
+                error: function (id, url, searchVal, err) {
+                    console.error(err);
+                    febs.alert.error('获取小组列表失败');
+                }
+            }).data(_id, 'server', {
+                data: _data,
+                url: ctx + _url,
+                keyName: 'valuee',            //自定义返回数据中name的key, 默认 name
+                keyVal: 'keyy',            //自定义返回数据中value的key, 默认 value
+                success: function(id, url, searchVal, result){      //使用远程方式的success回调
+                    if(_value!=null){
+                        console.log(_value);
+                        formSelects.value(id,_value);
+                    }
+                }
+            });
+        }
+    })
+</script>

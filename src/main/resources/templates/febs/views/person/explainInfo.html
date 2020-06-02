@@ -1,0 +1,76 @@
+<div class="layui-fluid layui-anim febs-anim" id="febs-user" lay-title="家庭成员">
+    <div class="layui-row febs-container">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-body febs-table-full">
+                    <table lay-filter="explainTable" lay-data="{id: 'explainTable'}"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/html" id="select-etype">
+    {{#
+    var etype = {
+	99: {title: ''},
+	6: {title: '其他'},
+	5: {title: '心理疏导'},
+	4: {title: '帮扶人子女教育'},
+    3: {title: '医疗服务'},
+	2: {title: '生活照料'},
+    1: {title: '日常通勤'}
+    }[d.etype];
+    }}
+    <span>{{etype.title}}</span>
+</script>
+<script type="text/html" id="select-estatus">
+    {{#
+    var estatus = {
+    99: {title: '', color: 'green'},
+    5: {title: '其  它', color: 'cyan'},
+    4: {title: '已反馈', color: 'green'},
+    3: {title: '已撤销', color: 'green'},
+    2: {title: '已解决', color: 'green'},
+    1: {title: '处理中', color: 'orange'},
+    0: {title: '未分配', color: 'red'}
+    }[d.estatus];
+    }}
+    <span class="layui-badge febs-bg-{{estatus.color}}">{{estatus.title }}</span>
+</script>
+<script data-th-inline="javascript">
+
+    layui.use([ 'jquery','table','febs'], function () {
+        var $ = layui.$,
+            febs = layui.febs,
+            $view = $('#febs-user'),
+            phone = [[${phone}]],
+            tableIns;
+
+
+        	initTable();
+
+    
+
+        function initTable() {
+                tableIns = febs.table.init({
+                    elem: $view.find('table'),
+                    id: 'explainTable',
+                    url: ctx + 'explain/info/'+phone,
+                    cellMinWidth: 120,
+                    cols: [
+                            [
+                            {title: '诉求类型', templet: '#select-etype'},
+                            {field: 'einfo', title: '诉求信息'},
+                            {title: '状态', templet: '#select-estatus'},
+                            {field: 'fzr', title: '负责人'},
+                            {field: 'transversion', title: '诉求解决情况'},
+                            {field: 'createdate', title: '诉求时间'}
+                            ]
+                        ],
+                    height: 'full'
+                });
+        }
+
+    });
+</script>

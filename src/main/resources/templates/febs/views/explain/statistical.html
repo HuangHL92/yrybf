@@ -1,0 +1,400 @@
+<style>
+    #febs-apex-column .layui-card-header {
+        font-weight: 600;
+    }
+</style>
+<div class="layui-fluid layui-anim febs-anim" id="febs-apex-column" lay-title="柱状图表">
+    <div class="layui-row layui-col-space8 febs-container">
+        <div class="layui-col-md6 layui-col-sm6 layui-col-xs12">
+            <div class="layui-card">
+                <div class="layui-card-header">医院信息柱状图</div>
+                <div class="layui-card-body">
+                    <div id="basicColumnChart"></div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-md6 layui-col-sm6 layui-col-xs12">
+            <div class="layui-card">
+                <div class="layui-card-header">诉求状态饼状图</div>
+                <div class="layui-card-body">
+                    <div id="dataLabelsColumnChart"></div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-md6 layui-col-sm6 layui-col-xs12">
+            <div class="layui-card">
+                <div class="layui-card-header">诉求类型饼状图</div>
+                <div class="layui-card-body">
+                    <div id="stackedColumnChart"></div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-md6 layui-col-sm6 layui-col-xs12">
+            <div class="layui-card">
+                <div class="layui-card-header">诉求数量增长趋势线性图</div>
+                <div class="layui-card-body">
+                    <div id="stackedColumnChart100"></div>
+                </div>
+            </div>
+        </div>
+       
+    </div>
+</div>
+<script data-th-src="@{febs/lay/data/dataSeries.js}"></script>
+<script data-th-inline="javascript" type="text/javascript">
+    layui.use(['apexcharts','febs','jquery'], function () {
+		var febs = layui.febs;
+		var time=new Array()
+		initcharts();
+    	
+        // ----------------- basicColumnChart -------------------
+        var basicColumnChartOptions = {
+            chart: {
+                height: 320,
+                type: 'bar',
+                toolbar: {
+                    show: false
+                },
+                events: { // 添加柱状图数据的点击事件
+                    dataPointSelection: function (event, chartContext, config) {
+        	            	
+        					var name=config.w.config.xaxis.categories[config.dataPointIndex];
+        					febs.modal.view('详细信息', 'explain/barInfo/' + name, {
+        						area: ['800px', '500px'],
+        	                });
+        	            }
+                	}
+
+            },
+            plotOptions: {
+                bar: {
+                    horizontal: false,
+                    columnWidth: '50%',
+                    dataLabels: {
+                        position: 'top' // top, center, bottom
+                    }
+                }
+            },
+            dataLabels: {
+                enabled: true,
+                offsetY: -20,
+                style: {
+                    fontSize: '12px',
+                    colors: ["#304758"]
+                }
+            },
+            stroke: {
+                show: true,
+                width: 2,
+                colors: ['transparent']
+            },
+            series: [{
+                name: '数量',
+                data: [44, 55, 57, 56, 61, 58, 63, 60, 66,100]
+            }],
+            xaxis: {
+                categories: ['浙江省疾控中心1', '浙江省疾控中心2', '浙江省疾控中心3', '浙江省疾控中心4', '浙江省疾控中心5', '浙江省疾控中心6', '浙江省疾控中心7', '浙江省疾控中心8', '浙江省疾控中心9','浙江省疾控中心10']
+            	
+            },
+            fill: {
+                opacity: 1
+
+            },
+            tooltip: {
+                y: {
+                    formatter: function (val) {
+                        return  val 
+                    }
+                }
+            },
+            grid: {
+                row: {
+                    colors: ['transparent', 'transparent'],
+                    opacity: 0.2
+                },
+                borderColor: '#f1f3fa'
+            }
+        };
+
+         
+    	
+        
+    	
+    	
+ 
+    	      
+    	      
+
+
+        // -------------- dataLabelsColumnChart ---------------
+       
+ 		var options = {
+    	          series: [44, 55, 13, 43, 22],
+    	          chart: {
+    	          height: 335,
+    	          type: 'pie',
+    	          events: { // 添加柱状图数据的点击事件
+                      dataPointSelection: function (event, chartContext, config) {
+                    	   var code=options.hidedata[config.dataPointIndex];
+          					 febs.modal.view('详细信息', 'explain/pieInfo/' + code, {
+          						area: ['800px', '500px'],
+          	                });  
+          	            }
+                  	}
+    	        },
+    	        labels: ['Team A', 'Team B', 'Team C', 'Team D', 'Team E'],
+    	        responsive: [{
+    	          breakpoint: 480,
+    	          options: {
+    	            chart: {
+    	              width: 200
+    	            },
+    	            legend: {
+    	              position: 'bottom'
+    	            }
+    	          }
+    	        }],
+    	        tooltip: {
+                    y: {
+                        formatter: function (val) {
+                            return  val 
+                        }
+                    }
+                }
+    	        };
+        
+ 		
+        
+        
+          
+
+        // ---------------- stackedColumnChart --------------
+        var stackedColumnChartOptions = {
+  	          series: [44, 55, 13, 43, 22],
+	          chart: {
+	          height: 335,
+	          type: 'pie',
+	          events: { // 添加柱状图数据的点击事件
+                  dataPointSelection: function (event, chartContext, config) {
+                	  var code=stackedColumnChartOptions.hidedata[config.dataPointIndex];
+   					 febs.modal.view('详细信息', 'explain/pieInfo2/' + code, {
+   						area: ['800px', '500px'],
+   	                });
+      					
+      					
+      	            }
+              	}
+	        },
+	        labels: ['Team A', 'Team B', 'Team C', 'Team D', 'Team E'],
+	        responsive: [{
+	          breakpoint: 480,
+	          options: {
+	            chart: {
+	              width: 200
+	            },
+	            legend: {
+	              position: 'bottom'
+	            }
+	          }
+	        }],
+	        tooltip: {
+                y: {
+                    formatter: function (val) {
+                        return  val 
+                    }
+                }
+            }
+	        };
+
+        
+
+        // ------------ stackedColumnChart100 -------------
+       var stackedColumnChart100Options = {
+            chart: {
+                height: 320,
+                type: 'line',
+                zoom: {
+                    enabled: false
+                },
+                toolbar: {
+                    show: false
+                },
+                events: { // 添加柱状图数据的点击事件
+                	markerClick: function (event, chartContext, config) {
+                		var code=time[config.dataPointIndex]
+                		 febs.modal.view('详细信息', 'explain/lineInfo/' + code, {
+       						area: ['800px', '530px'],
+       	                }); 
+						
+                		
+                		
+                	}
+                }
+            },
+            dataLabels: {
+                enabled: true
+            },
+            colors: ['#727cf5', '#0acf97'],
+            stroke: {
+                width: 4,
+                curve: 'smooth'
+            },
+            series: [{
+                name: "诉求数",
+                data: [10, 41, 35, 51, 49, 62, 69, 91, 148]
+            },
+            {
+                name: "完成数",
+                data: [10, 41, 35, 51, 49, 62, 69]
+            }
+            ],
+            title: {
+                text: '增长数量与完成数趋势线',
+                align: 'left'
+            },
+            grid: {
+                row: {
+                    colors: ['transparent', 'transparent'],
+                    opacity: 0.2
+                },
+                borderColor: '#f1f3fa'
+            },
+            markers: {
+                style: 'inverted',
+                size: 5,
+                hover: {
+                    size: 6
+                }
+            }, 
+            legend: {
+                position: 'top',
+                horizontalAlign: 'right',
+                floating: true,
+                offsetY: -25,
+                offsetX: -5
+            },
+            xaxis: {
+                categories: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月']
+            },
+            responsive: [{
+                breakpoint: 600,
+                options: {
+                    chart: {
+                        toolbar: {
+                            show: false
+                        }
+                    },
+                    legend: {
+                        show: false
+                    }
+                }
+            }]
+        };
+
+        
+
+     
+        
+        
+        
+        function initcharts(){
+        	febs.get(ctx + 'pm/unit', null, function (res) {
+                var data=res.data;
+                var num=new Array(),unit=new Array();
+                for(var i=0;i<data.length;i++){
+                	 num[i]=data[i].num;
+                	 unit[i]=data[i].unit;
+                	
+                }
+               
+                
+               
+                basicColumnChartOptions.series[0].data=num;
+                basicColumnChartOptions.xaxis.categories=unit;
+                new ApexCharts(
+                        document.querySelector("#basicColumnChart"),
+                        basicColumnChartOptions
+                    ).render();
+                
+                
+               
+            });
+        	
+        	
+        	 febs.get(ctx + 'explain/estatus', null, function (res){
+      			var data=res.data;
+                 var num=new Array(),estatus=new Array(),ecode=new Array();
+                 for(var i=0;i<data.length;i++){
+                	 num[i]=data[i].num;
+                	 estatus[i]=data[i].estatus;
+                	 ecode[i]=data[i].ecode;
+                }
+                 options.series=num;
+                 options.labels=estatus;
+                 options.hidedata=ecode;
+                 new ApexCharts(
+                         document.querySelector("#dataLabelsColumnChart"),
+                         options
+                     ).render();
+                 
+      		}); 
+        	 
+        	 
+        	 febs.get(ctx + 'explain/etype', null, function (res){
+        		 var data=res.data;
+                 var num=new Array(),etype=new Array(),ecode=new Array();
+                 for(var i=0;i<data.length;i++){
+                	 num[i]=data[i].num;
+                	 etype[i]=data[i].etype;
+                	 ecode[i]=data[i].ecode;
+                	
+                }
+                 stackedColumnChartOptions.series=num;
+                 stackedColumnChartOptions.labels=etype;
+                 stackedColumnChartOptions.hidedata=ecode;
+                 new ApexCharts(
+                         document.querySelector("#stackedColumnChart"),
+                         stackedColumnChartOptions
+                     ).render();
+        		 
+        	 });
+        	 
+        	
+        	 febs.get(ctx + 'explain/grow', null, function (res){
+        		 var data=res.data;
+                 var num=new Array(),endnum=new Array();
+                 for(var i=0;i<data.length;i++){
+                	 num[i]=data[i].num;
+                	 time[i]=data[i].time;
+                	 endnum[i]=data[i].endnum;
+                	
+                }
+                 
+                 stackedColumnChart100Options.series[0].data=num;
+                 stackedColumnChart100Options.series[1].data=endnum;
+                 stackedColumnChart100Options.xaxis.categories=time;
+        		 new ApexCharts(
+        		            document.querySelector("#stackedColumnChart100"),
+        		            stackedColumnChart100Options
+        		        ).render();
+        	 });
+        	 
+        	 
+        }
+        
+        
+
+    });
+    
+    
+    
+   
+    
+    
+    
+    
+    
+    
+    
+    
+</script>

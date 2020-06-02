@@ -1,0 +1,118 @@
+<div class="layui-fluid layui-anim febs-anim" id="febs-user" lay-title="柱状图信息">
+    <div class="layui-row febs-container">
+    	<div class="layui-btn layui-btn-sm layui-btn-primary table-action action-more" id="total">
+                  <i class="layui-icon">&#xe7aa;</i> 总诉求信息
+         </div>
+         <div class="layui-btn layui-btn-sm layui-btn-primary table-action action-more" id="end">
+                  <i class="layui-icon">&#xe7aa;</i> 完成诉求信息
+         </div>
+        <div class="layui-col-md12 layui-col-sm12 layui-col-xs12 table-action-area">
+            <div class="layui-card">
+                <div class="layui-card-body">
+                    <table lay-filter="barTable" lay-data="{id: 'barTable'}"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/html" id="select-estatus">
+    {{#
+    var estatus = {
+	99: {title: '', color: 'green'},
+    5: {title: '其  它', color: 'cyan'},
+	4: {title: '已反馈', color: 'green'},
+	3: {title: '已撤销', color: 'green'},
+    2: {title: '已解决', color: 'green'},
+	1: {title: '处理中', color: 'orange'},
+    0: {title: '未分配', color: 'red'}
+    }[d.estatus];
+    }}
+    <span class="layui-badge febs-bg-{{estatus.color}}">{{estatus.title }}</span>
+</script>
+<script type="text/html" id="select-etype">
+    {{#
+    var etype = {
+	99: {title: ''},
+    7: {title: '职务职称'},
+	6: {title: '其   他'},
+	5: {title: '心理疏导'},
+	4: {title: '子女教育'},
+    3: {title: '医疗服务'},
+	2: {title: '生活照料'},
+    1: {title: '日常通勤'}
+    }[d.etype];
+    }}
+    <span>{{etype.title}}</span>
+</script>
+<script data-th-inline="javascript">
+
+    layui.use([ 'jquery', 'table', 'febs'], function () {
+        var $ = layui.$,
+            febs = layui.febs,
+            $view = $('#febs-user'),
+            code = [[${code}]],
+            searchtype = [[${searchtype}]],
+            tableIns;
+        	initTable();
+
+        	if(searchtype!="line"){
+        		$('#total').hide();
+        		$('#end').hide();
+        	}
+
+        	function initTable() {
+                var url=ctx + 'explain/pielist/'+code;
+        		if(searchtype=="etype"){
+                	url=ctx + 'explain/pielist2/'+code;
+                }else if(searchtype=="unit"){
+                	url=ctx + 'explain/barlist/'+code;
+                }else if(searchtype=="line"){
+                	url=ctx + 'explain/linelist/'+code;
+                }
+        		tableIns = febs.table.init({
+                    elem: $view.find('table'),
+                    id: 'explainTable',
+                    url: url,
+                    cellMinWidth: 120,
+                    cols: [
+                    	[
+                        {field: 'yhname', title: '服务对象' ,fixed: 'left'},
+                        {field: 'tel', title: '服务对象手机号码'},
+                        {field: 'sqrphone', title: '联系人手机号码'},
+                        {title: '诉求类型', templet: '#select-etype'},
+                        {field: 'einfo', title: '诉求信息'},
+                       /* {field: 'province', title: '省'},
+                        {field: 'city', title: '市'},
+                        {field: 'district', title: '区'},
+                        {field: 'town', title: '街道'},*/
+                        {field: 'createdate', title: '诉求时间'},
+                        /*{field: 'sqradress', title: '诉求地址'},*/
+                        {field: 'fzr', title: '负责人'},
+                        {field: 'mgroup', title: '服务对象所在小组'},
+                        {field: 'agroup', title: '帮扶小组'},
+                       /* {field: 'interview', title: '走访情况'},*/
+                        {field: 'transversion', title: '诉求解决情况'},
+                        /*{title: '反馈类型', templet: '#select-myd'},*/
+                        {field: 'unit', title: '工作单位'},
+                        {title: '状态', templet: '#select-estatus',fixed: 'right'}
+                       
+                      
+                    ]
+                    	],
+                    height: 'full-340'
+                });
+            }
+        	
+        	
+        	
+        	
+        	$view.on('click', '#total', function () {
+				tableIns.reload({url: ctx + 'explain/linelist/'+code,page: {curr: 1}});
+            });
+        	
+			$view.on('click', '#end', function () {
+				tableIns.reload({url: ctx + 'explain/linelist2/'+code,page: {curr: 1}});
+            });
+
+    });
+</script>

@@ -1,0 +1,523 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.mrbird.febs.explain.mapper.ExplainMapper">
+
+    <!--
+        ifnull(e.sqradress,'') as sqradress,
+        ifnull(e.province,'') as province,
+        ifnull(e.city,'') as city,
+        ifnull(e.district,'') as district,
+        ifnull(e.town,'') as town,
+        d3.valuee sfsw,
+         when t.astatus='2' and t.aid != t.paid then '转办给团长'
+    -->
+    <sql id="findExplainDetailSql">
+       SELECT
+        distinct
+        e.eid,
+        d1.valuee etype,
+        e.einfo,
+        ifnull(e.sqrname,'') as sqrname,
+        e.sqrphone,
+        e.tel,
+        e.estatus,
+        e.cxly,
+        d4.valuee  myd ,
+        e.fkmx,
+        e.createdate,
+        t.astatus,
+        e.transversion as leadappraise,
+        t.reason,
+        t.aid,
+        t.paid,
+        	(
+		CASE WHEN e.estatus='4' THEN '已反馈' when t.astatus='2' and t.aid = t.paid then '转办给负责人' WHEN e.estatus='5' THEN '专班处理'
+		ELSE
+			''
+		END
+	) AS ypj,
+        (select nname from t_person_assist where userid=t.aid) as aidname,
+        (select phone from t_person_assist where userid=t.aid) as aidphone,
+        g.group_name groupName
+        FROM t_explain e
+        LEFT JOIN  t_person_medicine p on e.tel = p.phone
+        LEFT JOIN t_group_medicine g ON p.group_id = g.group_id
+        left join t_dict d1 on d1.field_name='etype' and e.etype=d1.keyy and d1.table_name='t_explain'
+        left join t_dict d3 on d3.field_name='sfsw' and e.sfsw=d3.keyy and d3.table_name='t_explain'
+        left join t_dict d4 on d4.field_name='myd' and e.sfsw=d4.keyy and d4.table_name='t_explain'
+        left join t_explain_assist t on e.eid=t.tid and t.xh=(select max(xh) from t_explain_assist d where d.tid=t.tid )
+        where 1=1
+    </sql>
+    <sql id="findExplainDetail">
+
+        SELECT e.eid,
+        e.einfo,
+        IFNULL(e.etype,"99") etype,
+		IFNULL(e.estatus,"99") estatus,
+		IFNULL(e.myd,"99") myd,
+        e.sqrname,
+        e.sqrphone,
+        e.tel,
+        e.sqradress,
+        e.province,
+        e.city,
+        e.district,
+        e.town,
+        e.cxly,
+        e.fkmx,
+        e.createdate,
+        pm.person_name yhname,
+        gm.group_name mgroup,
+        tga.group_name agroup,
+        tgt.team_name ateam
+        FROM t_explain e
+        LEFT JOIN t_person_medicine pm ON e.tel = pm.phone
+		LEFT JOIN t_group_medicine gm ON pm.group_id = gm.group_id
+		LEFT JOIN t_gma_map tgm ON tgm.groupm_id = pm.group_id
+		LEFT JOIN t_group_assist tga ON tga.group_id=tgm.groupa_id
+		LEFT JOIN t_gat_map tgm2 ON  tgm2.groupa_id = tga.group_id
+		LEFT JOIN t_group_team tgt ON tgt.team_id=tgm2.team_id
+        where 1=1 and e.estatus!='3' 
+    </sql>
+
+
+
+
+    <!--医护人员-->
+    <select id="getListNum" resultType="explain">
+
+        select (select count(1) from t_explain where   estatus='0'
+        <if test="tel != null and tel != ''">
+            and tel  = #{explain.tel}
+        </if>
+        ) wcl, (select count(1) from t_explain where   estatus='1'
+        <if test="tel != null and tel != ''">
+            and tel  = #{explain.tel}
+        </if>
+        ) clz, (select count(1) from t_explain where   (estatus='2' or estatus='4')
+        <if test="tel != null and tel != ''">
+            and tel  = #{explain.tel}
+        </if>
+        ) ycl
+
+    </select>
+
+    <!--帮扶组员-->
+    <select id="getListNumRylx1" resultType="explain">
+
+        select (select count(1) from t_explain_assist t where   t.astatus='0' and t.tcurrent='0'
+        <if test="tel != null and tel != ''">
+            and   exists (select 1 from t_person_assist where t.aid=userid and phone= #{explain.tel} )
+        </if>
+        ) wcl, (select count(1) from t_explain_assist t where   t.astatus='1' and t.tcurrent='0'
+        <if test="tel != null and tel != ''">
+            and exists (select 1 from t_person_assist where t.aid=userid and phone= #{explain.tel} )
+        </if>
+        ) clz, (select count(1) from t_explain_assist t where   t.astatus='3' and t.tcurrent='1'
+        <if test="tel != null and tel != ''">
+            and exists (select 1 from t_person_assist where t.aid=userid and phone= #{explain.tel} )
+        </if>
+        ) ycl
+
+    </select>
+    <!--帮扶组长-->
+    <select id="getListNumRylx2" resultType="explain">
+
+        select ((select count(1) from t_explain t where   t.estatus='0'
+        <if test="tel != null and tel != ''">
+            and  exists (select 1  from t_person_medicine a
+            inner join t_gma_map b on a.group_id=b.groupm_id
+            inner join t_gpa_map c on c.groupa_id=b.groupa_id
+            inner join t_person_assist d on d.userid=c.persona_id and d.phone=#{explain.tel}
+            where a.phone = t.tel
+            )
+        </if>
+        )+(select count(1) from t_explain_assist t where   t.astatus='2' and t.tcurrent='0'
+        <if test="tel != null and tel != ''">
+            and  exists (select 1 from t_person_assist where t.aid=userid and phone= #{explain.tel} )
+        </if>
+        )) wcl, ((select count(1) from t_explain t where   t.estatus='1'
+        <if test="tel != null and tel != ''">
+            and exists (select  1 from t_person_medicine a
+            inner join t_gma_map b on a.group_id=b.groupm_id
+            inner join t_gpa_map c on c.groupa_id=b.groupa_id
+            inner join t_person_assist d on d.userid=c.persona_id and d.phone=#{explain.tel}
+            where t.tel = a.phone
+            )
+        </if>
+        ) -(select count(1) from t_explain_assist t where  t.astatus='2' and t.tcurrent='0'
+        <if test="tel != null and tel != ''">
+            and  exists (select 1 from t_person_assist where t.aid=userid and phone= #{explain.tel} )
+        </if>
+        ))clz, ((select count(1) from t_explain_assist t where  t.astatus='3'
+        <if test="tel != null and tel != ''">
+            and  exists (select 1 from t_person_assist where t.paid=userid and phone= #{explain.tel} ))
+        </if>
+        +(select count(1) from t_explain_assist t where  t.astatus='5' and t.tcurrent='0'
+        <if test="tel != null and tel != ''">
+            and  exists (select 1 from t_person_assist where t.paid=userid and phone= #{explain.tel} )
+        </if>
+        )
+        ) ycl from dual
+
+    </select>
+
+    <!--帮扶团长 -->
+    <select id="getListNumRylx3" resultType="explain">
+
+        select ((select count(1) from t_explain t where   t.estatus='0'
+        <if test="tel != null and tel != ''">
+            and exists (select 1  from t_person_medicine a
+            inner join t_gma_map b on a.group_id=b.groupm_id
+            inner join t_gat_map c on c.groupa_id=b.groupa_id
+            inner join t_group_team d on c.team_id=d.team_id
+            inner join t_person_assist f on d.team_leader=f.userid and f.phone=#{explain.tel}
+            where t.tel = a.phone
+            )
+        </if>
+        )+(select count(1) from t_explain_assist t where   t.astatus='2' and t.tcurrent='0'
+        <if test="tel != null and tel != ''">
+            and  exists (select 1 from t_person_assist where t.aid=userid and phone= #{explain.tel} )
+        </if>
+        )) wcl, ((select count(1) from t_explain t where   t.estatus='1'
+        <if test="tel != null and tel != ''">
+            and exists (select 1 from t_person_medicine a
+            inner join t_gma_map b on a.group_id=b.groupm_id
+            inner join t_gat_map c on c.groupa_id=b.groupa_id
+            inner join t_group_team d on c.team_id=d.team_id
+            inner join t_person_assist f on d.team_leader=f.userid and f.phone=#{explain.tel}
+            where t.tel=a.phone
+            )
+        </if>
+        ) -(select count(1) from t_explain_assist  t where   t.astatus='2' and t.tcurrent='0'
+        <if test="tel != null and tel != ''">
+            and  exists (select 1 from t_person_assist where t.aid=userid and phone= #{explain.tel} )
+        </if>
+        ))clz, (select count(1) from t_explain t where   (t.estatus='2' or t.estatus='4')
+        <if test="tel != null and tel != ''">
+            and exists  (select 1  from t_person_medicine a
+            inner join t_gma_map b on a.group_id=b.groupm_id
+            inner join t_gat_map c on c.groupa_id=b.groupa_id
+            inner join t_group_team d on c.team_id=d.team_id
+            inner join t_person_assist f on d.team_leader=f.userid and f.phone=#{explain.tel}
+            where t.tel=a.phone
+            )
+        </if>
+        ) ycl
+
+    </select>
+
+
+    <select id="getExplainByEid" resultType="explain">
+
+        <include refid="findExplainDetailSql"/>
+
+        <if test="eid != null and eid != ''">
+            and e.eid  = #{eid}
+        </if>
+        <if test='status == "1"' >
+          and t.tcurrent='0'
+        </if>
+        <if test='status == "2"' >
+            and (t.tcurrent='1' and t.astatus='3') or (t.tcurrent='0' and t.astatus='5')
+        </if>
+    </select>
+
+    <!--诉求列表-->
+    <select id="getExplainListByTelAndStatus" resultType="explain">
+            <include refid="findExplainDetailSql"/>
+            and e.tel  = #{tel}
+            ${estatus}
+    </select>
+
+    <select id="getExplainListByTelAndStatus1" resultType="explain">
+        <include refid="findExplainDetailSql"/>
+        and exists (select 1 from t_person_assist a where a.phone=#{tel} and t.aid=a.userid )
+        ${estatus}
+    </select>
+
+    <!--诉求列表-->
+    <select id="getExplainListByTelAndStatus3" resultType="explain">
+        <include refid="findExplainDetailSql"/>
+        <if test='estatus == "0"' >
+            and t.astatus='2'
+            and t.tcurrent='0'
+            and exists (select 1 from t_person_assist where phone= #{tel} and t.aid=userid)
+            union all
+            <include refid="findExplainDetailSql"/>
+            and e.estatus='0'
+            and exists (select 1  from t_person_medicine a
+            inner join t_gma_map b on a.group_id=b.groupm_id
+            inner join t_gat_map c on c.groupa_id=b.groupa_id
+            inner join t_group_team d on c.team_id=d.team_id
+            inner join t_person_assist f on d.team_leader=f.userid and f.phone=#{tel}
+            where e.tel = a.phone
+            )
+        </if>
+        <if test='estatus == "1"' >
+            and e.estatus='1'
+            and exists (select 1  from t_person_medicine a
+            inner join t_gma_map b on a.group_id=b.groupm_id
+            inner join t_gat_map c on c.groupa_id=b.groupa_id
+            inner join t_group_team d on c.team_id=d.team_id
+            inner join t_person_assist f on d.team_leader=f.userid and f.phone=#{tel}
+            where e.tel = a.phone
+            )
+            and  not exists (select 1 from t_explain_assist a, t_person_assist b
+            where a.aid=b.userid and b.phone= #{tel} and a.astatus='2' and a.tcurrent='0' and e.eid=a.tid)
+        </if>
+        <if test='estatus == "2"' >
+            and e.eid=t.tid
+            and t.astatus='3'
+            and exists
+            (
+            select 1 from t_person_assist a
+            inner join t_gpa_map b on a.userid=b.persona_id
+            inner join t_gat_map c on b.groupa_id= c.groupa_id
+            inner join t_group_team d on c.team_id = d.team_id
+            inner join t_person_assist f on d.team_leader=f.userid and f.phone=#{tel}
+            where a.rrole='2' and t.paid = a.userid )
+
+
+        </if>
+    </select>
+
+
+    <select id="getExplainListByTelAndStatus2" resultType="explain">
+        <include refid="findExplainDetailSql"/>
+        <if test='estatus == "0"' >
+            and e.estatus='0'
+            and exists  (select 1  from t_person_medicine a
+            inner join t_gma_map b on a.group_id=b.groupm_id
+            inner join t_gpa_map c on c.groupa_id=b.groupa_id
+            inner join t_person_assist d on d.userid=c.persona_id and d.phone=#{tel}
+            where e.tel = a.phone
+            )
+            union all
+            <include refid="findExplainDetailSql"/>
+            and t.astatus='2'
+            and t.tcurrent='0'
+            and exists (select 1 from t_person_assist where phone= #{tel} and t.aid=userid)
+        </if>
+        <if test='estatus == "1"' >
+            and e.estatus='1'
+            and exists (select 1  from t_person_medicine a
+            inner join t_gma_map b on a.group_id=b.groupm_id
+            inner join t_gpa_map c on c.groupa_id=b.groupa_id
+            inner join t_person_assist d on d.userid=c.persona_id and d.phone=#{tel}
+            where a.phone = e.tel
+            )
+            and  not exists (select 1 from t_explain_assist a, t_person_assist b
+            where a.aid=b.userid and b.phone= #{tel} and a.astatus='2' and a.tcurrent='0' and e.eid=a.tid)
+        </if>
+        <if test='estatus == "2"' >
+            and e.eid=t.tid
+            and t.astatus='3'
+            and  exists   (
+            select 1 from t_person_assist a  where a.phone=#{tel} and t.paid=a.userid)
+            union all
+            <include refid="findExplainDetailSql"/>
+            and t.astatus='5'
+            and t.tcurrent='0'
+            and exists (select 1 from t_person_assist a  where a.phone=#{tel} and t.paid=a.userid)
+        </if>
+    </select>
+
+
+
+
+    <update id="cancelExplain" >
+        update t_explain
+        <trim prefix="set" suffixOverrides=",">
+            <if test=" status!=null and status != ''">estatus= #{status},</if>
+            <if test=" chreason!=null and chreason != '' ">cxly  = #{chreason},</if>
+        </trim>
+        where  eid  = #{eid}
+    </update>
+
+    <update id="updateExplainLy" >
+        update t_explain
+        <trim prefix="set" suffixOverrides=",">
+            <if test="transversion!=null">transversion=#{transversion},</if>
+            <if test="fkmx!=null">fkmx=#{fkmx},</if>
+            <if test="myd!=null">myd=#{myd},</if>
+        </trim>
+        where  eid  = #{eid}
+    </update>
+
+    <select id="getAssistTeamByTel" resultType="String">
+        select concat(b.group_name,'-',pa.nname,'-',pa.phone)  from t_person_assist pa
+        inner join t_gpa_map a on pa.userid=a.persona_id
+        inner join t_group_assist b on a.groupa_id = b.group_id
+        where EXISTS (select 1 from t_gpa_map p ,t_person_assist s where s.userid=p.persona_id and s.phone = #{tel} and  a.groupa_id=p.groupa_id)
+        and pa.phone != #{tel}
+    </select>
+
+    <select id="getAssistTeamZzByTel" resultType="String">
+        select concat(t.nname,'-',t.phone) from t_person_assist t where  EXISTS (select 1 from t_person_assist a
+            inner join t_gpa_map b on a.userid=b.persona_id
+            inner join t_gat_map c on b.groupa_id= c.groupa_id
+            inner join t_group_team d on c.team_id = d.team_id
+            inner join t_person_assist f on d.team_leader=f.userid and f.phone=#{tel}
+            where a.rrole='2' and t.userid = a.userid
+            )
+    </select>
+
+    <!--流程处理表插入数据-->
+    <insert id="insertTExplainAssist" parameterType="cc.mrbird.febs.explain.entity.ExplainAssist">
+      insert into t_explain_assist
+        <trim prefix="(" suffix=")">
+              taid,
+              aid,
+              tid,
+              receivedate,
+              startdate,
+              enddate,
+              paid,
+              astatus,
+              reason,
+              chreason,
+              xh,
+              tcurrent
+        </trim>
+        VALUES
+        <trim prefix="(" suffix=")">
+            #{taid},
+            #{aid},
+            #{tid},
+            #{receivedate},
+            #{startdate},
+            #{enddate},
+            #{paid},
+            #{astatus},
+            #{reason},
+            #{chreason},
+            #{xh},
+            #{tcurrent}
+        </trim>
+    </insert>
+
+    <select id="getAssistUserid" resultType="String">
+        select userid from t_person_assist where phone=#{phone}
+    </select>
+
+    <select id="getTeamLeadByTel" resultType="java.util.HashMap">
+        select t.nname,t.phone,t.userid from t_person_assist t where  EXISTS (
+            select 1 from t_group_team a
+            inner join t_gat_map b on a.team_id=b.team_id
+            inner join t_gpa_map c on b.groupa_id=c.groupa_id
+            inner join t_person_assist d on c.persona_id=d.userid and d.phone=#{phone}
+            where t.userid = a.team_leader
+            )
+    </select>
+
+    <select id="getExplainAssist" resultType="cc.mrbird.febs.explain.entity.ExplainAssist" >
+        select * from t_explain_assist where tcurrent='0' and tid=#{tid}
+    </select>
+
+    <update id="updateExplainAssistCurrent">
+        update t_explain_assist SET tcurrent='1'
+        where  taid=#{taid}
+    </update>
+
+
+
+
+   <select id="findDetailList" resultType="explain" parameterType="explain">
+   		<include refid="findExplainDetail"/>
+   		<if test="explain.etype != null and explain.etype != ''">
+           and e.etype  = #{explain.etype}
+        </if>
+        <if test="explain.estatus != null and explain.estatus != ''">
+           and e.estatus  = #{explain.estatus}
+        </if>
+<!--        <if test="explain.myd != null and explain.myd != ''">
+           and e.myd  = #{explain.myd}
+        </if>-->
+        <if test="explain.createTimeFrom != null and explain.createTimeFrom != ''">
+           and STR_TO_DATE(e.createdate,'%Y-%m-%d %H:%i:%s')  &gt; STR_TO_DATE(#{explain.createTimeFrom},'%Y-%m-%d %H:%i:%s')
+        </if>
+        <if test="explain.createTimeTo != null and explain.createTimeTo != ''">
+           and STR_TO_DATE(e.createdate,'%Y-%m-%d %H:%i:%s')  &lt; STR_TO_DATE(#{explain.createTimeTo},'%Y-%m-%d %H:%i:%s')
+        </if>
+        <if test="explain.mgroup != null and explain.mgroup != ''">
+           and gm.group_name like CONCAT('%',#{explain.mgroup},'%')
+        </if>
+        <if test="explain.agroup != null and explain.agroup != ''">
+           and tga.group_name like CONCAT('%',#{explain.agroup},'%')
+        </if>
+<!--        <if test="explain.ateam != null and explain.ateam != ''">
+           and tgt.team_name like CONCAT('%',#{explain.ateam},'%')
+        </if>-->
+        <if test="explain.tel != null and explain.tel != ''">
+           and e.tel =#{explain.tel}
+        </if>
+        <if test="explain.unit != null and explain.unit != ''">
+           and pm.unit =#{explain.unit}
+        </if>
+   </select>
+
+
+	<select id="findTJestatus" resultType="HashMap">
+	  select sum(1) num, d.VALUEE estatus,estatus ecode from t_explain  t left join t_dict d on  t.estatus=d.KEYY and d.FIELD_NAME='estatus' where t.estatus!='3' group by estatus
+	</select>
+
+	<select id="findTJetype" resultType="HashMap">
+	  select sum(1) num, d.VALUEE etype, etype ecode from t_explain  t left join t_dict d on  t.etype=d.KEYY and d.FIELD_NAME='etype' where t.estatus!='3'  group by etype
+	
+	</select>
+
+	<select id="getExplainNumByTime" resultType="String">
+		select count(1) from t_explain where estatus!= 3  and  STR_TO_DATE(createdate,'%Y-%m-%d %H:%i:%s') &lt; STR_TO_DATE(#{endtime},'%Y-%m-%d %H:%i:%s')
+	
+	</select>
+	
+	<select id="getExplainEndNumByTime" resultType="String">
+		select count(1) FROM t_explain e
+        LEFT JOIN t_explain_assist tea ON tea.tid=e.eid  where  e.estatus='2' and tea.astatus=3 and tea.enddate &lt; STR_TO_DATE(#{endtime},'%Y-%m-%d %H:%i:%s') 
+	</select>
+
+    <select id="getPaidByPersonid" resultType="String">
+        select a.persona_id from t_gpa_map a
+        inner join t_gma_map b on a.groupa_id=b.groupa_id
+        inner join t_person_medicine d on b.groupm_id=d.group_id and d.person_id=#{personid}
+        where a.groupa_type='1';
+    </select>
+
+	<select id="findEndDetailList" resultType="explain" parameterType="explain">
+		SELECT e.eid,
+        e.einfo,
+        IFNULL(e.etype,"99") etype,
+		IFNULL(e.estatus,"99") estatus,
+		IFNULL(e.myd,"99") myd,
+        e.sqrname,
+        e.sqrphone,
+        e.tel,
+        e.sqradress,
+        e.province,
+        e.city,
+        e.district,
+        e.town,
+        e.cxly,
+        e.fkmx,
+        e.createdate,
+        pm.person_name yhname,
+        gm.group_name mgroup,
+        tga.group_name agroup,
+        tgt.team_name ateam
+        FROM t_explain e
+        LEFT JOIN t_explain_assist tea ON tea.tid=e.eid 
+        LEFT JOIN t_person_medicine pm ON e.tel = pm.phone
+		LEFT JOIN t_group_medicine gm ON pm.group_id = gm.group_id
+		LEFT JOIN t_gma_map tgm ON tgm.groupm_id = pm.group_id
+		LEFT JOIN t_group_assist tga ON tga.group_id=tgm.groupa_id
+		LEFT JOIN t_gat_map tgm2 ON  tgm2.groupa_id = tga.group_id
+		LEFT JOIN t_group_team tgt ON tgt.team_id=tgm2.team_id
+        where 1=1 and e.estatus='2' 
+	    <if test="explain.enddate != null and explain.enddate != ''">
+           and tea.astatus='3' and tea.enddate  &lt; STR_TO_DATE(#{explain.enddate},'%Y-%m-%d %H:%i:%s') 
+        </if>
+	</select>
+
+
+</mapper>

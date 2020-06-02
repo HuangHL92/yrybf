@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.mrbird.febs.person.mapper.PersonAssistMapper">
+
+
+	<sql id="findPersonDetailSql_Header">
+        select
+        DISTINCT
+        userid,
+        nname,
+        phone,
+        ssex,
+        birth,
+        political,
+        workunid,
+        duty,
+        ttype,
+        rrole,
+        city,
+        county,
+        town,
+        village,
+        address,
+        ga.group_name groupName
+        from  t_person_assist pa
+        left join  t_gpa_map t on  t.persona_id=pa.userid
+        left join t_group_assist ga on ga.group_id=t.groupa_id
+        where 1=1
+    </sql>
+
+
+
+    <sql id="findNameUnitPhoneSql_Header">
+         select
+        CONCAT_WS(',',p.nname,p.phone) namee,
+        p.userid valuee
+        from t_person_assist p
+    </sql>
+
+
+
+
+    <select id="findPersonDetailPage" parameterType="personAssist" resultType="personAssist">
+        <include refid="findPersonDetailSql_Header"/>
+
+        <if test="personAssist.nname != null and personAssist.nname != ''">
+            AND pa.nname like CONCAT('%',#{personAssist.nname},'%')
+        </if>
+        <if test="personAssist.groupId != null and personAssist.groupId!= ''">
+            AND t.groupa_id = #{personAssist.groupId}
+        </if>
+    </select>
+
+
+    <select id="findPersonDetail2Page" parameterType="personAssist" resultType="personAssist">
+
+        select
+        DISTINCT
+        userid,
+        nname,
+        phone,
+        ssex,
+        birth,
+        political,
+        workunid,
+        duty,
+        ttype,
+        CASE  pa.rrole WHEN '1' THEN '组员'  WHEN '2' THEN '负责人'  ELSE '' END AS rrole,
+        city,
+        county,
+        town,
+        village,
+        address,
+        groupName
+        from  t_person_assist pa
+        left join (
+        select persona_id,GROUP_CONCAT(group_name) groupName from t_gpa_map gpa
+        left join t_group_assist ga on ga.group_id=gpa.groupa_id
+        where 1=1
+        <if test="personAssist.groupId != null and personAssist.groupId!= ''">
+            AND gpa.groupa_id = #{personAssist.groupId}
+        </if>
+        group by persona_id
+        ) gg on gg.persona_id=pa.userid
+        where 1=1
+        <if test="personAssist.nname != null and personAssist.nname != ''">
+            AND pa.nname like CONCAT('%',#{personAssist.nname},'%')
+        </if>
+        <if test="personAssist.phone != null and personAssist.phone!= ''">
+            AND pa.phone = #{personAssist.phone}
+        </if>
+        <if test="personAssist.groupName != null and personAssist.groupName!= ''">
+            AND gg.groupName like CONCAT('%',#{personAssist.groupName},'%')
+        </if>
+
+        <if test="personAssist.groupId != null and personAssist.groupId!= ''">
+            AND groupName is not null
+        </if>
+    </select>
+
+
+    <!-- 更新帮扶人员的所属小组 -->
+    <update id="updatePersonAssistIdsById" >
+        update t_person_assist SET group_id=   #{groupAssist.groupId}
+        where  userid  in (
+        <if test="groupAssist.groupMemberIds != null and groupAssist.groupMemberIds != ''">
+            <foreach collection="groupAssist.groupMemberIds" item="item" index="index" separator=",">
+                #{item}
+            </foreach>
+            )
+        </if>
+         or userid=  #{groupAssist.groupLeader}
+    </update>
+
+    <!-- 更新小组的所属团组 -->
+    <update id="updateGroupAssistIdsById" >
+        update t_group_assist SET team_id=   #{groupTeam.teamId}
+        where  userid  in (
+        <if test="groupTeam.teamMemberIds != null and groupTeam.teamMemberIds != ''">
+            <foreach collection="groupTeam.teamMemberIds" item="item" index="index" separator=",">
+                #{item}
+            </foreach>
+            )
+        </if>
+    </update>
+
+    <!-- 查询小组可选列表   排除小组组长/团长  -->
+   <!-- <select id="findGroupMembers" resultType="java.util.HashMap" >
+        select
+        p.userid valuee,p.nname keyy
+        from t_person_assist p
+        WHERE   ( ( p.group_id is null and p.team_id is null ) and p.userid not in ( select team_leader from t_group_team where team_leader is not null ))
+        <if test="groupId != null and  groupId != ''">
+            or ( p.group_id  = #{groupId}  and  p.userid not in ( select group_leader from t_group_assist where group_id = #{groupId} ) )
+        </if>
+    </select>-->
+    <select id="findGroupMembers" resultType="java.util.HashMap" >
+        <include refid="findNameUnitPhoneSql_Header"/>
+        WHERE  1=1
+        <if test="keyword != null and keyword != ''">
+            and p.nname  like CONCAT('%',#{keyword},'%')
+        </if>
+    </select>
+
+    <!-- 查询小组组长列表  1.团长不兼任组长 2. 非小组成员 3. 本组长  -->
+    <!--<select id="findGroupLeaders" resultType="java.util.HashMap" >
+        select
+        p.userid valuee,p.nname keyy
+        from t_person_assist p
+        WHERE ( p.group_id is null and p.userid not in (
+        select team_leader from t_group_team where team_leader is not null
+        union
+        select group_leader from t_group_assist where group_leader is not null ) )
+        <if test="groupId != null and  groupId != ''">
+        or p.userid in ( select group_leader from t_group_assist where  group_id = #{groupId} )
+        </if>
+    </select>-->
+    <!-- 帮扶小组负责人 不是组员的都可以被选中  -->
+    <select id="findGroupLeaders" resultType="java.util.HashMap" >
+        <include refid="findNameUnitPhoneSql_Header"/>
+        WHERE 1=1
+        <if test="keyword != null and keyword != ''">
+            and p.nname  like CONCAT('%',#{keyword},'%')
+        </if>
+    </select>
+
+    <!-- 查询团长列表   1.非组员 2.未兼任的组长 3 本团团长   -->
+    <!--<select id="findTeamLeaders" resultType="java.util.HashMap" >
+        select
+        p.userid valuee,p.nname keyy
+        from t_person_assist p
+        WHERE ( ( p.group_id is null and p.team_id is null )
+        or ( p.userid in ( select group_leader from t_group_assist where group_leader is not null ))
+        and p.userid not in ( select team_leader from t_group_team where team_leader is not null  ))
+        <if test="groupId != null and  groupId != ''">
+            or (p.userid in ( select group_leader from t_group_assist where group_leader is not null )
+            and p.userid in (select team_leader from t_group_team where  team_leader is not null and  &lt;&gt; #{groupId} ))
+        </if>
+    </select>-->
+
+
+    <select id="findTeamLeaders" resultType="java.util.HashMap" >
+        <include refid="findNameUnitPhoneSql_Header"/>
+        WHERE (p.userid in ( select persona_id FROM t_gpa_map where groupa_type='1' and persona_id not  in (select team_leader from t_group_team where team_leader is not null) )
+          or p.userid not in ( select persona_id FROM t_gpa_map where groupa_type='0' union all select team_leader from t_group_team where team_leader is not null)
+        <if test="teamId != null and  teamId != ''">
+        or p.userid  in (select team_leader from t_group_team  where  team_id = #{teamId}  )
+
+        </if>
+        )
+        <if test="keyword != null and keyword != ''">
+            and p.nname  like CONCAT('%',#{keyword},'%')
+        </if>
+    </select>
+
+
+<!--  select persona_id FROM t_gpa_map where groupa_type='0' and
+
+    <update id="updateGroupNull"  >
+        update t_person_assist SET group_id=null
+        where  group_id  = #{groupId}
+    </update>
+
+    <update id="updateTeamNull"  >
+        update t_person_assist SET team_id=null
+        where  team_id  = #{team_id}
+    </update>
+
+
+    <update id="updateRoleNull"  >
+        update t_person_assist SET group_id=null
+        where  group_id  = #{groupId}
+    </update>
+-->
+
+
+    <update id="updateRoleByPersonId"  >
+        update t_person_assist
+        SET rrole= #{role}
+        where  userid  = #{personId}
+    </update>
+
+
+    <select id="findPersonDetailByPersonMedicine" resultType="personAssist">
+        <include refid="findPersonDetailSql_Header"/>
+
+
+        <if test="personAssist.nname != null and personAssist.nname != ''">
+            AND pa.nname like CONCAT('%',#{personAssist.nname},'%')
+        </if>
+        <if test="personAssist.groupId != null and personAssist.groupId!= ''">
+            AND t.groupa_id = #{personAssist.groupId}
+        </if>
+        <if test="personAssist.groupId != null and personAssist.groupId!= ''">
+            AND t.groupa_id = #{personAssist.groupId}
+        </if>
+    </select>
+    
+    
+     <select id="findPersonDetailByPhone" parameterType="personAssist" resultType="personAssist">
+        <include refid="findPersonDetailSql_Header"/>
+        AND  pa.phone= #{personAssist.phone}
+    </select>
+
+
+
+    <select id="findPersonAssistByMedicinePhone"  resultType="personAssist">
+        select
+        pa.userid,
+        pa.nname,
+        pa.phone,
+        ifnull(pa.ssex,'') ssex,
+        ifnull(pa.birth,'') birth,
+        ifnull(pa.political,'') political,
+        ifnull(pa.workunid,'') workunid,
+        ifnull(pa.duty,'') duty,
+        ifnull(pa.ttype,'') ttype,
+        ifnull(pa.city,'') city,
+        ifnull(pa.county,'') county,
+        ifnull(pa.town,'') town,
+        ifnull(pa.village,'') village,
+        ifnull(pa.address,'') address,
+        CASE  pa.rrole WHEN '1' THEN '组员'  WHEN '2' THEN '负责人'  /* WHEN '3' THEN '团长' */  ELSE '' END AS rrole
+        from t_person_assist pa
+        where pa.userid in (
+        select gpa.persona_id from  t_gpa_map gpa
+        left join t_gma_map gma on gma.groupa_id=gpa.groupa_id
+        left join t_person_medicine pm on pm.group_id=gma.groupm_id
+        where 1=1
+        <if test="phone != null and phone!= ''">
+            and pm.phone=#{phone}
+        </if>
+        <!--union all
+        select team_leader from t_group_team gt
+        left  join  t_gat_map  gat  on gat.team_id=gt.team_id
+        left join  t_gma_map gma on gat.groupa_id=gma.groupa_id
+        left join t_person_medicine pm on pm.group_id=gma.groupm_id
+        where 1=1
+        <if test="phone != null and phone!= ''">
+            and pm.phone=#{phone}
+        </if>-->
+        )
+        order by pa.rrole desc
+
+    </select>
+
+
+    <select id="findPersonAssistByAssistMemberPhone"  resultType="personAssist">
+        select
+        pa.userid,
+        pa.nname,
+        pa.phone,
+        ifnull(pa.ssex,'') ssex,
+        ifnull(pa.birth,'') birth,
+        ifnull(pa.political,'') political,
+        ifnull(pa.workunid,'') workunid,
+        ifnull(pa.duty,'') duty,
+        ifnull(pa.ttype,'') ttype,
+        ifnull(pa.city,'') city,
+        ifnull(pa.county,'') county,
+        ifnull(pa.town,'') town,
+        ifnull(pa.village,'') village,
+        ifnull(pa.address,'') address,
+        CASE  pa.rrole WHEN '1' THEN '组员'  WHEN '2' THEN '负责人'/* WHEN '3' THEN '团长' */ ELSE '' END AS rrole
+        from  t_person_assist pa
+        left join t_gpa_map gpam on gpam.persona_id=pa.userid
+        where  groupa_id  in (
+        select m.groupa_id from t_person_assist  p
+        left join  t_gpa_map m on  m.persona_id=p.userid
+        where m.groupa_id is not null
+        <if test="phone != null and phone!= ''">
+            and p.phone=#{phone}
+        </if>
+        ) <!--or  pa.userid in (
+        select team_leader from t_group_team gt
+        left  join  t_gat_map  gat  on gat.team_id=gt.team_id
+        left join  t_gpa_map gpa on gpa.groupa_id=gat.groupa_id
+        left join t_person_assist pa on pa.userid =gpa.persona_id
+        where 1=1
+        <if test="phone != null and phone!= ''">
+            and pa.phone=#{phone}
+        </if>
+        )-->
+        order by pa.rrole desc
+    </select>
+
+    <select id="findPersonAssistByAssistMemberPhone1"  resultType="personAssist">
+    select
+    pa.userid,
+    pa.nname,
+    pa.phone,
+    ifnull(pa.ssex,'') ssex,
+    ifnull(pa.birth,'') birth,
+    ifnull(pa.political,'') political,
+    ifnull(pa.workunid,'') workunid,
+    ifnull(pa.duty,'') duty,
+    ifnull(pa.ttype,'') ttype,
+    ifnull(pa.city,'') city,
+    ifnull(pa.county,'') county,
+    ifnull(pa.town,'') town,
+    ifnull(pa.village,'') village,
+    ifnull(pa.address,'') address,
+    ga.group_name as rrole
+    from  t_person_assist pa
+    left join t_gpa_map gpam on gpam.persona_id=pa.userid
+    left join t_group_assist ga on  ga.group_id =gpam.groupa_id
+    where  groupa_id  in (
+    select m.groupa_id from t_person_assist  p
+    left join  t_gpa_map m on  m.persona_id=p.userid
+    where m.groupa_id is not null
+    <if test="phone != null and phone!= ''">
+        and p.phone=#{phone}
+    </if>
+    )
+    <if test="phone != null and phone!= ''">
+        and pa.phone &lt;&gt; #{phone}
+    </if>
+        order by ga.group_name desc
+    </select>
+
+</mapper>

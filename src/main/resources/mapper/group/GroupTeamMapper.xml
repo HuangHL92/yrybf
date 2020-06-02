@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.mrbird.febs.group.mapper.GroupTeamMapper">
+    <!--<sql id="findGroupTeamDetailSql">
+        SELECT
+            gt.team_id teamId,
+            gt.team_name teamName,
+            gt.team_leader teamLeader,
+            tl.nname  teamLeaderName,
+            IFNULL(teamMemberCount,'0') teamMemberCount,
+            gt.team_members teamMembers
+        FROM
+        t_group_team gt
+        LEFT JOIN (
+            SELECT
+            team_id,
+            count(1) teamMemberCount
+            FROM
+            t_group_assist
+            group by
+            team_id
+        ) ga ON gt.team_id = ga.team_id
+        LEFT join t_person_assist tl on  gt.team_leader=tl.userid
+        where 1=1
+        <if test="groupTeam.teamId != null and groupTeam.teamId != ''">
+            AND gt.team_id = #{groupTeam.teamId}
+        </if>
+        <if test="groupTeam.teamName != null and groupTeam.teamName != ''">
+            AND gt.team_name like CONCAT('%',#{groupTeam.teamName},'%')
+        </if>
+    </sql>-->
+    <sql id="findGroupTeamDetailSql">
+        SELECT
+        gt.team_id teamId,
+        gt.team_name teamName,
+        gt.team_leader teamLeader,
+        gl.nname  teamLeaderName,
+        IFNULL(teamMemberCount,'0') teamMemberCount,
+        teamMembers
+        FROM
+        t_group_team gt
+        LEFT JOIN ( select team_id, count(1) teamMemberCount, GROUP_CONCAT(groupa_id) teamMembers
+        from t_gat_map  group by team_id ) pa
+        ON gt.team_id = pa.team_id
+        LEFT join t_person_assist gl
+        on  gt.team_leader=gl.userid
+        where 1=1
+        <if test="groupTeam.teamId != null and groupTeam.teamId != ''">
+            AND gt.team_id = #{groupTeam.teamId}
+        </if>
+        <if test="groupTeam.teamName != null and groupTeam.teamName != ''">
+            AND gt.team_name like CONCAT('%',#{groupTeam.teamName},'%')
+        </if>
+    </sql>
+
+    <select id="findGroupDetailPage" parameterType="groupTeam" resultType="groupTeam">
+        <include refid="findGroupTeamDetailSql"/>
+    </select>
+
+    <select id="findGroupDetail" parameterType="groupTeam" resultType="groupTeam">
+        <include refid="findGroupTeamDetailSql"/>
+    </select>
+
+    <select id="findTeamMembers" resultType="java.util.HashMap" >
+        select
+        p.group_id valuee,p.group_name namee
+        from t_group_assist p
+        WHERE (  p.group_id not in ( select team_id from t_gat_map where team_id is not null )
+        <if test="teamId != null and teamId != ''">
+            or p.group_id in ( select groupa_id from t_gat_map where groupa_id is not null
+            and team_id= #{teamId}
+            )
+        </if>
+        )
+        <if test="keyword != null and keyword != ''">
+            and p.group_name  like CONCAT('%',#{keyword},'%')
+        </if>
+    </select>
+
+
+</mapper>

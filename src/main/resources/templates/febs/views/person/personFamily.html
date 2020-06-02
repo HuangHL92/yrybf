@@ -1,0 +1,109 @@
+<div class="layui-fluid layui-anim febs-anim" id="febs-user" lay-title="家庭成员">
+    <div class="layui-row febs-container">
+        <div class="layui-col-md12 layui-col-sm12 layui-col-xs12 table-action-area">
+            <div class="layui-card">
+                <div class="layui-card-body">
+                    <table lay-filter="familyTable" lay-data="{id: 'familyTable'}"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/html" id="toolbarfm">
+    <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-sm" lay-event="addbtn">添加</button>
+        <button class="layui-btn layui-btn-sm" lay-event="deletebtn">删除</button>
+    </div>
+</script>
+<script data-th-inline="javascript">
+
+    layui.use([ 'jquery', 'table', 'febs'], function () {
+        var $ = layui.$,
+            febs = layui.febs,
+            table = layui.table,
+            $view = $('#febs-user'),
+            phone = [[${phone}]],
+            tableInsFm;
+
+        	initTable();
+
+
+        function initTable() {
+            tableInsFm = febs.table.init({
+                elem: $view.find('table'),
+                id: 'familyTable',
+                url: ctx + 'pm/familylist/'+phone,
+                cellMinWidth: 120,
+                //toolbar: '#toolbarfm', //开启头部工具栏，并为其绑定左侧模板
+               // defaultToolbar: [  ],
+                cols: [
+                        [
+                            {type: 'checkbox', fixed: 'left'},
+                            {field: 'nname', title: '姓名' },
+                            {field: 'age', title: '年龄'},
+                            {field: 'relation', title: '关系'},
+                            {field: 'address', title: '地址'},
+                            {field: 'unit', title: '单位'},
+                            {field: 'phone', title: '手机'}
+                        ]
+                ],
+                height: 'full'
+            });
+        }
+       /* var datalist = [];
+        table.on('toolbar(familyTable)', function(obj){
+            var checkStatus = table.checkStatus(obj.config.id);
+            switch(obj.event){
+                case 'addbtn':
+                    //var data = checkStatus.data;
+                    //layer.alert(JSON.stringify(data));
+                    febs.get(ctx + 'pm/family/add/' + phone, null, function () {
+                        tableInsFm.reload();
+                    });
+                    break;
+                case 'deletebtn':
+                    if (!checkStatus.data.length) {
+                        febs.alert.warn('请选择需要删除的家属');
+                    } else {
+                        febs.modal.confirm('删除家属', '确定删除该家属？', function () {
+                            var userIds = [];
+                            layui.each(checkStatus.data, function (key, item) {
+                                userIds.push(item.userid);
+                            });
+                            console.log(userIds);
+                            deletePersonFm(userIds.join(','));
+                        });
+                    }
+                    break;
+            };
+        });
+
+        table.on('edit(familyTable)', function(obj){
+            var value = obj.value //得到修改后的值
+                ,data = obj.data //得到所在行所有键值
+                ,field = obj.field; //得到字段
+            layer.msg('[ID: '+ data.userid +'] ' + field + ' 字段更改为：'+ value);
+            febs.post(ctx + 'pm/family/update', {id:data.userid ,filedName:field,filedValue: value,ylrphone:phone}, function () {
+                //layer.closeAll();
+                febs.alert.success(' 信息修改成功');
+                //tableInsFm.reload();
+            });
+        });
+
+        function deletePersonFm(userIds) {
+
+            jquery.ajax
+
+            jquery.ajax({
+                url: ctx + 'pm/family/delete/' + userIds,
+                method: 'GET',
+                success: function (res) {
+                    console.log(res);
+                    febs.alert.success('删除家属成功');
+                    tableInsFm.reload();
+                }
+            });
+        }*/
+
+    });
+</script>

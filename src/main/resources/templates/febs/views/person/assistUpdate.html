@@ -1,0 +1,154 @@
+<style>
+    #user-update {
+        padding: 20px 25px 25px 0;
+    }
+
+    #user-update .layui-treeSelect .ztree li a, .ztree li span {
+        margin: 0 0 2px 3px !important;
+    }
+</style>
+<div class="layui-fluid" id="user-update">
+    <form class="layui-form" action="" lay-filter="user-update-form">
+        <div class="layui-form-item febs-hide">
+            <label class="layui-form-label febs-form-item-require">用户id：</label>
+            <div class="layui-input-block">
+                <input type="text" name="userid" data-th-value="${persona.userid}">
+                <input type="text" name="rrole" data-th-value="${persona.rrole}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label ">手机号(不允许修改)：</label>
+            <div class="layui-input-block">
+                <input type="text" name="phone" data-th-value="${persona.phone}"
+                      autocomplete="off" class="layui-input" readonly>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label febs-form-item-require">姓名：</label>
+            <div class="layui-input-block">
+                <input type="text" name="nname"  lay-verify="required" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">类型：</label>
+            <div class="layui-input-block">
+                <input type="text" name="ttype" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">性别：</label>
+            <div class="layui-input-block">
+                <input type="radio" name="ssex" value="男" title="男性" >
+                <input type="radio" name="ssex" value="女" title="女性" >
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">出生年月：</label>
+            <div class="layui-input-block">
+                <input type="text" name="birth" autocomplete="off"  class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">工作单位：</label>
+            <div class="layui-input-block">
+                <input type="text" name="workunid" autocomplete="off"  class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">职务：</label>
+            <div class="layui-input-block">
+                <input type="text" name="duty" autocomplete="off"  class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">政治面貌：</label>
+            <div class="layui-input-block">
+                <input type="text" name="political" autocomplete="off"  class="layui-input">
+            </div>
+        </div>
+.
+        <div class="layui-form-item">
+            <label class="layui-form-label">地址：</label>
+            <div class="layui-input-block">
+                <div class="layui-inline">
+                    <input type="text" name="city"  placeholder="请输入市" autocomplete="off"  class="layui-input">
+                </div>
+                <div class="layui-inline">
+                    <input type="text" name="county" placeholder="请输入区" autocomplete="off"  class="layui-input">
+                </div>
+                <div class="layui-inline">
+                    <input type="text" name="town"  placeholder="请输入街道" autocomplete="off"  class="layui-input">
+                </div>
+                <div class="layui-inline">
+                    <input type="text" name="village"  placeholder="请输入社区" autocomplete="off"  class="layui-input">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">详细地址：</label>
+            <div class="layui-input-block">
+                <input type="text" name="address" autocomplete="off"  class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item febs-hide">
+            <button class="layui-btn" lay-submit="" lay-filter="user-update-form-submit" id="submit"></button>
+        </div>
+    </form>
+</div>
+
+<script data-th-inline="javascript">
+    layui.use(['febs', 'form', 'formSelects', 'validate', 'treeSelect'], function () {
+        var $ = layui.$,
+            febs = layui.febs,
+            layer = layui.layer,
+            formSelects = layui.formSelects,
+            treeSelect = layui.treeSelect,
+            form = layui.form,
+            persona = [[${persona}]],
+            $view = $('#user-update'),
+            validate = layui.validate;
+
+        form.verify(validate);
+        form.render();
+
+        initUserValue();
+
+
+        function initUserValue() {
+            form.val("user-update-form", {
+                "phone": persona.phone,
+                "nname": persona.nname,
+                "ttype": persona.ttype,
+                "ssex": persona.ssex,
+                "birth": persona.birth,
+                "workunid": persona.workunid,
+                "duty": persona.duty,
+                "political": persona.political,
+                "city": persona.city,
+                "county": persona.county,
+                "town": persona.town,
+                "village": persona.village,
+                "address": persona.address
+            });
+        }
+
+        form.on('submit(user-update-form-submit)', function (data) {
+            if (febs.nativeEqual(data.field, persona)) {
+                febs.alert.warn('数据未作任何修改！');
+                return false;
+            }
+            febs.post(ctx + 'pa/update', data.field, function () {
+                layer.closeAll();
+                febs.alert.success(persona.nname + ' 信息修改成功');
+                $('#febs-unitp').find('#query').click();
+            });
+            return false;
+        });
+    });
+</script>

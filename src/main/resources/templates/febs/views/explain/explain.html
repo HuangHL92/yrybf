@@ -1,0 +1,580 @@
+<div class="layui-fluid layui-anim febs-anim" id="febs-user" lay-title="诉求信息">
+    <div class="layui-row febs-container">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-body febs-table-full">
+                    <form class="layui-form layui-table-form" lay-filter="user-table-form" id="ga-table-form">
+                        <div class="layui-row">
+                            <div class="layui-col-md12 layui-col-sm12 layui-col-xs12 ">
+                                <div class="layui-form-item">
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label ">诉求类型</label>
+                                        <div class="layui-input-inline">
+                                             <select name="etype" id="etype" xm-select="etype1">
+                                                <option value="1">日常通勤</option>
+                                                <option value="2">生活照料</option>
+                                                <option value="3">医疗服务</option>
+                                                <option value="4">子女教育</option>
+                                                <option value="5">心理疏导</option>
+                                                 <option value="7">职务职称</option>
+                                                 <option value="8">防护用品</option>
+                                                <option value="6">其他</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label ">诉求时间</label>
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="createdate" id="createdate" class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label ">处理状态</label>
+                                        <div class="layui-input-inline">
+                                            <select name="estatus" id="estatus"  xm-select="estatus1">
+                                                <option value="0">未分配</option>
+                                                <option value="1">处理中</option>
+                                                <option value="2">已解决</option>
+                                               <!-- <option value="3">已撤销</option>-->
+                                              	<option value="4">已反馈</option>
+                                                <option value="5">其它</option>
+                                            </select>
+                                        </div>
+                                    </div>
+<!--                                    <div class="layui-inline">
+                                        <label class="layui-form-label ">反馈类型</label>
+                                        <div class="layui-input-inline">
+                                            <select name="myd" id="myd">
+                                                <option value=""></option>
+                                                <option value="1">非常满意</option>
+                                                <option value="2">满意</option>
+                                                <option value="3">一般</option>
+                                                <option value="4">不满意</option>
+                                            </select>
+                                        </div>
+                                    </div>-->
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label " >小组</label>
+                                        <div class="layui-input-inline"  >
+                                            <select name="mgroup"
+                                                    xm-select-direction="down"
+                                                    xm-select="ga-mgroup"
+                                                    xm-select-search=""
+                                                    xm-select-search-type="dl"
+                                                    lay-filter="gamgroupSelect"
+                                                    xm-select-skin="normal">
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label " >服务对象</label>
+                                        <div class="layui-input-inline"  >
+                                            <select name="gmedicine"
+                                                    xm-select-direction="down"
+                                                    xm-select="ga-medicine"
+                                                    xm-select-search=""
+                                                    xm-select-search-type="dl"
+                                                    lay-filter="gamgroupSelect"
+                                                    xm-select-skin="normal">
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label ">帮扶小组</label>
+                                        <div class="layui-input-inline" >
+                                            <select name="agroup"
+                                                    xm-select-direction="down"
+                                                    xm-select="ga-agroup"
+                                                    xm-select-search=""
+                                                    xm-select-search-type="dl"
+                                                    lay-filter="gaagroupSelect"
+                                                    xm-select-skin="normal">
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label ">帮扶负责人</label>
+                                        <div class="layui-input-inline"  >
+                                            <select name="fzr"
+                                                    xm-select-direction="down"
+                                                    xm-select="ga-fzr"
+                                                    xm-select-search=""
+                                                    xm-select-search-type="dl"
+                                                    lay-filter="gafzrSelect"
+                                                    xm-select-skin="normal">
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label ">工作单位</label>
+                                        <div class="layui-input-inline">
+                                          <!-- <input type="text" name="unit" id="unit" autocomplete="off" class="layui-input">-->
+                                            <select name="unit" id="unit"  xm-select="unit1">
+                                                <option value="浙一">浙一</option>
+                                                <option value="浙二">浙二</option>
+                                                <option value="邵逸夫医院">邵逸夫医院</option>
+                                                <option value="省人民医院">省人民医院</option>
+                                                <option value="省疾控中心">省疾控中心</option>
+                                                <option value="省肿瘤医院">省肿瘤医院</option>
+                                                <option value="省立同德医院">省立同德医院</option>
+                                                <option value="省新华医院">省新华医院</option>
+                                                <option value="省血液中心">省血液中心</option>
+                                                <option value="省中山医院">省中山医院</option>
+                                                <option value="浙江医院">浙江医院</option>
+                                                <option value="省儿童医院">省儿童医院</option>
+                                                <option value="省中医院">省中医院</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline table-action-area">
+                                        <div class="layui-btn layui-btn-sm layui-btn-primary table-action" id="query">
+                                            <i class="layui-icon">&#xe848;</i>查询
+                                        </div>
+                                        <div class="layui-btn layui-btn-sm layui-btn-primary table-action" id="add" shiro:hasPermission="explain:add" >
+                                            <i class="layui-icon">&#xe7e3;</i>新增
+                                        </div>
+                                        <div class="layui-btn layui-btn-sm layui-btn-primary table-action action-more" id="export" shiro:hasPermission="explain:export">
+                                            <i class="layui-icon">&#xe7aa;</i> 导出结果
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                       <!-- <div class="layui-col-md3 layui-col-sm12 layui-col-xs12 table-action-area">
+
+                        </div>-->
+                    </form>
+                    <table lay-filter="explainTable" lay-data="{id: 'explainTable'}"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .layui-form-item .layui-input-inline {
+        width: 210px;
+    }
+</style>
+<script type="text/html" id="select-estatus">
+    {{#
+    var estatus = {
+	99: {title: '', color: 'green'},
+    5: {title: '其  它', color: 'cyan'},
+	4: {title: '已反馈', color: 'green'},
+	3: {title: '已撤销', color: 'green'},
+    2: {title: '已解决', color: 'green'},
+	1: {title: '处理中', color: 'orange'},
+    0: {title: '未分配', color: 'red'}
+    }[d.estatus];
+    }}
+    <span class="layui-badge febs-bg-{{estatus.color}}">{{estatus.title }}</span>
+</script>
+<script type="text/html" id="select-etype">
+    {{#
+    var etype = {
+	99: {title: ''},
+    8: {title: '防护用品'},
+    7: {title: '职务职称'},
+	6: {title: '其   他'},
+	5: {title: '心理疏导'},
+	4: {title: '子女教育'},
+    3: {title: '医疗服务'},
+	2: {title: '生活照料'},
+    1: {title: '日常通勤'}
+    }[d.etype];
+    }}
+    <span>{{etype.title}}</span>
+</script>
+<script type="text/html" id="select-myd">
+    {{#
+    var myd = {
+	99: {title: ''},
+	4: {title: '不满意'},
+    3: {title: '一般'},
+	2: {title: '满意'},
+    1: {title: '非常满意'}
+    }[d.myd];
+    }}
+    <span>{{myd.title}}</span>
+</script>
+<script type="text/html" id="explain-option">
+    <span shiro:lacksPermission="explain:view,explain:update,explain:delete">
+        <span class="layui-badge-dot febs-bg-orange"></span> 无权限
+    </span>
+    <a lay-event="modifyExplain" shiro:hasPermission="explain:update"><i class="layui-icon febs-edit-area febs-blue">&#xe7b3;</i></a>
+    <a lay-event="detail" shiro:hasPermission="explain:view"><i class="layui-icon febs-edit-area febs-green">&#xe7a5;</i></a>
+    <a lay-event="cancelExplain" shiro:hasPermission="explain:delete"><i class="layui-icon febs-edit-area febs-red">&#xe7f9;</i></a>
+</script>
+<style>
+    .layui-table-cell {
+        height: 28px;
+        line-height: 28px;
+        padding: 0 6px;
+        position: relative;
+        box-sizing: border-box;
+    }
+
+</style>
+<script data-th-inline="none" type="text/javascript">
+    layui.use(['dropdown', 'jquery', 'laydate', 'form',  'formSelects','table', 'febs', 'treeSelect'], function () {
+        var $ = layui.jquery,
+            laydate = layui.laydate,
+            febs = layui.febs,
+            form = layui.form,
+            table = layui.table,
+            formSelects = layui.formSelects,
+            treeSelect = layui.treeSelect,
+            dropdown = layui.dropdown,
+            $view = $('#febs-user'),
+            $query = $view.find('#query'),
+            $add = $view.find('#add'),
+            $reset = $view.find('#reset'),
+            $searchForm = $view.find('ga-table-form'),
+            sortObject = {field: 'createdate', type: null},
+            tableIns,
+            createTimeFrom,
+            createTimeTo,
+            mgroup,
+            agroup,
+            gmedicine,
+            fzr,
+            etypes,
+            estatuss,
+            units;
+
+        form.render();
+        formSelects.render();
+        initSelect();
+        initTable();
+
+        laydate.render({
+            elem: '#createdate',
+            range: true,
+            trigger: 'click'
+        });
+
+
+
+        $view.on('click', '#export', function () {
+            var params = {};
+            params.createTimeFrom= createTimeFrom,
+            params.createTimeTo= createTimeTo,
+            params.etype= etypes,
+            params.estatus= estatuss,
+           /* params.myd= $("#myd").val(),*/
+            params.mgroup= mgroup,
+            params.agroup= agroup,
+            params.gmedicine=gmedicine,
+            params.fzr=fzr,
+            params.unit= units,
+            febs.download(ctx + 'explain/excel', params, '诉求Excel导出结果.xlsx');
+        });
+
+
+        table.on('tool(explainTable)', function (obj) {
+            var data = obj.data,
+                layEvent = obj.event;
+            if (layEvent === 'detail') {
+                febs.modal.view('诉求流程信息', 'explain/explainInfo/' + data.eid, {
+                });
+            }
+            if (layEvent === 'modifyExplain') {
+                var estatus = data.estatus;
+                if(estatus == '3'){
+                    layer.alert("诉求已撤销，无法操作！")
+                    return
+                }
+                febs.modal.view('诉求修改', 'explain/toUpdateExplain/' + data.eid, {
+                });
+            }
+
+            if(layEvent === 'cancelExplain'){
+                var estatus = data.estatus;
+/*                if(estatus == '3'){
+                    layer.alert("诉求已撤销，请勿再次操作！")
+                    return
+                }*/
+                if(estatus == '2' || estatus == '4'){
+                    layer.alert("诉求已解决，无法撤销！")
+                    return
+                }
+                febs.modal.view('诉求撤销', 'explain/toCancelExplain/' + data.eid, {
+                });
+            }
+
+        });
+
+        $query.on('click', function () {
+            var params = $.extend(getQueryParams(), {field: sortObject.field, order: sortObject.type});
+            tableIns.reload({where: params, page: {curr: 1}});
+        });
+
+       //新增诉求
+        $add.on('click', function () {
+            febs.modal.view('诉求新增', 'explain/toAddExplainInfo', {});
+        });
+
+        $reset.on('click', function () {
+            $searchForm[0].reset();
+            sortObject.type = 'null';
+            createTimeTo = null;
+            createTimeFrom = null;
+            tableIns.reload({where: getQueryParams(), page: {curr: 1}, initSort: sortObject});
+        });
+
+        function initTable() {
+            tableIns = febs.table.init({
+                elem: $view.find('table'),
+                id: 'explainTable',
+                url: ctx + 'explain/list',
+                cellMinWidth: 120,
+                cols: [[,
+                    {title: '操作', toolbar: '#explain-option', minWidth: 100 },
+                    {field: 'yhname', title: '服务对象' },
+                    {field: 'tel', title: '服务对象手机号码'},
+                    {field: 'sqrphone', title: '联系人手机号码'},
+                    {title: '诉求类型', templet: '#select-etype'},
+                    {field: 'einfo', title: '诉求信息'},
+                   /* {field: 'province', title: '省'},
+                    {field: 'city', title: '市'},
+                    {field: 'district', title: '区'},
+                    {field: 'town', title: '街道'},*/
+                    {field: 'createdate', title: '诉求时间'},
+                    /*{field: 'sqradress', title: '诉求地址'},*/
+                    {field: 'fzr', title: '负责人'},
+                    {field: 'mgroup', title: '服务对象所在小组'},
+                    {field: 'agroup', title: '帮扶小组'},
+                   /* {field: 'interview', title: '走访情况'},*/
+                    {field: 'transversion', title: '诉求解决情况'},
+                    /*{title: '反馈类型', templet: '#select-myd'},*/
+                    {field: 'unit', title: '工作单位'},
+                    {title: '状态', templet: '#select-estatus'}
+                  
+                ]],
+                height: 'full-230'
+            });
+        }
+
+        function getQueryParams() {
+            var createTime = $("#createdate").val();
+            if (createTime) {
+                createTimeFrom = createTime.split(' - ')[0];
+                createTimeTo = createTime.split(' - ')[1];
+            }else{
+            	createTimeFrom="";
+            	createTimeTo="";
+            }
+            //服务小组
+            var mgroupids = formSelects.value('ga-mgroup', 'val');
+            if(mgroupids){
+                if(mgroupids.length >0 ){
+                    mgroup = "(";
+                    if( mgroupids.length>1){
+                        for(var i=0;i<mgroupids.length;i++){
+                            if( i == mgroupids.length-1){
+                                mgroup =mgroup + "'"+mgroupids[i]+"'";
+                            }else{
+                                mgroup =mgroup + "'"+mgroupids[i]+"',";
+                            }
+                        }
+                    }else{
+                        mgroup =mgroup+ "'"+mgroupids[0]+"'";
+                    }
+
+                    mgroup = mgroup +  ")"
+                }else{
+                    mgroup = "";
+                }
+            }else{
+                mgroup = "";
+            }
+            //医护人员
+            var gmedicineids = formSelects.value('ga-medicine', 'val');
+            if(gmedicineids){
+                if(gmedicineids.length >0 ){
+                    gmedicine = "(";
+                    if( gmedicineids.length>1){
+                        for(var i=0;i<gmedicineids.length;i++){
+                            if( i == gmedicineids.length-1){
+                                gmedicine =gmedicine + "'"+gmedicineids[i]+"'";
+                            }else{
+                                gmedicine =gmedicine + "'"+gmedicineids[i]+"',";
+                            }
+                        }
+                    }else{
+                        gmedicine = gmedicine+"'"+gmedicineids[0]+"'";
+                    }
+
+                    gmedicine = gmedicine +  ")"
+                }else{
+                    gmedicine = "";
+                }
+            }else{
+                gmedicine = "";
+            }
+            //帮扶小组
+            var agroupids = formSelects.value('ga-agroup', 'val');
+            if(agroupids){
+                if(agroupids.length >0 ){
+                    agroup = "(";
+                    if( agroupids.length>1){
+                        for(var i=0;i<agroupids.length;i++){
+                            if( i == agroupids.length-1){
+                                agroup =agroup + "'"+agroupids[i]+"'";
+                            }else{
+                                agroup =agroup + "'"+agroupids[i]+"',";
+                            }
+                        }
+                    }else{
+                        agroup = agroup+"'"+agroupids[0]+"'";
+                    }
+
+                    agroup = agroup +  ")"
+                }else{
+                    agroup = "";
+                }
+            }else{
+                agroup = "";
+            }
+            //负责人
+            var fzrids = formSelects.value('ga-fzr', 'val');
+            if(fzrids){
+                if(fzrids.length >0 ){
+                    fzr = "(";
+                    if( fzrids.length>1){
+                        for(var i=0;i<fzrids.length;i++){
+                            if( i == fzrids.length-1){
+                                fzr =fzr + "'"+fzrids[i]+"'";
+                            }else{
+                                fzr =fzr + "'"+fzrids[i]+"',";
+                            }
+                        }
+                    }else{
+                        fzr =fzr+ "'"+fzrids[0]+"'";
+                    }
+
+                    fzr = fzr +  ")"
+                }else{
+                    fzr = "";
+                }
+            }else{
+                fzr = "";
+            }
+            //诉求类型
+            var etypevals = formSelects.value('etype1', 'val');
+            if(etypevals){
+                if(etypevals.length >0 ){
+                    etypes = "(";
+                    if( etypevals.length>1){
+                        for(var i=0;i<etypevals.length;i++){
+                            if( i == etypevals.length-1){
+                                etypes =etypes + "'"+etypevals[i]+"'";
+                            }else{
+                                etypes =etypes + "'"+etypevals[i]+"',";
+                            }
+                        }
+                    }else{
+                        etypes =etypes+ "'"+etypevals[0]+"'";
+                    }
+                    etypes = etypes +  ")"
+                }else{
+                    etypes = "";
+                }
+            }else{
+                etypes = "";
+            }
+            //诉求状态
+            var estatusvals = formSelects.value('estatus1', 'val');
+            if(estatusvals){
+                if(estatusvals.length >0 ){
+                    estatuss = "(";
+                    if( estatusvals.length>1){
+                        for(var i=0;i<estatusvals.length;i++){
+                            if( i == estatusvals.length-1){
+                                estatuss =estatuss + "'"+estatusvals[i]+"'";
+                            }else{
+                                estatuss =estatuss + "'"+estatusvals[i]+"',";
+                            }
+                        }
+                    }else{
+                        estatuss =estatuss+ "'"+estatusvals[0]+"'";
+                    }
+                    estatuss = estatuss +  ")"
+                }else{
+                    estatuss = "";
+                }
+            }else{
+                estatuss = "";
+            }
+            //工作单位
+            var unitvals = formSelects.value('unit1', 'val');
+            if(unitvals){
+                if(unitvals.length >0 ){
+                    units = "(";
+                    if( unitvals.length>1){
+                        for(var i=0;i<unitvals.length;i++){
+                            if( i == unitvals.length-1){
+                                units =units + "'"+unitvals[i]+"'";
+                            }else{
+                                units =units + "'"+unitvals[i]+"',";
+                            }
+                        }
+                    }else{
+                        units =units+ "'"+unitvals[0]+"'";
+                    }
+                    units = units +  ")"
+                }else{
+                    units = "";
+                }
+            }else{
+                units = "";
+            }
+            return {
+                createTimeFrom: createTimeFrom,
+                createTimeTo: createTimeTo,
+                etype: etypes,
+                estatus: estatuss,
+               /* myd: $("#myd").val(),
+                mgroup: $("#mgroup").val(),*/
+                gmedicine:gmedicine,
+                mgroup: mgroup,
+                agroup: agroup,
+                fzr: fzr,
+                unit: units,
+                invalidate_ie_cache: new Date()
+            };
+        }
+
+        function initSelect(){
+            formSelectConfig('ga-mgroup','explain/getMembers',{tableName:'mgroup',groupId:0});//服务小组
+            formSelectConfig('ga-medicine','explain/getMembers',{tableName:'medicine',groupId:0});//医护人员
+            formSelectConfig('ga-agroup','explain/getMembers',{tableName:'agroup',groupId:0});//帮扶小组
+            formSelectConfig('ga-fzr','explain/getMembers',{tableName:'fzr',groupId:0});//负责人
+        }
+
+        function formSelectConfig(_id,_url,_data,_value){
+            formSelects.config(_id, {
+                delay: 1000,
+                response: {
+                    statusCode: 200
+                },
+                error: function (id, url, searchVal, err) {
+                    console.error(err);
+                    febs.alert.error('获取小组列表失败');
+                }
+            }).data(_id, 'server', {
+                data: _data,
+                url: ctx + _url,
+                keyName: 'namee',            //自定义返回数据中name的key, 默认 name
+                keyVal: 'valuee',            //自定义返回数据中value的key, 默认 value
+                success: function(id, url, searchVal, result){      //使用远程方式的success回调
+                    if(_value!=null){
+                        console.log(_value);
+                        formSelects.value(id,_value);
+                    }
+                }
+            });
+        }
+    })
+</script>

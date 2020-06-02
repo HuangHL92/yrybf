@@ -1,0 +1,139 @@
+<div class="layui-fluid layui-anim febs-anim" id="febs-update" lay-title="诉求修改">
+    <div class="layui-row layui-col-space8 febs-container">
+        <div class="layui-col-md6 layui-col-sm6 layui-col-xs12">
+            <div class="layui-card">
+                <div class="layui-card-body febs-table-full">
+                    <form class="layui-form layui-table-form" action="" lay-filter="explain-form">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label febs-form-item-require">诉求状态：</label>
+                            <div class="layui-input-block">
+                                <select name="estatus" id="estatus" th:value="${estatus}" >
+                                    <option th:selected="${estatus == '0'}" value="0">未分配</option>
+                                    <option th:selected="${estatus == '1'}" value="1">处理中</option>
+                                    <option th:selected="${estatus == '2'}" value="2">已解决</option>
+                                    <!--<option th:selected="${estatus == '3'}" value="3">已撤销</option>-->
+                                    <option th:selected="${estatus == '4'}" value="4">已反馈</option>
+                                    <option th:selected="${estatus == '5'}" value="5">其它</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label febs-form-item-require">诉求类型：</label>
+                            <div class="layui-input-block">
+                                <select name="etype" id="etype" th:value="${etype}" >
+                                    <option th:selected="${etype == '1'}" value="1">日常通勤</option>
+                                    <option th:selected="${etype == '2'}" value="2">生活照料</option>
+                                    <option th:selected="${etype == '3'}" value="3">医疗服务</option>
+                                    <option th:selected="${etype == '4'}" value="4">子女教育</option>
+                                    <option th:selected="${etype == '5'}" value="5">心理疏导</option>
+                                    <option th:selected="${etype == '7'}" value="7">职务职级</option>
+                                    <option th:selected="${etype == '8'}" value="8">防护用品</option>
+                                    <option th:selected="${etype == '6'}" value="6">其他</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label febs-form-item-require">诉求内容：</label>
+                            <div class="layui-input-block">
+                                <textarea   maxlength="1000" name="einfo" th:text="${einfo}"  class="layui-textarea"></textarea>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label febs-form-item-require">诉求解决情况：</label>
+                            <div class="layui-input-block">
+                                <textarea   maxlength="1000" name="transversion" th:text="${transversion}" class="layui-textarea"></textarea>
+                            </div>
+                        </div>
+<!--                        <div class="layui-inline">
+                            <label class="layui-form-label layui-form-label-sm">诉求时间</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="enddate" id="enddate" class="layui-input">
+                            </div>
+                        </div>-->
+                        <div class="layui-form-item febs-hide">
+                            <button type="reset" class="layui-btn" id="reset-form"></button>
+                            <button class="layui-btn" lay-submit="" lay-filter="group-form-submit"
+                                    id="submit-form"></button>
+                        </div>
+                    </form>
+                </div>
+                <div class="layui-card-footer  febs-table-full">
+                    <button class="layui-btn" id="submit">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<span style="display: none" id="eid" >[[${eid}]]</span>
+<span style="display: none" id="aid" >[[${aid}]]</span>
+<span style="display: none" id="ystatus" >[[${estatus}]]</span>
+<style>
+    .layui-form-label{
+        width: 120px;
+    }
+    .layui-input-block{
+        width: 480px;
+        margin-left: 150px;
+    }
+
+</style>
+<script data-th-inline="none" type="text/javascript">
+    layui.use(['dropdown', 'jquery', 'laydate', 'form',  'formSelects','table', 'febs', 'treeSelect', 'validate'], function () {
+        var $ = layui.jquery,
+            laydate = layui.laydate,
+            febs = layui.febs,
+            form = layui.form,
+            table = layui.table,
+            formSelects = layui.formSelects,
+            treeSelect = layui.treeSelect,
+            dropdown = layui.dropdown,
+            validate = layui.validate,
+            $view = $('#febs-update'),
+            $submit = $view.find('#submit'),
+            $searchForm = $view.find('#explain-form'),
+            $header = $view.find('#form-header'),
+            tableIns;
+
+        form.verify(validate);
+        form.render();
+
+        $submit.on('click', function () {
+            $view.find('#submit-form').trigger('click');
+        });
+
+        form.on('submit(group-form-submit)', function (data) {
+            UpdateExplain(data.field);
+            return false;
+        });
+
+        var UpdateExplain = function (data) {
+            var eid=$("#eid").html();
+            var aid=$("#aid").html();
+            var ystatus=$("#ystatus").html();
+            var xstatus = data.estatus;
+            if(ystatus == "1" &&xstatus == "0"){
+                layer.alert("处理中诉求不允许改为未分配！")
+                return
+            }
+            if(ystatus == "2" && xstatus != "2"){
+                layer.alert("已解决诉求不允许改变状态！")
+                return
+            }
+            if(ystatus == "4" && xstatus != "4"){
+                layer.alert("已反馈诉求不允许改变状态！")
+                return
+            }
+            if(ystatus == "5" && xstatus != "2"){
+                layer.alert("其它状态的诉求除了选择已解决外，不允许改变其它状态！")
+                return
+            }
+            febs.post(ctx + 'explain/updateExplain1?eid='+eid+"&ystatus="+ystatus +"&aid="+aid, data, function () {
+                layer.closeAll();
+                febs.alert.success('修改成功');
+                $('#febs-user').find('#query').click();
+            });
+        }
+
+
+    });
+</script>

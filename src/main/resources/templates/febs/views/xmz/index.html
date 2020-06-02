@@ -1,0 +1,280 @@
+<div class="layui-fluid layui-anim febs-anim" id="febs-group" lay-title="项目组管理">
+    <div class="layui-row layui-col-space8 febs-container">
+        <div class="layui-card">
+            <form class="layui-form layui-table-form" lay-filter="person-table-form">
+                <div class="layui-row">
+                    <div class="layui-col-md12 layui-col-sm12 layui-col-xs12 ">
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <label class="layui-form-label layui-form-label-sm">项目组</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="groupName" id="groupName" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-inline">
+                                <label class="layui-form-label layui-form-label-sm">手机号</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="phone" id="phone" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-inline">
+                                <div class="layui-btn layui-btn-sm layui-btn-primary table-action" id="query">
+                                    <i class="layui-icon">&#xe848;</i>
+                                </div>
+                                <div class="layui-btn layui-btn-sm layui-btn-primary table-action action-more"
+                                     shiro:hasAnyPermissions="pa:delete,pa:export">
+                                    <i class="layui-icon">&#xe875;</i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="layui-col-md3 layui-col-sm6 layui-col-xs12">
+            <div class="layui-card">
+                <div class="layui-card-body febs-table-full">
+				 	 <table  lay-filter="groupTable" lay-data="{id: 'groupTable'}" id="groupTable"></table>
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-md9 layui-col-sm6 layui-col-xs12">
+            <div class="layui-card">
+                <div class="layui-card-body febs-table-full">
+                    <table  lay-filter="personTable" lay-data="{id: 'personTable'}"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/html" id="person-sex">
+    {{#
+    var sex = {
+    2: {title: '保密'},
+    1: {title: '女'},
+    0: {title: '男'}
+    }[d.sex];
+    }}
+    <span>{{ sex.title }}</span>
+</script>
+<!--<script type="text/html" id="unitp-option">
+    <span shiro:lacksPermission="pa:delete">
+        <span class="layui-badge-dot febs-bg-orange"></span> 无权限
+    </span>
+    <a lay-event="detail" shiro:hasPermission="pa:update"><i class="layui-icon febs-edit-area febs-blue">&#xe7a4;</i></a>
+    <a lay-event="del" shiro:hasPermission="pa:delete"><i class="layui-icon febs-edit-area febs-red">&#xe7f9;</i></a>
+</script>-->
+<script data-th-inline="none" type="text/javascript">
+    layui.use([ 'dropdown',  'jquery', 'laydate', 'febs', 'form',  'table', 'validate','upload'], function () {
+        var $ = layui.jquery,
+            laydate = layui.laydate,
+            febs = layui.febs,
+            form = layui.form,
+            table = layui.table,
+            dropdown = layui.dropdown,
+           // upload = layui.upload,
+            validate = layui.validate,
+            $view = $('#febs-group'),
+            $query = $('#query'),
+            tableIns,
+			table2Ins;
+        
+      
+        form.verify(validate);
+        form.render();
+
+        initTablePerson();
+
+        initTableGroup();
+
+
+
+        laydate.render({
+            elem: '#createTime',
+            range: true
+        });
+
+
+        dropdown.render({
+            elem: $view.find('.action-more'),
+            click: function (name, elem, event) {
+               // var checkStatus = table.checkStatus('personTable');
+                if (name === 'add') {
+                    febs.modal.open('新增项目组', 'xmz/add/', {
+                        area: $(window).width() <= 750 ? '90%' : '50%',
+                        btn: ['提交', '取消'],
+                        yes: function (index, layero) {
+                            $('#user-update').find('#submit').trigger('click');
+                        },
+                        btn2: function () {
+                            layer.closeAll();
+                        }
+                    });
+                }
+                if (name === 'export') {
+                    var params = {};
+                    params.pageSize = $view.find(".layui-laypage-limits option:selected").val();
+                    params.pageNum = $view.find(".layui-laypage-em").next().html();
+                    febs.download(ctx + 'pa/excel', params, 'Excel导出结果.xlsx');
+                }
+            },
+            options: [{
+                name: 'add',
+                title: '添加项目组',
+                perms: 'xmz:add'
+            }, {
+                name: 'export',
+                title: '导出Excel',
+                perms: 'pm:export'
+            }]
+        });
+
+
+
+        /*upload.render({
+            elem: '#import',
+            url: ctx + 'pa/import',
+            accept: 'file',
+            exts: 'xlsx', // 只能上传 .xlsx格式
+            size: 5 * 1024, // kb
+            before: function () {
+                febs.view.loadBar.start();
+            },
+            done: function (res) {
+                febs.view.loadBar.finish();
+                if (res.code === 200) {
+                    // 刷新 table
+                    tableIns.reload({page: {curr: 1}});
+                    var data = res.data;
+                    layer.alert("导入"+data.data.length+"条");
+                    // 弹出导入结果
+                    /!* febs.modal.open('导入结果', 'pm/result', {
+                        area: $(window).width() <= 750 ? '95%' : '1000px',
+                    }); *!/
+                }
+            }, error: function (res) {
+                //请求异常回调
+                console.error(res);
+                febs.view.loadBar.error();
+                febs.alert.error('导入失败！');
+            }
+        });
+*/
+
+
+        $query.on('click', function () {
+            tableIns.reload({where: getQueryParams(), page: {curr: 1}});
+            table2Ins.reload({where: getQueryParams(), page: {curr: 1}});
+        });
+
+    
+        function initTableGroup() {
+            table2Ins = febs.table.init({
+                elem: $view.find('table')[0],
+                id: 'groupTable',
+                url: ctx + 'xmz/list2',
+                cols: [[
+                    {field: 'no', title: '序号',type:'numbers',width: '25%'},
+                    {field: 'groupName', title: '名称',width: '75%'}
+                ]],
+                height: 'full-210',
+                limit:50,
+                page: {
+                    layout: ['prev', 'next', 'count']
+                }
+            });
+        }
+
+
+        table.on('rowDouble(groupTable)', function(obj){
+            var data = obj.data;
+
+            tableIns.reload({where: getQueryParams2(data), page: {curr: 1}});
+            //标注选中样式
+            obj.tr.addClass('layui-table-click').siblings().removeClass('layui-table-click');
+        });
+
+
+        /*table.on('tool(personTable)', function (obj) {
+            var data = obj.data,
+                layEvent = obj.event;
+            console.log(data);
+            if (layEvent === 'detail') {
+                febs.modal.open('修改帮扶人员信息', 'person/assistInfo/' + data.userid, {
+                    area: $(window).width() <= 750 ? '90%' : '50%',
+                    btn: ['提交', '取消'],
+                    yes: function (index, layero) {
+                        $('#user-update').find('#submit').trigger('click');
+                    },
+                    btn2: function () {
+                        layer.closeAll();
+                    }
+                });
+            }
+            if (layEvent === 'del') {
+                febs.modal.confirm('删除帮扶人员', '确定删除该帮扶人员？', function () {
+                    deletePersons(data.userid);
+                });
+            }
+
+
+        });*/
+
+        function initTablePerson() {
+            tableIns = febs.table.init({
+                elem: $view.find('table')[1],
+                id: 'personTable',
+                url: ctx + 'pa/list2',
+                cellMinWidth: 120,
+                cols: [[
+                    {field: 'nname', title: '姓名'},
+                    {field: 'ttype', title: '类型',MinWidth: 120},
+                    {field: 'ssex',title: '性别',Width:20},
+                    {field: 'birth', title: '出生年月'},
+                    {field: 'workunid', title: '工作单位',MinWidth: 120},
+                    {field: 'duty', title: '职务',MinWidth: 120},
+                    {field: 'political', title: '政治面貌',MinWidth: 120},
+                    {field: 'phone', title: '联系方式',MinWidth: 120},
+                    {field: 'city', title: '市',MinWidth: 120},
+                    {field: 'county', title: '区',MinWidth: 120},
+                    {field: 'town', title: '街道',MinWidth: 120},
+                    {field: 'village', title: '社区',MinWidth: 120},
+                    {field: 'address', title: '具体地址',MinWidth: 120},
+                    {field: 'groupName', title: '所在分组',MinWidth: 120},
+                    {field: 'rrole', title: '角色',MinWidth: 120}/*,
+                    {title: '操作', toolbar: '#unitp-option' ,Width:20}*/
+                ]],
+                height: 'full-210',
+                limit:30
+            });
+        }
+
+        function getQueryParams() {
+           
+        	return {
+                phone: $("#phone").val().trim(),
+                groupName: $("#groupName").val().trim(),
+                groupId:"",
+                invalidate_ie_cache: new Date()
+            };
+        }
+
+        function getQueryParams2(obj) {
+        	return {
+                groupId: obj.groupId,
+                invalidate_ie_cache: new Date()
+            };
+        }
+
+
+        /*function deletePersons(userIds) {
+            febs.get(ctx + 'pa/delete/' + userIds, null, function () {
+                febs.alert.success('删除帮扶人员成功');
+                $query.click();
+            });
+        }*/
+
+    });
+</script>

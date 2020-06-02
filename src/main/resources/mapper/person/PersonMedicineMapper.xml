@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.mrbird.febs.person.mapper.PersonMedicineMapper">
+
+   <!-- <select id="getAllUnits" resultType="java.lang.String">
+        select distinct unit from t_person_medicine where unit &lt;&gt; ''
+    </select>-->
+
+    <sql id="findPersonDetailSql_Header">
+        SELECT
+        p.person_id personId,
+        p.person_name personName,
+        p.age,
+        p.sex,
+        p.duty,
+        p.unit,
+        p.party,
+        p.group_id groupId,
+        g.group_name groupName,
+        p.professional,
+        p.category,
+        p.szyld,
+        p.county,
+        p.town,
+        p.village,
+        p.address,
+        p.phone
+<!--         p.nick_name nickName,
+        p.avatar_url avatarUrl,
+        p.openid,
+        p.country,
+        p.province,
+        p.city,
+        e.e_type explainType,
+        d1.valuee explainTypeName,
+        e.e_info explainInfo,
+        e.e_status explainStatus,
+        d2.valuee explainStatusName,
+        e.create_time explainCreateTime,
+        e.deal_time explainDealTime -->
+        FROM
+        t_person_medicine p
+        LEFT JOIN t_group_medicine g ON (p.group_id = g.group_id)
+<!--         LEFT JOIN (select e_rid,e_type,e_info,e_status,create_time,deal_time from  t_explain  where e_rid not in (select e_rid from t_explain group by e_rid having count(e_rid)>1) or e_id  in(select max(e_id) from t_explain group by e_rid having count(e_rid)>1))
+            e ON (p.person_id = e.e_rid)
+        LEFT JOIN  t_dict d1 on (d1.keyy=e.e_type and d1.field_name='e_type'and d1.table_name='t_explain')
+        LEFT JOIN  t_dict d2 on (d1.keyy=e.e_type and d2.field_name='e_status'and d2.table_name='t_explain') -->
+    </sql>
+
+
+    <select id="findPersonDetailPage" parameterType="personMedicine" resultType="personMedicine">
+        <include refid="findPersonDetailSql_Header"/>
+        where 1=1
+        <if test="personMedicine.personName != null and personMedicine.personName != ''">
+            AND p.person_name like CONCAT('%',#{personMedicine.personName},'%')
+        </if>
+        <if test="personMedicine.unit != null and personMedicine.unit != ''">
+            AND p.unit  like CONCAT('%',#{personMedicine.unit},'%')
+        </if>
+        <if test="personMedicine.phone != null and personMedicine.phone != ''">
+            AND p.phone = #{personMedicine.phone}
+        </if>
+        <if test="personMedicine.groupId != null and personMedicine.groupId != ''">
+            AND p.group_id = #{personMedicine.groupId}
+        </if>
+        <if test="personMedicine.szyld != null and personMedicine.szyld != ''">
+            AND p.szyld = #{personMedicine.szyld}
+        </if>
+    </select>
+
+    <select id="findPersonDetail" parameterType="personMedicine" resultType="personMedicine">
+        <include refid="findPersonDetailSql_Header"/>
+        where 1=1
+        <if test="personMedicine.personName != null and personMedicine.personName != ''">
+            AND p.person_name like CONCAT('%',#{personMedicine.personName},'%')
+        </if>
+        <if test="personMedicine.unit != null and personMedicine.unit != ''">
+            AND p.unit = like CONCAT('%',#{personMedicine.unit},'%')
+        </if>
+        <if test="personMedicine.phone != null and personMedicine.phone != ''">
+            AND p.phone = #{personMedicine.phone}
+        </if>
+        <if test="personMedicine.groupId != null and personMedicine.groupId != ''">
+            AND p.group_id = #{personMedicine.groupId}
+        </if>
+        <if test="personMedicine.openid != null and personMedicine.openid != ''">
+            AND p.openid = #{personMedicine.openid}
+        </if>
+        <if test="personMedicine.szyld != null and personMedicine.szyld != ''">
+            AND p.szyld = #{personMedicine.szyld}
+        </if>
+    </select>
+
+     <select id="findPersonMedicineByAssistMemberPhone" resultType="personMedicine">
+      SELECT
+         p.person_id personId,
+         p.person_name personName,
+         ifnull(p.age,'') age,
+         ifnull(p.sex,'') sex,
+         ifnull(p.duty,'') duty,
+         ifnull(p.unit,'') unit,
+         ifnull(p.party,'') party,
+         p.group_id groupId,
+         g.group_name groupName,
+         ifnull(p.professional,'') professional,
+         ifnull(p.category,'') category,
+         ifnull(p.county,'') county,
+         ifnull(p.town,'') town,
+         ifnull(p.village,'') village,
+         ifnull(p.address,'') address,
+         ifnull(p.phone,'') phone,
+         ifnull(p.remark,'') remark
+         FROM
+         t_person_medicine p
+         LEFT JOIN t_group_medicine g ON (p.group_id = g.group_id)
+         LEFT JOIN t_gma_map gmam ON p.group_id = gmam.groupm_id
+         left join t_gpa_map gpam on gpam.groupa_id=gmam.groupa_id
+         left join t_person_assist pa on pa.userid=gpam.persona_id
+         where 1=1
+         and pa.phone = #{phone}
+    </select>
+
+    <select id="findPersonMedicineByAssistMemberPhone1" resultType="personMedicine">
+        SELECT
+        p.person_id personId,
+        p.person_name personName,
+        p.age,
+        p.sex,
+        p.duty,
+        p.unit,
+        p.party,
+        p.group_id groupId,
+        g.group_name groupName,
+        p.professional,
+        p.category,
+        p.county,
+        p.town,
+        p.village,
+        p.address,
+        p.phone,
+        p.remark
+        FROM
+        t_person_medicine p
+           LEFT JOIN t_group_medicine g ON (p.group_id = g.group_id)
+        LEFT JOIN t_gma_map b ON p.group_id = b.groupm_id
+        LEFT JOIN t_gat_map c ON c.groupa_id = b.groupa_id
+        LEFT JOIN t_group_team d ON c.team_id = d.team_id
+        LEFT JOIN t_person_assist f ON d.team_leader = f.userid
+        where 1=1
+        AND f.phone = #{phone}
+
+    </select>
+
+    <select id="findPersonDetailByPhone" resultType="personMedicine">
+        <include refid="findPersonDetailSql_Header"/>
+        where 1=1
+        AND  p.phone= #{personMedicine.phone}
+    </select>
+
+    <select id="getPersonIdByOpenid" resultType="java.lang.String">
+        select person_id from t_person where openid = #{openid,jdbcType=VARCHAR}
+    </select>
+
+    <!--查询医务或者帮扶人员key-value-->
+    <select id="findGroupMembers" resultType="java.util.HashMap"  >
+        select
+        person_name namee,
+        person_id valuee,
+        unit unitt,
+        phone phonee
+        from t_person_medicine
+        WHERE ( group_id is null or group_id=0
+        <if test="groupId != null and groupId != ''">
+            or group_id  in ( #{groupId} )
+        </if>
+        )
+        <if test="keyword != null and keyword != ''">
+            and person_name  like CONCAT(#{keyword},'%')
+        </if>
+    </select>
+
+    <update id="updateGroupIdByGroupMedicine"  >
+        update t_person_medicine SET group_id=#{groupMedicine.groupId}
+        where  person_id  in (
+        <if test="groupMedicine.groupMemberIds != null and groupMedicine.groupMemberIds != ''">
+        <foreach collection="groupMedicine.groupMemberIds" item="item" index="index" separator=",">
+            #{item}
+        </foreach>
+         )
+        </if>
+    </update>
+
+    <update id="updateGroupNull"  >
+        update t_person_medicine SET group_id=0
+        where  group_id  = #{groupId}
+    </update>
+
+    <update id="updatePersonFmField" >
+        update t_person_medicine_family SET
+        <if test="filedName=='nname'"> nname=#{filedValue} </if>
+        <if test="filedName=='age'"> age=#{filedValue} </if>
+        <if test="filedName=='relation'"> relation=#{filedValue} </if>
+        <if test="filedName=='address'"> address=#{filedValue} </if>
+        <if test="filedName=='unit'"> unit=#{filedValue} </if>
+        <if test="filedName=='phone'"> phone=#{filedValue} </if>
+        where  userid  = #{id} and ylrphone=#{ylrphone}
+    </update>
+
+
+    <select id="tjUnit" resultType="HashMap">
+		select sum(1) num,IFNULL(unit,'其他') unit from t_explain a left join t_person_medicine b on a.tel=b.phone  where a.estatus!='3' group by b.unit
+	</select>
+</mapper>

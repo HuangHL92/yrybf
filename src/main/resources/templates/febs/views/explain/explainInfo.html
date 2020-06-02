@@ -1,0 +1,44 @@
+<div class="layui-fluid layui-anim febs-anim" id="febs-ex" lay-title="家庭成员">
+    <div class="layui-row febs-container">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-body febs-table-full">
+                    <table lay-filter="exTable" lay-data="{id: 'exTable'}"></table>
+                    <span style="display: none" id="eid">[[${eid}]]</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script data-th-inline="none" type="text/javascript">
+    layui.use([ 'jquery', 'form', 'table', 'febs'], function () {
+        var $ = layui.jquery,
+            febs = layui.febs,
+            table = layui.table,
+            $view = $('#febs-ex'),
+            tableIns;
+
+        	initTable();
+
+            function initTable() {
+                var eid=$("#eid").html();
+                tableIns = febs.table.init({
+                    elem: $view.find('table'),
+                    id: 'explaininfoTable',
+                    url: ctx + 'explain/assistinfo/'+eid,
+                    cellMinWidth: 120,
+                    cols: [[
+
+                        {field: 'aid', title: '帮扶人员' ,fixed: 'left'},
+                        {field: 'receivedate', title: '分配诉求时间'},
+                        {field: 'startdate', title: '诉求处理时间'},
+                        {field: 'enddate', title: '处理结束时间'},
+                        {field: 'paid', title: '分配人'},
+                        {field: 'astatus',title: '状态'}
+                    ]],
+                    height: 'full-550'
+                });
+            }
+    })
+</script>

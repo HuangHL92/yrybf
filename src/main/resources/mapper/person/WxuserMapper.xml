@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.mrbird.febs.person.mapper.WxuserMapper">
+    <sql id="findUserDetailSql">
+        select  w.userid,w.telnum1,w.telnum2,w.hospital,w.region,w.address,w.passwd,w.rylx, w.family
+        from t_wxuser w
+        where 1 = 1
+    </sql>
+
+    <update id="updateWUserPasswd"  >
+        update t_wxuser SET passwd=#{passwd}
+        where  telnum1  = #{telno}
+    </update>
+</mapper>

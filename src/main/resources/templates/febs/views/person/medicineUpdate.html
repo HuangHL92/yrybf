@@ -1,0 +1,205 @@
+<style>
+    #user-update {
+        padding: 20px 25px 25px 0;
+    }
+
+    #user-update .layui-treeSelect .ztree li a, .ztree li span {
+        margin: 0 0 2px 3px !important;
+    }
+</style>
+<div class="layui-fluid" id="user-update">
+    <form class="layui-form" action="" lay-filter="user-update-form">
+        <div class="layui-form-item febs-hide">
+            <label class="layui-form-label febs-form-item-require">用户id：</label>
+            <div class="layui-input-block">
+                <input type="text" name="personId" data-th-value="${personm.personId}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label ">手机号(不允许修改)：</label>
+            <div class="layui-input-block">
+                <input type="text" name="phone"  autocomplete="off" class="layui-input" readonly>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label febs-form-item-require">姓名：</label>
+            <div class="layui-input-block">
+                <input type="text" name="personName"  lay-verify="required" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">性别：</label>
+            <div class="layui-input-block">
+                <input type="radio" name="sex" value="男" title="男性" >
+                <input type="radio" name="sex" value="女" title="女性" >
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">所在小组：</label>
+            <div class="layui-input-block">
+                <select name="groupId"
+                        xm-select-direction="down"
+                        xm-select="user-update-group"
+                        xm-select-radio=""
+                        xm-select-search=""
+                        xm-select-search-type="dl"
+                        xm-select-skin="default">
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">工作单位：</label>
+            <div class="layui-input-block">
+                <input type="text" name="unit" autocomplete="off"  class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">职务/职称：</label>
+            <div class="layui-input-block">
+                <input type="text" name="duty" autocomplete="off"  class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">专业：</label>
+            <div class="layui-input-block">
+                <input type="text" name="professional" autocomplete="off"  class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">年龄：</label>
+            <div class="layui-input-block">
+                <input type="text" name="age" autocomplete="off"  class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">政治面貌：</label>
+            <div class="layui-input-block">
+                <input type="text" name="party" autocomplete="off"  class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">类别：</label>
+            <div class="layui-input-block">
+                <input type="text" name="category" autocomplete="off"  class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">所在医疗队：</label>
+            <div class="layui-input-block">
+                <input type="text" name="szyld" autocomplete="off"  class="layui-input">
+            </div>
+        </div>
+.
+        <div class="layui-form-item">
+            <label class="layui-form-label">地址：</label>
+            <div class="layui-input-block">
+                <div class="layui-inline">
+                    <input type="text" name="county"  placeholder="请输入所在县市区" autocomplete="off"  class="layui-input">
+                </div>
+                <div class="layui-inline">
+                    <input type="text" name="town" placeholder="所在镇街道" autocomplete="off"  class="layui-input">
+                </div>
+                <div class="layui-inline">
+                    <input type="text" name="village"  placeholder="所在村社区" autocomplete="off"  class="layui-input">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">家庭地址：</label>
+            <div class="layui-input-block">
+                <input type="text" name="address" autocomplete="off"  class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item febs-hide">
+            <button class="layui-btn" lay-submit="" lay-filter="user-update-form-submit" id="submit"></button>
+        </div>
+    </form>
+</div>
+
+<script data-th-inline="javascript">
+    layui.use(['febs', 'form', 'formSelects', 'validate', 'treeSelect'], function () {
+        var $ = layui.$,
+            febs = layui.febs,
+            layer = layui.layer,
+            formSelects = layui.formSelects,
+            treeSelect = layui.treeSelect,
+            form = layui.form,
+            personm = [[${personm}]],
+            $view = $('#user-update'),
+            validate = layui.validate;
+
+        form.verify(validate);
+        form.render();
+
+        formSelectConfig('user-update-group','gm/AllList');
+
+        initUserValue();
+
+        function initUserValue() {
+            form.val("user-update-form", {
+                "phone": personm.phone,
+                "personName": personm.personName,
+                "sex": personm.sex,
+                "unit": personm.unit,
+                "duty": personm.duty,
+                "professional": personm.professional,
+                "age": personm.age,
+                "party": personm.party,
+                "category": personm.category,
+                "szyld": personm.szyld,
+                "county": personm.county,
+                "town": personm.town,
+                "village": personm.village,
+                "address": personm.address
+            });
+            console.log(personm.groupId);
+
+        }
+
+        function formSelectConfig(_id,_url,_data){
+            formSelects.config(_id, {
+                delay: 1000,
+                response: {
+                    statusCode: 200
+                },
+                error: function (id, url, searchVal, err) {
+                    console.error(err);
+                    febs.alert.error('获取小组人员列表失败');
+                }
+            }).data(_id, 'server', {
+                data: _data,
+                url: ctx + _url,
+                beforeSuccess: function (id, url, searchVal, result) {
+                    var data = result.data;
+                    var tranData = [];
+                    for (var i = 0; i < data.length; i++) {
+                        tranData.push({
+                            name: data[i].groupName,
+                            value: data[i].groupId
+                        })
+                    }
+                    result.data = tranData;
+                    return result;
+                },success:function(id, url, searchVal, result){
+                formSelects.value('user-update-group',[personm.groupId]);
+            }
+            });
+        }
+
+        form.on('submit(user-update-form-submit)', function (data) {
+            if (febs.nativeEqual(data.field, personm)) {
+                febs.alert.warn('数据未作任何修改！');
+                return false;
+            }
+            febs.post(ctx + 'pm/person/update', data.field, function () {
+                layer.closeAll();
+                febs.alert.success(personm.personName + ' 信息修改成功');
+                $('#febs-unitp').find('#query').click();
+            });
+            return false;
+        });
+    });
+</script>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.mrbird.febs.explain.mapper.ExplainAssistMapper">
+
+<!--
+    <select id="findExplainDetail" resultType="java.util.HashMap" >
+        SELECT
+        ifnull(e.sqrname,'') as sqrname,
+        e.sqrphone,
+        e.tel,
+        d1.valuee etype,
+        e.einfo,
+        ifnull(e.sqradress,'') as sqradress,
+        ifnull(e.province,'') as province,
+        ifnull(e.city,'') as city,
+        ifnull(e.district,'') as district,
+        ifnull(e.town,'') as town,
+        d3.valuee sfsw,
+        d5.valuee estatus,
+        e.cxly,
+        d4.valuee  myd,
+        e.fkmx,
+        e.createdate,
+        e.leadappraise
+        FROM t_explain e
+        left join t_dict d1 on d1.field_name='etype' and e.etype=d1.keyy and d1.table_name='t_explain'
+        left join t_dict d3 on d3.field_name='sfsw' and e.sfsw=d3.keyy and d3.table_name='t_explain'
+        left join t_dict d4 on d4.field_name='myd' and e.sfsw=d4.keyy and d4.table_name='t_explain'
+        left join t_dict d5 on d5.field_name='estatus' and e.estatus=d5.keyy and d5.table_name='t_explain'
+        where 1=1
+        <if test="eid != null and keyword != ''">
+            and e.eid = #{eid}
+        </if>
+    </select>-->
+
+    <select id="findDetailList"  resultType="explainAssist" parameterType="explainAssist">
+        select
+        pa1.nname  aid,
+        ea.receivedate,
+        ea.startdate,
+        ea.enddate,
+        pa2.nname paid,
+        dd.VALUEE astatus,
+        ifnull(ea.reason,'') reason,
+        ifnull(ea.chreason,'') chreason
+        from t_explain_assist ea
+        left join t_person_assist pa1 on pa1.userid=ea.aid
+        left join t_person_assist pa2 on pa2.userid=ea.paid
+        left join t_dict dd on dd.TABLE_NAME='t_explain_assist' and dd.FIELD_NAME='astatus' and ea.astatus=dd.KEYY
+        where 1=1
+        <if test="explainAssist.tid != null and explainAssist.tid != ''">
+            and ea.tid = #{explainAssist.tid}
+        </if>
+    </select>
+
+
+
+</mapper>
