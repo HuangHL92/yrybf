@@ -20,103 +20,7 @@
                                             <input type="text" name="createdate" id="createdate" class="layui-input">
                                         </div>
                                     </div>
-                                   <!--<div class="layui-inline">
-                                        <label class="layui-form-label ">处理状态</label>
-                                        <div class="layui-input-inline">
-                                            <select name="estatus" id="estatus"  xm-select="estatus1">
-                                                <option value="0">未分配</option>
-                                                <option value="1">处理中</option>
-                                                <option value="2">已解决</option>
-                                              	<option value="4">已反馈</option>
-                                                <option value="5">其它</option>
-                                            </select>
-                                        </div>
-                                    </div>-->
-<!--                                    <div class="layui-inline">
-                                        <label class="layui-form-label ">反馈类型</label>
-                                        <div class="layui-input-inline">
-                                            <select name="myd" id="myd">
-                                                <option value=""></option>
-                                                <option value="1">非常满意</option>
-                                                <option value="2">满意</option>
-                                                <option value="3">一般</option>
-                                                <option value="4">不满意</option>
-                                            </select>
-                                        </div>
-                                    </div>-->
-                                   <!-- <div class="layui-inline">
-                                        <label class="layui-form-label " >小组</label>
-                                        <div class="layui-input-inline"  >
-                                            <select name="mgroup"
-                                                    xm-select-direction="down"
-                                                    xm-select="ga-mgroup"
-                                                    xm-select-search=""
-                                                    xm-select-search-type="dl"
-                                                    lay-filter="gamgroupSelect"
-                                                    xm-select-skin="normal">
-                                            </select>
-                                        </div>
-                                    </div>-->
-                                    <!--<div class="layui-inline">
-                                        <label class="layui-form-label " >服务对象</label>
-                                        <div class="layui-input-inline"  >
-                                            <select name="gmedicine"
-                                                    xm-select-direction="down"
-                                                    xm-select="ga-medicine"
-                                                    xm-select-search=""
-                                                    xm-select-search-type="dl"
-                                                    lay-filter="gamgroupSelect"
-                                                    xm-select-skin="normal">
-                                            </select>
-                                        </div>
-                                    </div>-->
-                                    <!--<div class="layui-inline">
-                                        <label class="layui-form-label ">帮扶小组</label>
-                                        <div class="layui-input-inline" >
-                                            <select name="agroup"
-                                                    xm-select-direction="down"
-                                                    xm-select="ga-agroup"
-                                                    xm-select-search=""
-                                                    xm-select-search-type="dl"
-                                                    lay-filter="gaagroupSelect"
-                                                    xm-select-skin="normal">
-                                            </select>
-                                        </div>
-                                    </div>-->
-                                    <!--<div class="layui-inline">
-                                        <label class="layui-form-label ">帮扶负责人</label>
-                                        <div class="layui-input-inline"  >
-                                            <select name="fzr"
-                                                    xm-select-direction="down"
-                                                    xm-select="ga-fzr"
-                                                    xm-select-search=""
-                                                    xm-select-search-type="dl"
-                                                    lay-filter="gafzrSelect"
-                                                    xm-select-skin="normal">
-                                            </select>
-                                        </div>
-                                    </div>-->
-                                    <!--<div class="layui-inline">
-                                        <label class="layui-form-label ">工作单位</label>
-                                        <div class="layui-input-inline">
-                                          &lt;!&ndash; <input type="text" name="unit" id="unit" autocomplete="off" class="layui-input">&ndash;&gt;
-                                            <select name="unit" id="unit"  xm-select="unit1">
-                                                <option value="浙一">浙一</option>
-                                                <option value="浙二">浙二</option>
-                                                <option value="邵逸夫医院">邵逸夫医院</option>
-                                                <option value="省人民医院">省人民医院</option>
-                                                <option value="省疾控中心">省疾控中心</option>
-                                                <option value="省肿瘤医院">省肿瘤医院</option>
-                                                <option value="省立同德医院">省立同德医院</option>
-                                                <option value="省新华医院">省新华医院</option>
-                                                <option value="省血液中心">省血液中心</option>
-                                                <option value="省中山医院">省中山医院</option>
-                                                <option value="浙江医院">浙江医院</option>
-                                                <option value="省儿童医院">省儿童医院</option>
-                                                <option value="省中医院">省中医院</option>
-                                            </select>
-                                        </div>
-                                    </div>-->
+
                                     <div class="layui-inline table-action-area">
                                         <div class="layui-btn layui-btn-sm layui-btn-primary table-action" id="query">
                                             <i class="layui-icon">&#xe848;</i>查询
@@ -151,9 +55,8 @@
     <span shiro:lacksPermission="matter:view,matter:update,matter:delete">
         <span class="layui-badge-dot febs-bg-orange"></span> 无权限
     </span>
-    <a lay-event="modify" shiro:hasPermission="matter:update"><i class="layui-icon febs-edit-area febs-blue">&#xe7b3;</i></a>
-    <a lay-event="audit" shiro:hasPermission="matter:view"><i class="layui-icon febs-edit-area febs-green">&#xe7a5;</i></a>
-    <a lay-event="cancel" shiro:hasPermission="matter:delete"><i class="layui-icon febs-edit-area febs-red">&#xe7f9;</i></a>
+    <a lay-event="cancel" shiro:hasPermission="matter:audit"><i class="layui-icon febs-edit-area febs-red">审批</i></a>
+    <span shiro:lacksPermission="matter:audit">无权限操作</span>
 </script>
 <style>
     .layui-table-cell {
@@ -270,22 +173,19 @@
                 id: 'matterTable',
                 url: ctx + 'matter/list',
                 cellMinWidth: 120,
-                cols: [[,
-                    {title: '操作', toolbar: '#matter-option', minWidth: 100 },
-                    {field: 'yhname', title: '服务对象' },
-                    {field: 'tel', title: '服务对象手机号码'},
-                    {field: 'sqrphone', title: '联系人手机号码'},
-                    {title: '诉求类型', templet: '#select-etype'},
-                    {field: 'einfo', title: '诉求信息'},
-                    {field: 'createdate', title: '诉求时间'},
-                    {field: 'fzr', title: '负责人'},
-                    {field: 'mgroup', title: '服务对象所在小组'},
-                    {field: 'agroup', title: '帮扶小组'},
-                    {field: 'transversion', title: '诉求解决情况'},
-                    {field: 'unit', title: '工作单位'},
-                    {title: '状态', templet: '#select-estatus'}
-                  
+                cols: [[
+                    {field: 'createdBy', title: '创建人', align:'center'},
+                    {field: 'createdTime', title: '创建时间',align:'center'},
+                    {field: 'matterType', title: '事项类型',align:'center'},
+                    {field: 'matterContent', title: '事项内容',align:'center'},
+                    {field: 'status', title: '状态',align:'center',templet: function(res){
+                            return '<span>'+ res.status=='1'?"通过":"未审批" +'</span>'}
+                        },
+                    {field: 'groupName', title: '所在组',align:'center'},
+                    {title: '操作', toolbar: '#matter-option',align:'center' }
                 ]],
+                page:true,
+                limit:30,
                 height: 'full-230'
             });
         }

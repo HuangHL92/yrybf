@@ -67,4 +67,9 @@ public class MatterManage implements Serializable {
     @TableField("MATTER_CONTENT")
     private String matterContent;
 
+    /**
+     * 事项创建人所在的组
+     */
+    @TableField("Group_Name")
+    private String groupName;
 }
