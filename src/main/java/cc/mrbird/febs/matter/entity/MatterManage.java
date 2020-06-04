@@ -2,6 +2,7 @@ package cc.mrbird.febs.matter.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import lombok.Data;
 import com.baomidou.mybatisplus.annotation.IdType;
@@ -72,4 +73,13 @@ public class MatterManage implements Serializable {
      */
     @TableField("Group_Name")
     private String groupName;
+
+    @TableField(exist = false)
+    private List<String> matterTypes;
+
+    @TableField(exist = false)
+    private String createTimeFrom;
+
+    @TableField(exist = false)
+    private String  createTimeTo;
 }

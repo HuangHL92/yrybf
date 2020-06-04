@@ -52,4 +52,7 @@ public interface IMatterManageService extends IService<MatterManage> {
      * @param matterManage matterManage
      */
     void deleteMatterManage(MatterManage matterManage);
+
+
+    Integer getTatal(MatterManage matterManage);
 }

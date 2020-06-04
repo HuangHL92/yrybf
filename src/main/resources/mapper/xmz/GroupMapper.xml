@@ -52,6 +52,14 @@
             and u.nname  like CONCAT('%',#{keyword},'%')
         </if>
     </select>
+    <select id="getGroupNameByUserName" parameterType="java.lang.String" resultType="java.lang.String" >
+       select g.group_name from t_group g
+           left join t_user_group ug on
+              ug.GROUP_ID = g.group_id
+           left join t_user u on
+               u.USER_ID = ug.USER_ID
+           where u.USERNAME = #{userName}
+   </select>
 
 
 </mapper>

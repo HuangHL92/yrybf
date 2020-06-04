@@ -118,4 +118,10 @@ public class GroupServiceImpl extends ServiceImpl<GroupMapper, Group> implements
     public List <Map <Long, String>> findGroupMembers ( Long groupId, String keyword ) {
         return  this.baseMapper.findGroupMembers(groupId,keyword);
     }
+
+    @Override
+    public String getGroupNameByUserName(String userName) {
+        return baseMapper.getGroupNameByUserName(userName);
+    }
+
 }

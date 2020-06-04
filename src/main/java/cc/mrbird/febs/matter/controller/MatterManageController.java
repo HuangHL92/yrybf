@@ -8,6 +8,7 @@ import cc.mrbird.febs.common.entity.FebsResponse;
 import cc.mrbird.febs.common.entity.QueryRequest;
 import cc.mrbird.febs.matter.entity.MatterManage;
 import cc.mrbird.febs.matter.service.IMatterManageService;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.wuwenze.poi.ExcelKit;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -21,8 +22,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.SimpleFormatter;
 
 /**
  * 事项管理  Controller
@@ -47,21 +50,26 @@ public class MatterManageController extends BaseController {
     }
 
     @GetMapping("matter/list")
+
+
     @ResponseBody
     @RequiresPermissions("matter:view")
     public FebsResponse matterList(QueryRequest request, MatterManage matter) {
-        Map<String, Object> dataTable = getDataTable(this.matterService.findMatterManages(request, matter));
-        return new FebsResponse().success().data(dataTable);
+        Map<String,Object> resultMap = new HashMap<>();
+        List<MatterManage> matterManages = matterService.findMatterManages(matter);
+        Integer tatal = matterService.getTatal(matter);
+        resultMap.put("rows",matterManages);
+        resultMap.put("total",tatal);
+        return new FebsResponse().success().data(resultMap);
     }
 
     @ControllerEndpoint(operation = "新增MatterManage", exceptionMessage = "新增MatterManage失败")
-    @PostMapping("matter")
+    @PostMapping("matter/add")
     @ResponseBody
     @RequiresPermissions("matter:add")
     public FebsResponse addMatterManage(@Valid MatterManage matter) {
-        matter.setCreatedBy (getCurrentUser ().getUserId ().toString ());
-        matter.setCreatedTime (new Date ());
-        matter.setStatus ("0"); //0 提交 1 审批通过
+
+
         this.matterService.createMatterManage(matter);
         return new FebsResponse().success();
     }

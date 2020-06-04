@@ -2,4 +2,35 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cc.mrbird.febs.matter.mapper.MatterManageMapper">
 
+    <select id="findManageMapper" parameterType="cc.mrbird.febs.matter.entity.MatterManage" resultType="cc.mrbird.febs.matter.entity.MatterManage">
+        select * from t_matter_manage m where 1=1
+        <if test="matterManage.matterTypes != null and matterManage.matterTypes.size() > 0">
+            and m.MATTER_TYPE in
+        <foreach collection="matterManage.matterTypes" item="matterType" index="index" open="(" close=")" separator=",">
+            #{matterType}
+        </foreach>
+        </if>
+        <if test="matterManage.createTimeFrom != null and matterManage.createTimeFrom != ''">
+            and m.CREATED_TIME &gt;= #{matterManage.createTimeFrom}
+        </if>
+        <if test="matterManage.createTimeTo != null and matterManage.createTimeTo != ''">
+            and m.CREATED_TIME &lt;= #{matterManage.createTimeTo}
+        </if>
+
+    </select>
+    <select id="getTatal" resultType="java.lang.Integer" parameterType="cc.mrbird.febs.matter.entity.MatterManage">
+        select count(*) from t_matter_manage m where 1=1
+        <if test="matterManage.matterTypes != null and matterManage.matterTypes.size() > 0">
+            and m.MATTER_TYPE in
+            <foreach collection="matterManage.matterTypes" item="matterType" index="index" open="(" close=")" separator=",">
+                #{matterType}
+            </foreach>
+        </if>
+        <if test="matterManage.createTimeFrom != null and matterManage.createTimeFrom != ''">
+            and m.CREATED_TIME &gt;= #{matterManage.createTimeFrom}
+        </if>
+        <if test="matterManage.createTimeTo != null and matterManage.createTimeTo != ''">
+            and m.CREATED_TIME &lt;= #{matterManage.createTimeTo}
+        </if>
+    </select>
 </mapper>

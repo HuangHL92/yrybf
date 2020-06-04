@@ -59,4 +59,6 @@ public interface IGroupService extends IService<Group> {
     List<Map<Long,String>>  findGroupLeaders ( Long groupId, String keyword );
 
     List<Map<Long,String>>  findGroupMembers ( Long groupId, String keyword );
+
+    String getGroupNameByUserName(String userName);
 }

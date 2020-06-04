@@ -39,6 +39,7 @@
 
                         </div>-->
                     </form>
+                    <span id="nihao">你好</span>
                     <table lay-filter="matterTable" lay-data="{id: 'matterTable'}"></table>
                 </div>
             </div>
@@ -55,8 +56,14 @@
     <span shiro:lacksPermission="matter:view,matter:update,matter:delete">
         <span class="layui-badge-dot febs-bg-orange"></span> 无权限
     </span>
-    <a lay-event="cancel" shiro:hasPermission="matter:audit"><i class="layui-icon febs-edit-area febs-red">审批</i></a>
-    <span shiro:lacksPermission="matter:audit">无权限操作</span>
+    {{#  if(d.status == 1){ }}
+    <button shiro:hasPermission="matter:audit" class="layui-btn layui-btn-sm" lay-event="cancel" >审批</button>
+    <button shiro:hasPermission="matter:audit" class="layui-btn layui-btn-sm" lay-event="cancel" >驳回</button>
+    {{#  } else { }}
+    <span shiro:hasPermission="matter:audit" style="font-size: 1.2em" class="layui-bg-gray">无相关操作</span>
+    {{#  } }}
+    <span shiro:lacksPermission="matter:audit" class="layui-icon layui-bg-gray" >无权限操作</span>
+
 </script>
 <style>
     .layui-table-cell {
@@ -68,8 +75,29 @@
     }
 
 </style>
+<script type="text/html" id="select-status">
+    {{#
+    var status = {
+    2: {title: '已通过',color: 'green'},
+    1: {title: '未审批',color: 'red'},
+    0: {title: '被驳回',color: 'orange'}
+    }[d.status];
+    }}
+    <span class="layui-badge febs-bg-{{status.color}}">{{status.title}}</span>
+</script>
+<script type="text/html" id="select-matterType">
+        {{#
+        var matterType = {
+        3: {title: '报备'},
+        2: {title: '外出'},
+        1: {title: '请假'}
+        }[d.matterType];
+        }}
+<span class="layui-badge}">{{matterType.title}}</span>
+
+</script>
 <script data-th-inline="none" type="text/javascript">
-    layui.use(['dropdown', 'jquery', 'laydate', 'form',  'formSelects','table', 'febs'/*, 'treeSelect'*/], function () {
+    layui.use(['dropdown', 'jquery', 'laydate', 'form',  'formSelects','table', 'febs', 'treeSelect'], function () {
         var $ = layui.jquery,
             laydate = layui.laydate,
             febs = layui.febs,
@@ -87,6 +115,7 @@
             tableIns,
             createTimeFrom,
             createTimeTo,
+            matterTypes,
             matterType;
 
         form.render();
@@ -156,7 +185,7 @@
 
        //新增诉求
         $add.on('click', function () {
-            febs.modal.view('事项新增', 'matter/toAdd', {});
+            febs.modal.view('事项新增', 'matter/toAdd', {area: ['800px', '400px'],});
         });
 
         $reset.on('click', function () {
@@ -176,11 +205,9 @@
                 cols: [[
                     {field: 'createdBy', title: '创建人', align:'center'},
                     {field: 'createdTime', title: '创建时间',align:'center'},
-                    {field: 'matterType', title: '事项类型',align:'center'},
+                    {field: 'matterType', title: '事项类型',align:'center',templet: '#select-matterType'},
                     {field: 'matterContent', title: '事项内容',align:'center'},
-                    {field: 'status', title: '状态',align:'center',templet: function(res){
-                            return '<span>'+ res.status=='1'?"通过":"未审批" +'</span>'}
-                        },
+                    {field: 'status', title: '状态',align:'center',templet: '#select-status'},
                     {field: 'groupName', title: '所在组',align:'center'},
                     {title: '操作', toolbar: '#matter-option',align:'center' }
                 ]],
@@ -200,13 +227,16 @@
             	createTimeTo="";
             }
             //服务小组
+            var matter="";
             var matters = formSelects.value('matterType', 'val');
+
+                matter=matters+matter;
 
 
             return {
                 createTimeFrom: createTimeFrom,
                 createTimeTo: createTimeTo,
-                matterType: matters,
+                matterTypes: matter,
                 invalidate_ie_cache: new Date()
             };
         }
@@ -230,7 +260,7 @@
                 url: ctx + _url,
                 keyName: 'valuee',            //自定义返回数据中name的key, 默认 name
                 keyVal: 'keyy',            //自定义返回数据中value的key, 默认 value
-                success: function(id, url, searchVal, result){      //使用远程方式的success回调
+                success: function(id, url, searchVal, result){//使用远程方式的success回调
                     if(_value!=null){
                         console.log(_value);
                         formSelects.value(id,_value);

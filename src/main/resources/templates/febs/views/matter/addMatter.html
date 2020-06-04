@@ -9,6 +9,9 @@
                             <div class="layui-input-block">
                                 <select name="matterType" id="matterType" lay-verify="required">
                                     <option value="">请选择</option>
+                                    <option value="1">请假</option>
+                                    <option value="2">外出</option>
+                                    <option value="3">报备</option>
                                 </select>
                             </div>
                         </div>
@@ -18,44 +21,20 @@
                                 <textarea   maxlength="1000" name="matterContent"  class="layui-textarea"></textarea>
                             </div>
                         </div>
-                        <!--<div class="layui-form-item">
-                            <label class="layui-form-label febs-form-item-require">事项对象：</label>
-                            <div class="layui-input-block">
-                                <select name="gmedicine"
-                                        xm-select-direction="down"
-                                        xm-select="ga-medicine1"
-                                        xm-select-search=""
-                                        xm-select-search-type="dl"
-                                        lay-filter="gamedicineSelect"
-                                        xm-select-radio=""
-                                        xm-select-skin="normal">
-                                </select>
-                            </div>
-                        </div>
                         <div class="layui-form-item">
-                            <label class="layui-form-label febs-form-item-require">联系人：</label>
+                            <label class="layui-form-label febs-form-item-require">创建人：</label>
                             <div class="layui-input-block">
-                                <input type="text" name="sqrname" autocomplete="off" class="layui-input"
+                                <input type="text" name="createdBy" autocomplete="off" class="layui-input"
                                        maxlength="50" lay-verify="range">
                             </div>
                         </div>
-                        <div class="layui-form-item">
-                            <label class="layui-form-label febs-form-item-require">联系电话：</label>
-                            <div class="layui-input-block">
-                                <input type="text" name="sqrphone" autocomplete="off" class="layui-input"
-                                       maxlength="50" lay-verify="range">
-                            </div>
-                        </div>-->
-                        <div class="layui-form-item febs-hide">
-                            <button type="reset" class="layui-btn" id="reset-form"></button>
+                        <div class="layui-form-item ">
+                            <button type="reset" class="layui-btn" id="reset-form">重置</button>
                             <button class="layui-btn" lay-submit="" lay-filter="group-form-submit"
-                             id="submit-form"></button>
+                             id="submit-form">保存</button>
                         </div>
                     </form>
                 </div>
-                <div class="layui-card-footer">
-                    <button class="layui-btn" id="submit">保存</button>
-               </div>
              </div>
         </div>
      </div>
@@ -71,65 +50,14 @@
 
 </style>
 <script data-th-inline="none" type="text/javascript">
-    layui.use([ 'jquery',  'febs', 'form', 'formSelects'], function () {
+    layui.use(['dropdown','jquery','febs', 'form', 'formSelects','treeSelect'], function () {
         var $ = layui.jquery,
             febs = layui.febs,
             form = layui.form,
-            formSelects = layui.formSelects,
-            $view = $('#febs-add'),
-            $reset = $view.find('#reset'),
-            $matterType = $view.find('#matterType'),
-            $submit = $view.find('#submit'),
-            $searchForm = $view.find('#sx-form'),
-            $header = $view.find('#form-header'),
-            gmedicine;
+            formSelects = layui.formSelects
 
         form.render();
-
-        $.get(ctx+'dict/code',{fieldName:'MATTER_TYPE'},function (d) {
-            var list=d.data;
-            console.log(list);
-            if(list!=null&& list.size() > 0){
-               // $matterType.html('');
-                for (var c in list) {
-                    $matterType.append("<option value='"+c.keyy+"'>"+c.valuee+"</option>");
-                }
-            }
-        });
-
-       /* initSelect();
-        function initSelect(){
-            formSelectConfig('ga-medicine1','explain/getMembers',{tableName:'medicine',groupId:0});//医护人员
-        }
-
-        function formSelectConfig(_id,_url,_data,_value){
-            formSelects.config(_id, {
-                delay: 1000,
-                response: {
-                    statusCode: 200
-                },
-                error: function (id, url, searchVal, err) {
-                    console.error(err);
-                    febs.alert.error('获取小组人员列表失败');
-                }
-            }).data(_id, 'server', {
-                data: _data,
-                url: ctx + _url,
-                keyName: 'namee',            //自定义返回数据中name的key, 默认 name
-                keyVal: 'valuee',            //自定义返回数据中value的key, 默认 value
-                success: function(id, url, searchVal, result){      //使用远程方式的success回调
-                    if(_value!=null){
-                        console.log(_value);
-                        formSelects.value(id,_value);
-                    }
-                }
-            });
-        }*/
-
-
-        $submit.on('click', function () {
-            $view.find('#submit-form').trigger('click');
-        });
+        formSelects.render();
 
         form.on('submit(group-form-submit)', function (data) {
             AddMatter(data.field);
@@ -138,15 +66,16 @@
 
         var AddMatter = function (data) {
             var matterContent = data.matterContent;
+            var messgar = $("#nihao").text();
             if(matterContent == null || matterContent == ''){
-                layer.alert("事项内容不能为空！")
+                layer.alert(messgar)
                 return
             }
 
             febs.post(ctx + 'matter/add', data, function () {
                 layer.closeAll();
                 febs.alert.success('新增成功');
-                $('#febs-user').find('#query').click();
+                $('#query').click();
             });
         }
 
