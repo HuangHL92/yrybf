@@ -24,7 +24,7 @@ public class MatterManage implements Serializable {
      * 主键 主键
      */
     @TableField("OID")
-    private String oid;
+    private Integer oid;
 
     /**
      * 创建人 创建人
@@ -36,7 +36,7 @@ public class MatterManage implements Serializable {
      * 创建时间 创建时间
      */
     @TableField("CREATED_TIME")
-    private Date createdTime;
+    private String createdTime;
 
     /**
      * 更新人 更新人
@@ -48,7 +48,7 @@ public class MatterManage implements Serializable {
      * 更新时间 更新时间
      */
     @TableField("UPDATED_TIME")
-    private Date updatedTime;
+    private String updatedTime;
 
     /**
      * 事项类型 事项类型
@@ -82,4 +82,10 @@ public class MatterManage implements Serializable {
 
     @TableField(exist = false)
     private String  createTimeTo;
+
+    @TableField("Start_Time")
+    private String startTime;
+
+    @TableField("End_Time")
+    private String endTime;
 }

@@ -55,4 +55,6 @@ public interface IMatterManageService extends IService<MatterManage> {
 
 
     Integer getTatal(MatterManage matterManage);
+
+    void updateByOid(Integer oid,Integer sts);
 }

@@ -17,6 +17,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -45,15 +46,17 @@ public class MatterManageServiceImpl extends ServiceImpl<MatterManageMapper, Mat
     public List<MatterManage> findMatterManages(MatterManage matterManage) {
 //	    LambdaQueryWrapper<MatterManage> queryWrapper = new LambdaQueryWrapper<>();
 		// TODO 设置查询条件
-		return this.baseMapper.findManageMapper(matterManage);
+        List<MatterManage> manageMapper = this.baseMapper.findManageMapper(matterManage);
+        return manageMapper;
     }
 
     @Override
     @Transactional
     public void createMatterManage(MatterManage matterManage) {
-        matterManage.setCreatedTime (new Date());
         matterManage.setUpdatedBy(FebsUtil.getCurrentUser().getUsername());
-        matterManage.setUpdatedTime(new Date());
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String format = dateFormat.format(new Date());
+        matterManage.setCreatedTime(format);
         String creatUserName = matterManage.getCreatedBy();
         String groupName = groupService.getGroupNameByUserName(creatUserName);
         matterManage.setGroupName(groupName);
@@ -79,5 +82,10 @@ public class MatterManageServiceImpl extends ServiceImpl<MatterManageMapper, Mat
     @Override
     public Integer getTatal(MatterManage matterManage) {
         return baseMapper.getTatal(matterManage);
+    }
+
+    @Override
+    public void updateByOid(Integer oid,Integer sts) {
+        baseMapper.updateByOid(oid,sts);
     }
 }

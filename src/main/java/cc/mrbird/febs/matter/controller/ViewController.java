@@ -25,7 +25,7 @@ public class ViewController {
 
     @GetMapping("toAdd")
     public String toAddExplainInfo(){
-        return FebsUtil.view("matter/addMatter");
+        return FebsUtil.view("matter/addTest");
     }
 
 

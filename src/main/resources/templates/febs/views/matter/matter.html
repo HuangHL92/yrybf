@@ -39,7 +39,6 @@
 
                         </div>-->
                     </form>
-                    <span id="nihao">你好</span>
                     <table lay-filter="matterTable" lay-data="{id: 'matterTable'}"></table>
                 </div>
             </div>
@@ -57,8 +56,8 @@
         <span class="layui-badge-dot febs-bg-orange"></span> 无权限
     </span>
     {{#  if(d.status == 1){ }}
-    <button shiro:hasPermission="matter:audit" class="layui-btn layui-btn-sm" lay-event="cancel" >审批</button>
-    <button shiro:hasPermission="matter:audit" class="layui-btn layui-btn-sm" lay-event="cancel" >驳回</button>
+    <button shiro:hasPermission="matter:audit" class="layui-btn layui-btn-sm" lay-event="approval" >审批</button>
+    <button shiro:hasPermission="matter:audit" class="layui-btn layui-btn-sm" lay-event="reject" >驳回</button>
     {{#  } else { }}
     <span shiro:hasPermission="matter:audit" style="font-size: 1.2em" class="layui-bg-gray">无相关操作</span>
     {{#  } }}
@@ -140,26 +139,29 @@
         });
 
 
-        table.on('tool(explainTable)', function (obj) {
+        table.on('tool(matterTable)', function (obj) {
             var data = obj.data,
                 layEvent = obj.event;
-            if (layEvent === 'audit') {
-                /*var estatus = data.estatus;
-                if(estatus == '3'){
-                    layer.alert("事项已审批！")
-                    return
-                }*/
-                febs.modal.view('事项审批信息', 'matter/toAudit/' + data.eid, {
-                });
+            if (layEvent === 'approval') {
+                 febs.modal.warn("确定审批通过吗","",function () {
+                     var oid = data.oid;
+                     var sts = 2
+                     febs.get('matter/update/'+oid+'/'+sts,'',function (r) {
+                         $('#query').click();
+                          layer.alert("审批成功")
+                     })
+                 })
+
             }
-            if (layEvent === 'modify') {
-                var estatus = data.estatus;
-                if(estatus == '3'){
-                    layer.alert("诉求已撤销，无法操作！")
-                    return
-                }
-                febs.modal.view('事项修改', 'matter/toUpdate/' + data.eid, {
-                });
+            if (layEvent === 'reject') {
+                febs.modal.warn("确定审批驳回吗","",function () {
+                    var oid = data.oid;
+                    var sts = 0
+                    febs.get('matter/update/'+oid+'/'+sts,'',function (r) {
+                        $('#query').click();
+                        layer.alert("驳回成功")
+                    })
+                })
             }
 
             if(layEvent === 'cancel'){
@@ -185,7 +187,28 @@
 
        //新增诉求
         $add.on('click', function () {
-            febs.modal.view('事项新增', 'matter/toAdd', {area: ['800px', '400px'],});
+            // febs.modal.view('事项新增', 'matter/toAdd', {area: ['800px', '400px'],});
+            var a = layer.open({
+                title: "新增事务",
+                area:['900px','400px'],
+                type:2,
+                content:'febs/views/matter/toAdd',
+                body:'',
+
+                success:function (layero, index) {
+                    body = layer.getChildFrame('body', index);
+                    console.log(body.html()) //得到iframe页的body内容
+                },
+                btn:['确认','关闭'],
+                yes:function (layero, index) {
+                  body.find("#submit-form").click();
+                  layer.close(a);
+                    layer.alert("新增成功");
+                    $('#query').click();
+
+                },btn2:function () {
+                },
+            });
         });
 
         $reset.on('click', function () {
@@ -203,17 +226,20 @@
                 url: ctx + 'matter/list',
                 cellMinWidth: 120,
                 cols: [[
+                    {field: 'oid', hide: true},
                     {field: 'createdBy', title: '创建人', align:'center'},
                     {field: 'createdTime', title: '创建时间',align:'center'},
                     {field: 'matterType', title: '事项类型',align:'center',templet: '#select-matterType'},
                     {field: 'matterContent', title: '事项内容',align:'center'},
+                    {field: 'startTime', title: '开始时间',align:'center'},
+                    {field: 'endTime', title: '结束时间',align:'center'},
                     {field: 'status', title: '状态',align:'center',templet: '#select-status'},
                     {field: 'groupName', title: '所在组',align:'center'},
                     {title: '操作', toolbar: '#matter-option',align:'center' }
                 ]],
                 page:true,
                 limit:30,
-                height: 'full-230'
+                height: 'full-160'
             });
         }
 

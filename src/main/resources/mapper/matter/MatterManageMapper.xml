@@ -10,11 +10,11 @@
             #{matterType}
         </foreach>
         </if>
-        <if test="matterManage.createTimeFrom != null and matterManage.createTimeFrom != ''">
-            and m.CREATED_TIME &gt;= #{matterManage.createTimeFrom}
+        <if test="matterManage.createTimeFrom != '' and matterManage.createTimeFrom != null">
+            and str_to_date(m.Start_Time,'%Y-%m-%d') &gt;= #{matterManage.createTimeFrom}
         </if>
-        <if test="matterManage.createTimeTo != null and matterManage.createTimeTo != ''">
-            and m.CREATED_TIME &lt;= #{matterManage.createTimeTo}
+        <if test="matterManage.createTimeTo != '' and matterManage.createTimeTo != null">
+            and  str_to_date(m.End_Time,'%Y-%m-%d') &lt;= #{matterManage.createTimeTo}
         </if>
 
     </select>
@@ -26,11 +26,14 @@
                 #{matterType}
             </foreach>
         </if>
-        <if test="matterManage.createTimeFrom != null and matterManage.createTimeFrom != ''">
-            and m.CREATED_TIME &gt;= #{matterManage.createTimeFrom}
+        <if test="matterManage.createTimeFrom != '' and matterManage.createTimeFrom != null">
+            and str_to_date(m.Start_Time,'%Y-%m-%d') &gt;= #{matterManage.createTimeFrom}
         </if>
-        <if test="matterManage.createTimeTo != null and matterManage.createTimeTo != ''">
-            and m.CREATED_TIME &lt;= #{matterManage.createTimeTo}
+        <if test="matterManage.createTimeTo != '' and matterManage.createTimeTo != null">
+            and  str_to_date(m.End_Time,'%Y-%m-%d') &lt;= #{matterManage.createTimeTo}
         </if>
     </select>
+    <update id="updateByOid">
+        update t_matter_manage m set m.STATUS = #{sts} where OID = #{oid}
+    </update>
 </mapper>

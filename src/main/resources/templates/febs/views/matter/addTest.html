@@ -1,9 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Layui</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="/layui/css/layui.css" media="all">
+</head>
+<body>
 <div class="layui-fluid layui-anim febs-anim" id="febs-add" lay-title="事项新增管理">
     <div class="layui-row layui-col-space8 febs-container">
         <div class="layui-col-md6 layui-col-sm6 layui-col-xs12">
             <div class="layui-card">
                 <div class="layui-card-body febs-table-full">
                     <form class="layui-form layui-table-form" action="" lay-filter="sx-form" id="sx-form">
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <label class="layui-form-label">开始时间</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="startTime" class="layui-input" id="startTime" >
+                                </div>
+                            </div>
+                            <div class="layui-inline">
+                                <label class="layui-form-label">结束时间</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="endTime" class="layui-input" id="endTime" placeholder="yyyy-MM-dd">
+                                </div>
+                            </div>
+                        </div>
                         <div class="layui-form-item">
                             <label class="layui-form-label febs-form-item-require">事项类型：</label>
                             <div class="layui-input-block">
@@ -18,7 +43,7 @@
                         <div class="layui-form-item">
                             <label class="layui-form-label febs-form-item-require">事项内容：</label>
                             <div class="layui-input-block">
-                                <textarea   maxlength="1000" name="matterContent"  class="layui-textarea"></textarea>
+                                <textarea maxlength="1000" name="matterContent" class="layui-textarea"></textarea>
                             </div>
                         </div>
                         <div class="layui-form-item">
@@ -28,17 +53,20 @@
                                        maxlength="50" lay-verify="range">
                             </div>
                         </div>
-                        <div class="layui-form-item ">
+
+                        <div hidden class="layui-form-item ">
                             <button type="reset" class="layui-btn" id="reset-form">重置</button>
-                            <button class="layui-btn" lay-submit="" lay-filter="group-form-submit"
-                             id="submit-form">保存</button>
+                            <button  class="layui-btn" lay-submit="" lay-filter="group-form-submit"
+                                    id="submit-form">保存
+                            </button>
                         </div>
                     </form>
                 </div>
-             </div>
+            </div>
         </div>
-     </div>
+    </div>
 </div>
+
 <style>
     .layui-form-label{
         width: 100px;
@@ -49,37 +77,42 @@
     }
 
 </style>
-<script data-th-inline="none" type="text/javascript">
-    layui.use(['dropdown','jquery','febs', 'form', 'formSelects','treeSelect'], function () {
-        var $ = layui.jquery,
-            febs = layui.febs,
+<script src="/layui/layui.js" charset="utf-8"></script>
+<script>
+    layui.use(['form', 'layedit', 'laydate','jquery','form'], function () {
+        var laydate = layui.laydate;
             form = layui.form,
-            formSelects = layui.formSelects
+            $ = layui.jquery,
+            // formSelects = layui.formSelects;
+            form.render();
+            // formSelects.render();
 
-        form.render();
-        formSelects.render();
+        //常规用法
+        laydate.render({
+            elem: '#startTime',
+            trigger:'click'
+        });
 
+        //国际版
+        laydate.render({
+            elem: '#endTime',
+            trigger:'click'
+        });
         form.on('submit(group-form-submit)', function (data) {
             console.log(data);
             AddMatter(data.field);
             return false;
         });
-
         var AddMatter = function (data) {
-            var matterContent = data.matterContent;
-            var messgar = $("#nihao").text();
-            if(matterContent == null || matterContent == ''){
-                layer.alert(messgar)
-                return
-            }
+            $.post('/matter/add',data,function (r) {
 
-            febs.post(ctx + 'matter/add', data, function () {
-                layer.closeAll();
-                febs.alert.success('新增成功');
-                $('#query').click();
-            });
+
+            })
         }
+    })
 
-    });
 
 </script>
+
+</body>
+</html>

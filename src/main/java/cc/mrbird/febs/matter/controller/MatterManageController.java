@@ -15,9 +15,7 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -50,8 +48,6 @@ public class MatterManageController extends BaseController {
     }
 
     @GetMapping("matter/list")
-
-
     @ResponseBody
     @RequiresPermissions("matter:view")
     public FebsResponse matterList(QueryRequest request, MatterManage matter) {
@@ -84,11 +80,12 @@ public class MatterManageController extends BaseController {
     }
 
     @ControllerEndpoint(operation = "修改MatterManage", exceptionMessage = "修改MatterManage失败")
-    @PostMapping("matter/update")
+    @RequestMapping("matter/update/{oid}/{sts}")
     @ResponseBody
     @RequiresPermissions("matter:update")
-    public FebsResponse updateMatterManage(MatterManage matter) {
-        this.matterService.updateMatterManage(matter);
+    public FebsResponse updateMatterManage(@PathVariable("oid") Integer oid,@PathVariable("sts") Integer sts) {
+
+       this.matterService.updateByOid(oid,sts);
         return new FebsResponse().success();
     }
 

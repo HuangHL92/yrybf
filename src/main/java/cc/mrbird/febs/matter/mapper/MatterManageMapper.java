@@ -19,4 +19,6 @@ public interface MatterManageMapper extends BaseMapper<MatterManage> {
     List<MatterManage> findManageMapper(@Param("matterManage") MatterManage matterManage);
 
     Integer getTatal(@Param("matterManage") MatterManage matterManage);
+
+    void updateByOid(@Param("oid") Integer oid, @Param("sts") Integer sts);
 }
