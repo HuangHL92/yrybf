@@ -88,4 +88,10 @@ public class MatterManage implements Serializable {
 
     @TableField("End_Time")
     private String endTime;
+
+    @TableField(exist = false)
+    private Integer pageNum;
+
+    @TableField(exist = false)
+    private Integer pageSize;
 }

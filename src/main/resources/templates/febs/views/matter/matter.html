@@ -10,7 +10,8 @@
                                     <div class="layui-inline">
                                         <label class="layui-form-label ">事项类型</label>
                                         <div class="layui-input-inline">
-                                             <select name="matterType" id="matterType" lay-filter="matterTypeSelect" xm-select="matterType">
+                                            <select name="matterType" id="matterType" lay-filter="matterTypeSelect"
+                                                    xm-select="matterType">
                                             </select>
                                         </div>
                                     </div>
@@ -25,19 +26,21 @@
                                         <div class="layui-btn layui-btn-sm layui-btn-primary table-action" id="query">
                                             <i class="layui-icon">&#xe848;</i>查询
                                         </div>
-                                        <div class="layui-btn layui-btn-sm layui-btn-primary table-action" id="add" shiro:hasPermission="matter:add" >
+                                        <div class="layui-btn layui-btn-sm layui-btn-primary table-action" id="add"
+                                             shiro:hasPermission="matter:add">
                                             <i class="layui-icon">&#xe7e3;</i>新增
                                         </div>
-                                        <div class="layui-btn layui-btn-sm layui-btn-primary table-action action-more" id="export" shiro:hasPermission="explain:export">
+                                        <div class="layui-btn layui-btn-sm layui-btn-primary table-action action-more"
+                                             id="export" shiro:hasPermission="explain:export">
                                             <i class="layui-icon">&#xe7aa;</i> 导出结果
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                       <!-- <div class="layui-col-md3 layui-col-sm12 layui-col-xs12 table-action-area">
+                        <!-- <div class="layui-col-md3 layui-col-sm12 layui-col-xs12 table-action-area">
 
-                        </div>-->
+                         </div>-->
                     </form>
                     <table lay-filter="matterTable" lay-data="{id: 'matterTable'}"></table>
                 </div>
@@ -56,12 +59,12 @@
         <span class="layui-badge-dot febs-bg-orange"></span> 无权限
     </span>
     {{#  if(d.status == 1){ }}
-    <button shiro:hasPermission="matter:audit" class="layui-btn layui-btn-sm" lay-event="approval" >审批</button>
-    <button shiro:hasPermission="matter:audit" class="layui-btn layui-btn-sm" lay-event="reject" >驳回</button>
+    <button shiro:hasPermission="matter:audit" class="layui-btn layui-btn-sm" lay-event="approval">审批</button>
+    <button shiro:hasPermission="matter:audit" class="layui-btn layui-btn-sm" lay-event="reject">驳回</button>
     {{#  } else { }}
     <span shiro:hasPermission="matter:audit" style="font-size: 1.2em" class="layui-bg-gray">无相关操作</span>
     {{#  } }}
-    <span shiro:lacksPermission="matter:audit" class="layui-icon layui-bg-gray" >无权限操作</span>
+    <span shiro:lacksPermission="matter:audit" class="layui-icon layui-bg-gray">无权限操作</span>
 
 </script>
 <style>
@@ -85,25 +88,25 @@
     <span class="layui-badge febs-bg-{{status.color}}">{{status.title}}</span>
 </script>
 <script type="text/html" id="select-matterType">
-        {{#
-        var matterType = {
-        3: {title: '报备'},
-        2: {title: '外出'},
-        1: {title: '请假'}
-        }[d.matterType];
-        }}
-<span class="layui-badge}">{{matterType.title}}</span>
+    {{#
+    var matterType = {
+    3: {title: '报备'},
+    2: {title: '外出'},
+    1: {title: '请假'}
+    }[d.matterType];
+    }}
+    <span class="layui-badge}">{{matterType.title}}</span>
 
 </script>
 <script data-th-inline="none" type="text/javascript">
-    layui.use(['dropdown', 'jquery', 'laydate', 'form',  'formSelects','table', 'febs', 'treeSelect'], function () {
+    layui.use(['dropdown', 'jquery', 'laydate', 'form', 'formSelects', 'table', 'febs', 'treeSelect'], function () {
         var $ = layui.jquery,
             laydate = layui.laydate,
             febs = layui.febs,
             form = layui.form,
             table = layui.table,
             formSelects = layui.formSelects,
-           // treeSelect = layui.treeSelect,
+            // treeSelect = layui.treeSelect,
             dropdown = layui.dropdown,
             $view = $('#febs-sx'),
             $query = $view.find('#query'),
@@ -129,13 +132,12 @@
         });
 
 
-
         $view.on('click', '#export', function () {
             var params = {};
-            params.createTimeFrom= createTimeFrom,
-            params.createTimeTo= createTimeTo,
-            params.matterType= matterType,
-            febs.download(ctx + 'matter/excel', params, '事项Excel导出结果.xlsx');
+            params.createTimeFrom = createTimeFrom,
+                params.createTimeTo = createTimeTo,
+                params.matterType = matterType,
+                febs.download(ctx + 'matter/excel', params, '事项Excel导出结果.xlsx');
         });
 
 
@@ -143,39 +145,38 @@
             var data = obj.data,
                 layEvent = obj.event;
             if (layEvent === 'approval') {
-                 febs.modal.warn("确定审批通过吗","",function () {
-                     var oid = data.oid;
-                     var sts = 2
-                     febs.get('matter/update/'+oid+'/'+sts,'',function (r) {
-                         $('#query').click();
-                          layer.alert("审批成功")
-                     })
-                 })
+                febs.modal.warn("确定审批通过吗", "", function () {
+                    var oid = data.oid;
+                    var sts = 2
+                    febs.get('matter/update/' + oid + '/' + sts, '', function (r) {
+                        $('#query').click();
+                        layer.alert("审批成功")
+                    })
+                })
 
             }
             if (layEvent === 'reject') {
-                febs.modal.warn("确定审批驳回吗","",function () {
+                febs.modal.warn("确定审批驳回吗", "", function () {
                     var oid = data.oid;
                     var sts = 0
-                    febs.get('matter/update/'+oid+'/'+sts,'',function (r) {
+                    febs.get('matter/update/' + oid + '/' + sts, '', function (r) {
                         $('#query').click();
                         layer.alert("驳回成功")
                     })
                 })
             }
 
-            if(layEvent === 'cancel'){
+            if (layEvent === 'cancel') {
                 var estatus = data.estatus;
-/*                if(estatus == '3'){
-                    layer.alert("诉求已撤销，请勿再次操作！")
-                    return
-                }*/
-                if(estatus == '2' || estatus == '4'){
+                /*                if(estatus == '3'){
+                                    layer.alert("诉求已撤销，请勿再次操作！")
+                                    return
+                                }*/
+                if (estatus == '2' || estatus == '4') {
                     layer.alert("诉求已解决，无法撤销！")
                     return
                 }
-                febs.modal.view('诉求撤销', 'matter/toCancel/' + data.eid, {
-                });
+                febs.modal.view('诉求撤销', 'matter/toCancel/' + data.eid, {});
             }
 
         });
@@ -185,28 +186,26 @@
             tableIns.reload({where: params, page: {curr: 1}});
         });
 
-       //新增诉求
+        //新增诉求
         $add.on('click', function () {
             // febs.modal.view('事项新增', 'matter/toAdd', {area: ['800px', '400px'],});
             var a = layer.open({
                 title: "新增事务",
-                area:['900px','400px'],
-                type:2,
-                content:'febs/views/matter/toAdd',
-                body:'',
+                area: ['900px', '400px'],
+                type: 2,
+                content: 'febs/views/matter/toAdd',
+                body: '',
 
-                success:function (layero, index) {
+                success: function (layero, index) {
                     body = layer.getChildFrame('body', index);
-                    console.log(body.html()) //得到iframe页的body内容
+                    // console.log(body.html()) //得到iframe页的body内容
                 },
-                btn:['确认','关闭'],
-                yes:function (layero, index) {
-                  body.find("#submit-form").click();
-                  layer.close(a);
-                    layer.alert("新增成功");
+                btn: ['确认', '关闭'],
+                yes: function (layero, index) {
+                    console.log(layero + "," + index);
+                    body.find("#submit-form").click();
                     $('#query').click();
-
-                },btn2:function () {
+                }, btn2: function () {
                 },
             });
         });
@@ -227,18 +226,18 @@
                 cellMinWidth: 120,
                 cols: [[
                     {field: 'oid', hide: true},
-                    {field: 'createdBy', title: '创建人', align:'center'},
-                    {field: 'createdTime', title: '创建时间',align:'center'},
-                    {field: 'matterType', title: '事项类型',align:'center',templet: '#select-matterType'},
-                    {field: 'matterContent', title: '事项内容',align:'center'},
-                    {field: 'startTime', title: '开始时间',align:'center'},
-                    {field: 'endTime', title: '结束时间',align:'center'},
-                    {field: 'status', title: '状态',align:'center',templet: '#select-status'},
-                    {field: 'groupName', title: '所在组',align:'center'},
-                    {title: '操作', toolbar: '#matter-option',align:'center' }
+                    {field: 'createdBy', title: '创建人', align: 'center'},
+                    {field: 'createdTime', title: '创建时间', align: 'center'},
+                    {field: 'matterType', title: '事项类型', align: 'center', templet: '#select-matterType'},
+                    {field: 'matterContent', title: '事项内容', align: 'center'},
+                    {field: 'startTime', title: '开始时间', align: 'center'},
+                    {field: 'endTime', title: '结束时间', align: 'center'},
+                    {field: 'status', title: '状态', align: 'center', templet: '#select-status'},
+                    {field: 'groupName', title: '所在组', align: 'center'},
+                    {title: '操作', toolbar: '#matter-option', align: 'center'}
                 ]],
-                page:true,
-                limit:30,
+                page: true,
+                limit: 30,
                 height: 'full-160'
             });
         }
@@ -248,15 +247,15 @@
             if (createTime) {
                 createTimeFrom = createTime.split(' - ')[0];
                 createTimeTo = createTime.split(' - ')[1];
-            }else{
-            	createTimeFrom="";
-            	createTimeTo="";
+            } else {
+                createTimeFrom = "";
+                createTimeTo = "";
             }
             //服务小组
-            var matter="";
+            var matter = "";
             var matters = formSelects.value('matterType', 'val');
 
-                matter=matters+matter;
+            matter = matters + matter;
 
 
             return {
@@ -267,11 +266,11 @@
             };
         }
 
-        function initSelect(){
-            formSelectConfig('matterType','dict/code',{fieldName:'MATTER_TYPE'});//事项类型
+        function initSelect() {
+            formSelectConfig('matterType', 'dict/code', {fieldName: 'MATTER_TYPE'});//事项类型
         }
 
-        function formSelectConfig(_id,_url,_data,_value){
+        function formSelectConfig(_id, _url, _data, _value) {
             formSelects.config(_id, {
                 delay: 1000,
                 response: {
@@ -286,10 +285,10 @@
                 url: ctx + _url,
                 keyName: 'valuee',            //自定义返回数据中name的key, 默认 name
                 keyVal: 'keyy',            //自定义返回数据中value的key, 默认 value
-                success: function(id, url, searchVal, result){//使用远程方式的success回调
-                    if(_value!=null){
+                success: function (id, url, searchVal, result) {//使用远程方式的success回调
+                    if (_value != null) {
                         console.log(_value);
-                        formSelects.value(id,_value);
+                        formSelects.value(id, _value);
                     }
                 }
             });

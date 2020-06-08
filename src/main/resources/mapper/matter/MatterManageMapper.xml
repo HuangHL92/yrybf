@@ -16,6 +16,7 @@
         <if test="matterManage.createTimeTo != '' and matterManage.createTimeTo != null">
             and  str_to_date(m.End_Time,'%Y-%m-%d') &lt;= #{matterManage.createTimeTo}
         </if>
+        limit #{matterManage.pageNum},#{matterManage.pageSize}
 
     </select>
     <select id="getTatal" resultType="java.lang.Integer" parameterType="cc.mrbird.febs.matter.entity.MatterManage">

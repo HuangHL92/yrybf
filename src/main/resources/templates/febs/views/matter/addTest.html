@@ -14,18 +14,21 @@
         <div class="layui-col-md6 layui-col-sm6 layui-col-xs12">
             <div class="layui-card">
                 <div class="layui-card-body febs-table-full">
-                    <form class="layui-form layui-table-form" action="" lay-filter="sx-form" id="sx-form">
+                    <form class="layui-form layui-table-form" autocomplete="off" action="" lay-filter="sx-form"
+                          id="sx-form">
                         <div class="layui-form-item">
-                            <div class="layui-inline">
-                                <label class="layui-form-label">开始时间</label>
-                                <div class="layui-input-inline">
-                                    <input type="text" name="startTime" class="layui-input" id="startTime" >
+                            <div>
+                                <label class="layui-form-label febs-form-item-require ">开始时间</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="startTime" lay-verify="required" class="layui-input"
+                                           id="startTime" maxlength="50">
                                 </div>
                             </div>
-                            <div class="layui-inline">
-                                <label class="layui-form-label">结束时间</label>
-                                <div class="layui-input-inline">
-                                    <input type="text" name="endTime" class="layui-input" id="endTime" placeholder="yyyy-MM-dd">
+                            <div>
+                                <label class="layui-form-label febs-form-item-require">结束时间</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="endTime" lay-verify="required|endTime" class="layui-input"
+                                           id="endTime" maxlength="50">
                                 </div>
                             </div>
                         </div>
@@ -43,20 +46,22 @@
                         <div class="layui-form-item">
                             <label class="layui-form-label febs-form-item-require">事项内容：</label>
                             <div class="layui-input-block">
-                                <textarea maxlength="1000" name="matterContent" class="layui-textarea"></textarea>
+                                <textarea maxlength="1000" lay-verify="required" name="matterContent"
+                                          class="layui-textarea"></textarea>
                             </div>
                         </div>
                         <div class="layui-form-item">
-                            <label class="layui-form-label febs-form-item-require">创建人：</label>
+                            <label class="layui-form-label febs-form-item-require lay-ver ">创建人：</label>
                             <div class="layui-input-block">
-                                <input type="text" name="createdBy" autocomplete="off" class="layui-input"
-                                       maxlength="50" lay-verify="range">
+                                <input type="text" name="createdBy" autocomplete="off" lay-verify="required"
+                                       class="layui-input"
+                                       maxlength="50">
                             </div>
                         </div>
 
                         <div hidden class="layui-form-item ">
                             <button type="reset" class="layui-btn" id="reset-form">重置</button>
-                            <button  class="layui-btn" lay-submit="" lay-filter="group-form-submit"
+                            <button class="layui-btn" lay-submit="" lay-filter="group-form-submit"
                                     id="submit-form">保存
                             </button>
                         </div>
@@ -68,10 +73,11 @@
 </div>
 
 <style>
-    .layui-form-label{
+    .layui-form-label {
         width: 100px;
     }
-    .layui-input-block{
+
+    .layui-input-block {
         width: 500px;
         margin-left: 130px;
     }
@@ -79,36 +85,51 @@
 </style>
 <script src="/layui/layui.js" charset="utf-8"></script>
 <script>
-    layui.use(['form', 'layedit', 'laydate','jquery','form'], function () {
+    layui.use(['form', 'layedit', 'laydate', 'jquery', 'form'], function () {
         var laydate = layui.laydate;
-            form = layui.form,
+        form = layui.form,
             $ = layui.jquery,
             // formSelects = layui.formSelects;
             form.render();
-            // formSelects.render();
+        // formSelects.render();
 
         //常规用法
         laydate.render({
             elem: '#startTime',
-            trigger:'click'
+            trigger: 'click'
         });
 
         //国际版
         laydate.render({
             elem: '#endTime',
-            trigger:'click'
+            trigger: 'click'
         });
         form.on('submit(group-form-submit)', function (data) {
-            console.log(data);
+
             AddMatter(data.field);
             return false;
         });
         var AddMatter = function (data) {
-            $.post('/matter/add',data,function (r) {
-
-
+            $.post('/matter/add', data, function (r) {
+                // console.log(r);
+                if (r.code == 200) {
+                    parent.layer.msg("新增事项成功");
+                    setTimeout("parent.location.reload();" +
+                        "var index = parent.layer.getFrameIndex(window.name);" +
+                        "parent.layer.close(index);", 500);
+                }
             })
         }
+        form.verify({
+            endTime: function (value,item) {
+                var startTime = $("#startTime").val();
+                var endTime = $("#endTime").val();
+                if(startTime>endTime){
+                    return '开始时间必须小于或等于结束时间';
+                }
+
+            }
+        });
     })
 
 

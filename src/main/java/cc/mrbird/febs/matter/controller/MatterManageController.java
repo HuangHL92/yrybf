@@ -52,6 +52,8 @@ public class MatterManageController extends BaseController {
     @RequiresPermissions("matter:view")
     public FebsResponse matterList(QueryRequest request, MatterManage matter) {
         Map<String,Object> resultMap = new HashMap<>();
+        matter.setPageNum((request.getPageNum()-1)*30);
+        matter.setPageSize(request.getPageSize());
         List<MatterManage> matterManages = matterService.findMatterManages(matter);
         Integer tatal = matterService.getTatal(matter);
         resultMap.put("rows",matterManages);
@@ -67,7 +69,8 @@ public class MatterManageController extends BaseController {
 
 
         this.matterService.createMatterManage(matter);
-        return new FebsResponse().success();
+        FebsResponse success = new FebsResponse().success();
+        return success;
     }
 
     @ControllerEndpoint(operation = "删除MatterManage", exceptionMessage = "删除MatterManage失败")

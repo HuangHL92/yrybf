@@ -46,6 +46,7 @@ public class MatterManageServiceImpl extends ServiceImpl<MatterManageMapper, Mat
     public List<MatterManage> findMatterManages(MatterManage matterManage) {
 //	    LambdaQueryWrapper<MatterManage> queryWrapper = new LambdaQueryWrapper<>();
 		// TODO 设置查询条件
+
         List<MatterManage> manageMapper = this.baseMapper.findManageMapper(matterManage);
         return manageMapper;
     }
